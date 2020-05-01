@@ -1,0 +1,59 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+}
+
+type FunctionCall {
+    end: String
+    fileName: String!
+    functionName: String!
+    start: String!
+}
+
+type GetTracesResponse {
+    hasMore: Boolean!
+    offset: Int!
+    traces: [Trace!]!
+}
+
+type Query {
+    getTrace(id: String): Trace
+    getTraces(offset: Int, search: String): GetTracesResponse!
+}
+
+type ResourceAccessEvent {
+    end: String
+    error: String
+    request: String!
+    resourceIdentifier: String!
+    response: String!
+    serviceName: String!
+    start: String!
+    status: String!
+}
+
+type Trace {
+    duration: Int!
+    end: String!
+    error: String
+    functionCallEvents: [FunctionCall!]!
+    id: String!
+    request: String!
+    resourceAccessEvents: [ResourceAccessEvent!]!
+    response: String
+    start: String!
+    status: String!
+    unitName: String!
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+
+scalar JSON
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

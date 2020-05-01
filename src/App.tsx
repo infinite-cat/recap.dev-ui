@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { ApolloProvider } from '@apollo/react-hooks'
+import 'antd/dist/antd.css'
+
+import { TracesList } from './containers/traces-list.container'
+import { getApolloClient } from './config/apollo.config'
+import { Trace } from './containers/trace.container'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ApolloProvider client={getApolloClient()}>
+      <Router>
+        <Switch>
+          <Route path="/traces/:id">
+            <Trace />
+          </Route>
+          <Route path="/">
+            <TracesList />
+          </Route>
+        </Switch>
+      </Router>
+    </ApolloProvider>
+  )
 }
 
-export default App;
+export default App
