@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Card, Typography } from 'antd'
-
 import styled from 'styled-components'
 import ReactJson from 'react-json-view'
+import { map } from 'lodash'
+
 import {
   CallDurationColumn,
   CallDurationContainer,
@@ -60,16 +61,17 @@ const BasicInfoCard = styled(Card)`
 
 const parseResourceIdentifier = (resourceIdentifier: string) => {
   const object = JSON.parse(resourceIdentifier)
-  const key = Object.keys(object)[0]
-  const resourceIdentifierType = camelToTitle(key)
-  const id = object[key]
-  return { resourceIdentifierType, resourceIdentifier: id }
+
+  return map(Object.keys(object), (key) => ({
+    title: camelToTitle(key),
+    value: object[key],
+  }))
 }
 
 export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, event }: ResourceAccessRowProps) => {
   const [opened, setOpened] = useState(false)
 
-  const { resourceIdentifierType, resourceIdentifier } = parseResourceIdentifier(event.resourceIdentifier)
+  const resourceIdRows = parseResourceIdentifier(event.resourceIdentifier)
 
   const request = JSON.parse(event.request)
 
@@ -95,7 +97,7 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
       {opened
       && (
       <CallsRow>
-        <ResourceDetailsContainer colspan="3">
+        <ResourceDetailsContainer colSpan="3">
           <BasicDetails>
             <Text type="secondary">Status</Text>
             <Text strong><ExecutionStatusTag status={event.status} /></Text>
@@ -103,8 +105,12 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
             <Text strong>{event.serviceName}</Text>
             <Text type="secondary">Operation</Text>
             <Text strong>{request.operation}</Text>
-            <Text type="secondary">{resourceIdentifierType}</Text>
-            <Text strong>{resourceIdentifier}</Text>
+            {map(resourceIdRows, (idRow, index) => (
+              <Fragment key={index}>
+                <Text type="secondary">{idRow.title}</Text>
+                <Text strong>{idRow.value}</Text>
+              </Fragment>
+            ))}
           </BasicDetails>
           <CardsContainer>
             {event.error && (

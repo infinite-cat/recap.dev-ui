@@ -75,7 +75,7 @@ export const TracesList = () => {
 
     setLoadingMore(true)
 
-    return fetchMore({
+    fetchMore({
       variables: {
         offset: data?.getTraces?.offset,
       },
