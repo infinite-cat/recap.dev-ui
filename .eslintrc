@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-typescript"],
+  "extends": ["airbnb", "react-app"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "env": {
@@ -12,11 +12,15 @@
     "import/resolver": {"node": {"extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]}}
   },
   "rules": {
-    "@typescript-eslint/semi": ["error", "never"],
-    "max-len": ["error", 120],
+    "semi": ["error", "never"],
     "object-curly-newline": ["error", {"consistent": true}],
+    "max-len": ["error", 120],
+    "react/jsx-filename-extension": [1, {"extensions": [".tsx", ".jsx"]}],
+    "@typescript-eslint/no-unused-vars": ["error", {"ignoreRestSiblings": true}],
     "import/prefer-default-export": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "implicit-arrow-linebreak": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "import/extensions": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }

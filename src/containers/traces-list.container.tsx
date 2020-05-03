@@ -5,7 +5,7 @@ import { DateTime } from 'luxon'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
-import { debounce } from 'lodash'
+import { debounce } from 'lodash-es'
 
 import { GetTraces } from '../graphql/queries'
 import { getTraces } from '../graphql/queries/types/getTraces'
@@ -97,7 +97,7 @@ export const TracesList = () => {
     }).then(() => {
       setLoadingMore(false)
     })
-  }, [loadingMore, data])
+  }, [loadingMore, fetchMore, data])
 
   return (
     <PageHeader
