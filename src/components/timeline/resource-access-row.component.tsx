@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from 'react'
-import { Card, Typography } from 'antd'
+import { Typography } from 'antd'
 import styled from 'styled-components'
-import ReactJson from 'react-json-view'
 import { map } from 'lodash'
 
 import {
@@ -14,6 +13,7 @@ import {
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
 import { camelToTitle } from '../../utils/string.utils'
 import { ExecutionStatusTag } from '../execution-status.component'
+import { JsonCard } from '../json'
 
 const { Text } = Typography
 
@@ -35,6 +35,7 @@ const CardsContainer = styled.div`
   display: grid;
   column-gap: 20px;
   grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   margin-bottom: 20px;
 `
 
@@ -49,14 +50,6 @@ const BasicDetails = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
-`
-const BasicInfoCard = styled(Card)`
-  margin: 10px 0;
-  
-  .ant-card-body {
-    padding: 10px;
-    word-break: break-word;  
-  }
 `
 
 const parseResourceIdentifier = (resourceIdentifier: string) => {
@@ -114,26 +107,11 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
           </BasicDetails>
           <CardsContainer>
             {event.error && (
-            <BasicInfoCard>
-              <Text type="secondary">
-                Error
-              </Text>
-              <ReactJson src={JSON.parse(event.error)} />
-            </BasicInfoCard>
+              <JsonCard title="Error" src={event.error} />
             )}
-            <BasicInfoCard>
-              <Text type="secondary">
-                Request
-              </Text>
-              <ReactJson src={request} />
-            </BasicInfoCard>
+            <JsonCard title="Request" src={event.request} />
             {event.response && (
-            <BasicInfoCard>
-              <Text type="secondary">
-                Response
-              </Text>
-              <ReactJson src={JSON.parse(event.response)} />
-            </BasicInfoCard>
+              <JsonCard title="Response" src={event.response} />
             )}
           </CardsContainer>
         </ResourceDetailsContainer>
