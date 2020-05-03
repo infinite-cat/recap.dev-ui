@@ -1,5 +1,5 @@
 import React from 'react'
-import { map, orderBy } from 'lodash'
+import { map, orderBy } from 'lodash-es'
 import styled from 'styled-components'
 import { Typography } from 'antd'
 import { getTrace_getTrace as Trace } from '../../graphql/queries/types/getTrace'

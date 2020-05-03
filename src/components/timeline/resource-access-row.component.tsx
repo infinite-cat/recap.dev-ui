@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from 'react'
 import { Typography } from 'antd'
 import styled from 'styled-components'
-import { map } from 'lodash'
+import { map } from 'lodash-es'
 
 import {
   CallDurationColumn,
