@@ -1,7 +1,7 @@
 import React from 'react'
 import { map, orderBy } from 'lodash-es'
-import styled from 'styled-components'
-import { Typography } from 'antd'
+import styled from 'styled-components/macro'
+import { Typography } from '@material-ui/core'
 import { getTrace_getTrace as Trace } from '../../graphql/queries/types/getTrace'
 import {
   CallDurationColumn,
@@ -11,8 +11,7 @@ import {
   FunctionCallDurationGraph,
 } from './timeline.styles'
 import { ResourceAccessRow } from './resource-access-row.component'
-
-const { Text } = Typography
+import { Code } from '../typography.component'
 
 export interface TimelineProps {
   trace: Trace
@@ -37,20 +36,20 @@ export const Timeline = ({ trace }: TimelineProps) => {
       <tbody>
         <CallsRow>
           <CallsColumn>
-            <Text strong>
+            <Typography variant="subtitle2">
               Function Calls
-            </Text>
+            </Typography>
           </CallsColumn>
           <CallsColumn>
-            <Text strong>
+            <Typography variant="subtitle2">
               Duration
-            </Text>
+            </Typography>
           </CallsColumn>
         </CallsRow>
         {map(functionCalls, (call, i) => (
           <CallsRow key={i}>
             <CallsColumn>
-              <Text code>{call.functionName}</Text>
+              <Code>{call.functionName}</Code>
             </CallsColumn>
             <CallsColumn>
               {(Number(call.end) || maxTimestamp) - Number(call.start)} ms
@@ -67,14 +66,14 @@ export const Timeline = ({ trace }: TimelineProps) => {
         ))}
         <CallsRow>
           <CallsColumn>
-            <Text strong>
+            <Typography variant="subtitle2">
               Resources
-            </Text>
+            </Typography>
           </CallsColumn>
           <CallsColumn>
-            <Text strong>
+            <Typography variant="subtitle2">
               Duration
-            </Text>
+            </Typography>
           </CallsColumn>
         </CallsRow>
         {map(resourceAccessEvents, (event, i) => (

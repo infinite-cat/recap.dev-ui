@@ -1,9 +1,7 @@
-import styled from 'styled-components'
-import { Card, Col } from 'antd'
+import styled from 'styled-components/macro'
+import { Card } from '@material-ui/core'
 
-export const Content = styled(Col)`
-
-`
+export const Content = styled.div``
 
 export const TopCardsContainer = styled.div`
   display: grid;
@@ -13,8 +11,6 @@ export const TopCardsContainer = styled.div`
   margin-bottom: 20px;
 `
 export const BasicInfoCard = styled(Card)`
-  .ant-card-body {
-    padding: 10px;
-    word-break: break-word;  
-  }
+  padding: 10px 20px;
+  word-break: break-word;  
 `

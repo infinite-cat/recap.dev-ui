@@ -1,60 +1,47 @@
 import React, { useCallback, useState } from 'react'
-import { PageHeader, Row, Spin, Table, Input } from 'antd'
+import styled from 'styled-components/macro'
+import {
+  CircularProgress, Table, IconButton, InputBase, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow,
+} from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
-import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import { debounce } from 'lodash-es'
 
+import SearchIcon from '@material-ui/icons/Search'
+
 import { GetTraces } from '../graphql/queries'
-import { getTraces } from '../graphql/queries/types/getTraces'
+import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
 import { ExecutionStatusTag } from '../components'
 
-const { Search } = Input
-
-const Content = styled(Row)`
-
+const Content = styled.div`
 `
-const Controls = styled.div`
+const Input = styled(InputBase)`
+  flex: 1;
+  padding: 10px 16px;
+`
+const Controls = styled(Paper)`
+  display: flex;
+  width: 100%;
   margin: 16px 0;
-  width: 100%;
-`
-
-const StyledTable = styled(Table)`
-  width: 100%;
 `
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `
+const PageHeader = styled.div`
+  padding: 20px;
+` as any
 
-const columns = [{
-  title: 'Request Id',
-  dataIndex: 'id',
-  key: 'id',
-  render: (id: string) => <Link to={`/traces/${id}`}>{id}</Link>,
-}, {
-  title: 'Unit Name',
-  dataIndex: 'unitName',
-  key: 'id',
-}, {
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'id',
-  render: (status: string) => <ExecutionStatusTag status={status} />,
-}, {
-  title: 'Duration',
-  dataIndex: 'duration',
-  key: 'id',
-  render: (duration: number) => `${duration} ms`,
-}, {
-  title: 'Time',
-  dataIndex: 'start',
-  key: 'id',
-  render: (time: string) => DateTime.fromMillis(Number(time)).toISO(),
-}]
+const columns = [
+  { title: 'Request Id', dataIndex: 'id' as keyof Trace, key: 'id' },
+  { title: 'Unit Name', dataIndex: 'unitName' as keyof Trace, key: 'id' },
+  { title: 'Status', dataIndex: 'status' as keyof Trace, key: 'id' },
+  { title: 'Duration', dataIndex: 'duration' as keyof Trace, key: 'id' },
+  { title: 'Time', dataIndex: 'start' as keyof Trace, key: 'id' },
+]
 
-export const TracesList = () => {
+const TracesListContainer = () => {
   const [search, setSearch] = useState('')
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore } = useQuery<getTraces>(GetTraces, {
@@ -111,26 +98,47 @@ export const TracesList = () => {
           threshold={500}
         >
           <Controls>
-            <Search
+            <Input
               placeholder="Search for a trace id or unit name"
-              onSearch={(value) => setSearch(value)}
               onChange={(e) => debouncedSetSearch(e.target.value)}
-              loading={loadingMore || loading}
-              enterButton
             />
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon />
+            </IconButton>
           </Controls>
-          {!loading && data
-          && (
-          <StyledTable
-            rowKey="id"
-            pagination={false}
-            dataSource={data?.getTraces?.traces}
-            columns={columns}
-          />
+          {!loading && data && (
+            <TableContainer component={Paper}>
+              <Table aria-label="traces table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell key={column.dataIndex}>{column.title}</TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {data?.getTraces?.traces?.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        <Link to={`/traces/${row.id}`}>{row.id}</Link>
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        {row.unitName}
+                      </TableCell>
+                      <TableCell><ExecutionStatusTag status={row.status} /></TableCell>
+                      <TableCell>{row.duration} ms</TableCell>
+                      <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           )}
-          {(loading || loadingMore) && <Spin />}
+          {(loading || loadingMore) && <CircularProgress />}
         </StyledInfiniteScroll>
       </Content>
     </PageHeader>
   )
 }
+
+export default TracesListContainer

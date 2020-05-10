@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react'
-import { Typography } from 'antd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
+import { Typography } from '@material-ui/core'
 import { map } from 'lodash-es'
 
 import {
@@ -11,11 +11,10 @@ import {
   ResourceAccessDurationGraph,
 } from './timeline.styles'
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
-import { camelToTitle } from '../../utils/string.utils'
+import { camelToTitle } from '../../utils'
 import { ExecutionStatusTag } from '../execution-status.component'
-import { JsonCard } from '../json'
-
-const { Text } = Typography
+import { JsonCard } from '../json/json-card.component'
+import { Code } from '../typography.component'
 
 export interface ResourceAccessRowProps {
   minTimestamp: number
@@ -72,7 +71,7 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
     <>
       <CollapsibleCallsRow onClick={() => setOpened(!opened)}>
         <CallsColumn>
-          <Text code>{event.serviceName}.{JSON.parse(event.request)?.operation}</Text>
+          <Code>{event.serviceName}.{JSON.parse(event.request)?.operation}</Code>
         </CallsColumn>
         <CallsColumn>
           {(Number(event.end) || maxTimestamp) - Number(event.start)} ms
@@ -89,33 +88,35 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
       </CollapsibleCallsRow>
       {opened
       && (
-      <CallsRow>
-        <ResourceDetailsContainer colSpan="3">
-          <BasicDetails>
-            <Text type="secondary">Status</Text>
-            <Text strong><ExecutionStatusTag status={event.status} /></Text>
-            <Text type="secondary">Service Name</Text>
-            <Text strong>{event.serviceName}</Text>
-            <Text type="secondary">Operation</Text>
-            <Text strong>{request.operation}</Text>
-            {map(resourceIdRows, (idRow, index) => (
-              <Fragment key={index}>
-                <Text type="secondary">{idRow.title}</Text>
-                <Text strong>{idRow.value}</Text>
-              </Fragment>
-            ))}
-          </BasicDetails>
-          <CardsContainer>
-            {event.error && (
-              <JsonCard title="Error" src={event.error} />
-            )}
-            <JsonCard title="Request" src={event.request} />
-            {event.response && (
-              <JsonCard title="Response" src={event.response} />
-            )}
-          </CardsContainer>
-        </ResourceDetailsContainer>
-      </CallsRow>
+        <CallsRow>
+          <ResourceDetailsContainer colSpan="3">
+            <BasicDetails>
+              <Typography>Status</Typography>
+              <Typography variant="subtitle2">
+                <ExecutionStatusTag status={event.status} />
+              </Typography>
+              <Typography>Service Name</Typography>
+              <Typography variant="subtitle2">{event.serviceName}</Typography>
+              <Typography>Operation</Typography>
+              <Typography variant="subtitle2">{request.operation}</Typography>
+              {map(resourceIdRows, (idRow, index) => (
+                <Fragment key={index}>
+                  <Typography>{idRow.title}</Typography>
+                  <Typography variant="subtitle2">{idRow.value}</Typography>
+                </Fragment>
+              ))}
+            </BasicDetails>
+            <CardsContainer>
+              {event.error && (
+                <JsonCard title="Error" src={event.error} />
+              )}
+              <JsonCard title="Request" src={event.request} />
+              {event.response && (
+                <JsonCard title="Response" src={event.response} />
+              )}
+            </CardsContainer>
+          </ResourceDetailsContainer>
+        </CallsRow>
       )}
     </>
   )

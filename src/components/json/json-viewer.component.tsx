@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactJson from 'react-json-view'
-import { Typography } from 'antd'
-
-const { Text } = Typography
+import { Code } from '../typography.component'
 
 export interface JsonViewerProps {
   src?: string
@@ -27,7 +25,7 @@ export const JsonViewer = ({ src, ...rest }: JsonViewerProps) => {
   if (!isJsonString(src)) {
     return (
       <div>
-        <Text code>{src}</Text>
+        <Code>{src}</Code>
       </div>
     )
   }
