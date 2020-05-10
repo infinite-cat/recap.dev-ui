@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
   CircularProgress, Table, IconButton, InputBase, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Link as MaterialLink,
 } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
@@ -13,7 +14,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 import { GetTraces } from '../graphql/queries'
 import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { ExecutionStatusTag } from '../components'
+import { ExecutionStatusTag, PageHeader } from '../components'
 
 const Content = styled.div`
 `
@@ -29,9 +30,6 @@ const Controls = styled(Paper)`
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `
-const PageHeader = styled.div`
-  padding: 20px;
-` as any
 
 const columns = [
   { title: 'Request Id', dataIndex: 'id' as keyof Trace, key: 'id' },
@@ -120,7 +118,7 @@ const TracesListContainer = () => {
                   {data?.getTraces?.traces?.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell component="th" scope="row">
-                        <Link to={`/traces/${row.id}`}>{row.id}</Link>
+                        <MaterialLink to={`/traces/${row.id}`} component={Link}>{row.id}</MaterialLink>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {row.unitName}

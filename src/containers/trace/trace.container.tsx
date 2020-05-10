@@ -1,20 +1,15 @@
 import React from 'react'
-import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
-import { useParams, useHistory, Link } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 
 import { GetTrace } from '../../graphql/queries'
 import { getTrace } from '../../graphql/queries/types/getTrace'
-import { LoadingPage } from '../../components'
+import { LoadingPage, PageHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
-
-const PageHeader = styled.div`
-  padding: 20px;
-` as any
 
 const breadcrumb = (id: string) => (
   {
@@ -24,13 +19,9 @@ const breadcrumb = (id: string) => (
         breadcrumbName: 'Traces',
       },
       {
-        path: `/traces/${id}`,
         breadcrumbName: id,
       },
     ],
-    itemRender: (route: any) => (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
-    ),
   }
 )
 

@@ -71,7 +71,7 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
       </Drawer>
       <Content expanded={isExpanded}>
         <div>
-          <Toolbar />
+          {isMobile && <Toolbar />}
           {children}
         </div>
       </Content>
