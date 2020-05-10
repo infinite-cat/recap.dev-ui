@@ -1,11 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState, memo } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Toolbar, IconButton, useMediaQuery } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import { User } from 'react-feather'
+import { Menu } from 'react-feather'
 import { useLocation } from 'react-use'
 
 import ElevationScroll from '../elevation-scroll.component'
-import ThemeSwitcher from '../../theme-switcher.component'
 import { AppBarContext } from '../../../contexts'
 import { TopMenuItems, BottomMenuItems } from './drawer-layout.utils'
 import { mobileMediaQuery } from '../../../utils'
@@ -19,16 +18,13 @@ import {
   Flex,
   FullLogo,
   Hr,
-  RightAppBar,
-  RightAppBarItem,
-  Logo,
 } from './drawer-layout.styles'
 
 interface DrawerLayoutProps {
   children: React.ReactElement
 }
 
-export const DrawerLayout = memo(({ children }: DrawerLayoutProps) => {
+export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
   const { pathname } = useLocation()
   const { isExpanded, setExpanded } = useContext(AppBarContext)
   const [isOpen, setOpen] = useState(false)
@@ -42,22 +38,18 @@ export const DrawerLayout = memo(({ children }: DrawerLayoutProps) => {
 
   return (
     <Wrapper>
-      <ElevationScroll threshold={1}>
-        <AppBar position="fixed" open={isExpanded}>
-          <Toolbar>
-            {isMobile && (
+      {isMobile && (
+        <ElevationScroll threshold={1}>
+          <AppBar position="fixed" open={isExpanded}>
+            <Toolbar>
               <IconButton onClick={openSidebar}>
-                <Logo />
+                <Menu color="#fff" />
               </IconButton>
-            )}
-            <Flex />
-            <RightAppBar>
-              <RightAppBarItem> <ThemeSwitcher /></RightAppBarItem>
-              <RightAppBarItem> <User /></RightAppBarItem>
-            </RightAppBar>
-          </Toolbar>
-        </AppBar>
-      </ElevationScroll>
+              <Flex />
+            </Toolbar>
+          </AppBar>
+        </ElevationScroll>
+      )}
       <Drawer
         variant={isMobile ? 'temporary' : 'permanent'}
         open={!isMobile || isOpen}
@@ -85,4 +77,4 @@ export const DrawerLayout = memo(({ children }: DrawerLayoutProps) => {
       </Content>
     </Wrapper>
   )
-})
+}
