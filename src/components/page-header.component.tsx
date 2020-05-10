@@ -51,7 +51,7 @@ export const PageHeader = memo(({ title = '', subTitle = '', breadcrumb, onBack,
                 </MaterialLink>
               )
             }
-            return <Typography color="textPrimary">{route.breadcrumbName}</Typography>
+            return <Typography key={index} color="textPrimary">{route.breadcrumbName}</Typography>
           })}
         </Breadcrumbs>
       </Box>
