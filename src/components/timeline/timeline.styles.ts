@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 export const CallsRow = styled.tr`
   height: 40px;
@@ -17,7 +17,6 @@ export const CallDurationColumn = styled.td`
 export const CallDurationContainer = styled.div`
   width: 100%;
   height: 20px;
-  background: #EEE;
   position: relative;
 `
 

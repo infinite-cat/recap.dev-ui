@@ -1,18 +1,28 @@
 import React from 'react'
-import { Tag } from 'antd'
+import styled from 'styled-components/macro'
+import { Chip } from '@material-ui/core'
 
 interface ExecutionStatusTagProps {
   status?: 'OK' | 'ERROR' | string
 }
 
+const SuccessChip = styled(Chip)`
+  border-color: ${(p) => p.theme.palette.success.main};
+  color: ${(p) => p.theme.palette.success.main};
+`
+const ErrorChip = styled(Chip)`
+  border-color: ${(p) => p.theme.palette.error.main};
+  color: ${(p) => p.theme.palette.error.main};
+`
+
 export const ExecutionStatusTag = ({ status }: ExecutionStatusTagProps) => {
   if (status === 'OK') {
-    return <Tag color="green">OK</Tag>
+    return <SuccessChip label="OK" variant="outlined" />
   }
 
   if (status === 'ERROR') {
-    return <Tag color="magenta">Error</Tag>
+    return <ErrorChip label="Error" variant="outlined" />
   }
 
-  return <Tag color="orange">Unknown</Tag>
+  return <Chip variant="outlined">Unknown</Chip>
 }

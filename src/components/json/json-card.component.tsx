@@ -1,14 +1,16 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Button, Card, message, Typography } from 'antd'
-import { CopyOutlined } from '@ant-design/icons'
+import styled from 'styled-components/macro'
+import { Card, IconButton, Typography } from '@material-ui/core'
+import { useSnackbar } from 'notistack'
+
+import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
+
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { JsonViewer } from './json-viewer.component'
 
-const { Text } = Typography
-
 const BasicInfoCard = styled(Card)`
   margin: 10px 0;
+  padding: 10px 20px;
   position: relative;
   
   .ant-card-body {
@@ -17,13 +19,14 @@ const BasicInfoCard = styled(Card)`
   }
 `
 const ScrollContainer = styled.div`
+  margin-top: 10px;
   max-height: 400px;
   overflow-y: auto;
 `
 const Controls = styled.div`
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 10px;
+  right: 10px;
 `
 
 export interface JsonCardProps {
@@ -31,18 +34,24 @@ export interface JsonCardProps {
   src?: string
 }
 
-export const JsonCard = ({ src, title }: JsonCardProps) => (
-  <BasicInfoCard>
-    <Text type="secondary">
-      {title}
-    </Text>
-    <ScrollContainer>
-      <JsonViewer src={src} />
-    </ScrollContainer>
-    <Controls>
-      <CopyToClipboard text={src!} onCopy={() => message.success('Copied to clipboard')}>
-        <Button shape="circle" icon={<CopyOutlined />} />
-      </CopyToClipboard>
-    </Controls>
-  </BasicInfoCard>
-)
+export const JsonCard = ({ src, title }: JsonCardProps) => {
+  const { enqueueSnackbar } = useSnackbar()
+
+  return (
+    <BasicInfoCard>
+      <Typography color="textSecondary">
+        {title}
+      </Typography>
+      <ScrollContainer>
+        <JsonViewer src={src} />
+      </ScrollContainer>
+      <Controls>
+        <CopyToClipboard text={src!} onCopy={() => enqueueSnackbar('Copied to clipboard', { variant: 'success' })}>
+          <IconButton>
+            <FileCopyOutlinedIcon />
+          </IconButton>
+        </CopyToClipboard>
+      </Controls>
+    </BasicInfoCard>
+  )
+}

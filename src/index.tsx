@@ -1,10 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+
+import { AppBarProvider, SnackbarProvider, ThemeProvider } from './contexts'
+import RootContainer from './containers/root.container'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <SnackbarProvider>
+        <AppBarProvider>
+          <RootContainer />
+        </AppBarProvider>
+      </SnackbarProvider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 )
