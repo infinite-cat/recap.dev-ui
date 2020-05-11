@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 
 import CopyToClipboard from 'react-copy-to-clipboard'
+import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
 
 const BasicInfoCard = styled(Card)`
@@ -29,16 +30,16 @@ const Controls = styled.div`
   right: 10px;
 `
 
-export interface JsonCardProps {
+export interface JsonCardProps extends CardProps {
   title: string
   src?: string
 }
 
-export const JsonCard = ({ src, title }: JsonCardProps) => {
+export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
   const { enqueueSnackbar } = useSnackbar()
 
   return (
-    <BasicInfoCard>
+    <BasicInfoCard {...rest}>
       <Typography color="textSecondary">
         {title}
       </Typography>

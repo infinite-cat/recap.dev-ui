@@ -3,6 +3,7 @@ import React, { memo, PropsWithChildren } from 'react'
 import { Breadcrumbs, IconButton, Typography, Link as MaterialLink, Box } from '@material-ui/core'
 import { ArrowLeft } from 'react-feather'
 import { Link } from 'react-router-dom'
+import styled from 'styled-components'
 
 type Route = {
   path?: string
@@ -20,16 +21,22 @@ type PageHeaderProps = PropsWithChildren<{
   onBack?: () => void
 }>
 
+const Header = styled(Typography)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 export const PageHeader = memo(({ title = '', subTitle = '', breadcrumb, onBack, children }: PageHeaderProps) => (
   <Box p={2}>
-    <Typography variant="h4" component="h4" color="textPrimary">
+    <Header variant="h6">
       {onBack && (
         <IconButton onClick={onBack} color="inherit">
           <ArrowLeft />
         </IconButton>
       )}
       {title}
-    </Typography>
+    </Header>
 
     <Typography color="textSecondary">
       {subTitle}

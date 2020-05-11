@@ -1,24 +1,27 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { map, orderBy } from 'lodash-es'
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
+
 import { getTrace_getTrace as Trace } from '../../graphql/queries/types/getTrace'
 import {
-  CallDurationColumn,
-  CallDurationContainer,
-  CallsColumn,
-  CallsRow,
+  CallDurationContainer, CallName,
+  Column,
+  DurationColumn,
+  ExpandIconContainer,
   FunctionCallDurationGraph,
+  SectionName,
 } from './timeline.styles'
 import { ResourceAccessRow } from './resource-access-row.component'
-import { Code } from '../typography.component'
 
 export interface TimelineProps {
   trace: Trace
 }
 
-const CallsGrid = styled.table`
+const CallsGrid = styled.div`
   width: 100%;
+  display: grid;
+  grid-template-columns: min-content min-content 1fr;
 `
 
 export const Timeline = ({ trace }: TimelineProps) => {
@@ -33,59 +36,57 @@ export const Timeline = ({ trace }: TimelineProps) => {
 
   return (
     <CallsGrid>
-      <tbody>
-        <CallsRow>
-          <CallsColumn>
-            <Typography variant="subtitle2">
-              Function Calls
-            </Typography>
-          </CallsColumn>
-          <CallsColumn>
-            <Typography variant="subtitle2">
-              Duration
-            </Typography>
-          </CallsColumn>
-        </CallsRow>
-        {map(functionCalls, (call, i) => (
-          <CallsRow key={i}>
-            <CallsColumn>
-              <Code>{call.functionName}</Code>
-            </CallsColumn>
-            <CallsColumn>
-              {(Number(call.end) || maxTimestamp) - Number(call.start)} ms
-            </CallsColumn>
-            <CallDurationColumn>
-              <CallDurationContainer>
-                <FunctionCallDurationGraph
-                  left={(Number(call.start) - Number(minTimestamp)) / totalDuration}
-                  width={((Number(call.end) || maxTimestamp) - Number(call.start)) / totalDuration}
-                />
-              </CallDurationContainer>
-            </CallDurationColumn>
-          </CallsRow>
-        ))}
-        <CallsRow>
-          <CallsColumn>
-            <Typography variant="subtitle2">
-              Resources
-            </Typography>
-          </CallsColumn>
-          <CallsColumn>
-            <Typography variant="subtitle2">
-              Duration
-            </Typography>
-          </CallsColumn>
-        </CallsRow>
-        {map(resourceAccessEvents, (event, i) => (
-          <ResourceAccessRow
-            key={i}
-            event={event}
-            maxTimestamp={maxTimestamp}
-            minTimestamp={minTimestamp}
-            totalDuration={totalDuration}
-          />
-        ))}
-      </tbody>
+      <Column>
+        <Typography>
+          Name
+        </Typography>
+      </Column>
+      <DurationColumn>
+        <Typography>
+          Duration
+        </Typography>
+      </DurationColumn>
+      <Column />
+      <SectionName>
+        <Typography variant="h5">
+          Functions
+        </Typography>
+      </SectionName>
+      {map(functionCalls, (call, i) => (
+        <Fragment key={i}>
+          <Column>
+            <ExpandIconContainer />
+            <CallName>
+              <Typography variant="caption">{call.functionName}</Typography>
+            </CallName>
+          </Column>
+          <DurationColumn>
+            <Typography variant="caption">{(Number(call.end) || maxTimestamp) - Number(call.start)} ms</Typography>
+          </DurationColumn>
+          <Column>
+            <CallDurationContainer>
+              <FunctionCallDurationGraph
+                left={(Number(call.start) - Number(minTimestamp)) / totalDuration}
+                width={((Number(call.end) || maxTimestamp) - Number(call.start)) / totalDuration}
+              />
+            </CallDurationContainer>
+          </Column>
+        </Fragment>
+      ))}
+      <SectionName>
+        <Typography variant="h5">
+          Resources
+        </Typography>
+      </SectionName>
+      {map(resourceAccessEvents, (event, i) => (
+        <ResourceAccessRow
+          key={i}
+          event={event}
+          maxTimestamp={maxTimestamp}
+          minTimestamp={minTimestamp}
+          totalDuration={totalDuration}
+        />
+      ))}
     </CallsGrid>
   )
 }

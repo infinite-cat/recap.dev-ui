@@ -2,19 +2,18 @@ import React, { useState, Fragment } from 'react'
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
 import { map } from 'lodash-es'
+import { ChevronDown, ChevronUp } from 'react-feather'
 
 import {
-  CallDurationColumn,
-  CallDurationContainer,
-  CallsColumn,
-  CallsRow,
+  CallDurationContainer, CallName,
+  ClickableDurationColumn,
+  Column,
+  DetailsRow, ExpandIconContainer,
   ResourceAccessDurationGraph,
 } from './timeline.styles'
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
 import { camelToTitle } from '../../utils'
-import { ExecutionStatusTag } from '../execution-status.component'
 import { JsonCard } from '../json/json-card.component'
-import { Code } from '../typography.component'
 
 export interface ResourceAccessRowProps {
   minTimestamp: number
@@ -23,32 +22,31 @@ export interface ResourceAccessRowProps {
   event: ResourceAccessEvent
 }
 
-const CollapsibleCallsRow = styled(CallsRow)`
-  cursor: pointer;
-  &:hover {
-    background: rgb(49, 130, 189, 0.1);
-  }
-`
-
 const CardsContainer = styled.div`
   display: grid;
   column-gap: 20px;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  margin-bottom: 20px;
 `
-
-
-const ResourceDetailsContainer = styled((props) => <td {...props} />)`
-  padding: 20px;
+const ResourceDetailsContainer = styled.div`
+  padding: 10px 10px 10px 18px;
+  margin: 14px;
   width: 100%;
   box-sizing: border-box;
+  border-left: 2px solid ${({ theme }) => theme.palette.primary.main};
 `
-
 const BasicDetails = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: min-content min-content;
   grid-gap: 10px;
+  margin-bottom: 10px;
+`
+const BasicDetailsItem = styled(Typography)`
+  word-break: keep-all;
+  white-space: nowrap;
+`
+const ClickableColumn = styled(Column)`
+  cursor: pointer;
 `
 
 const parseResourceIdentifier = (resourceIdentifier: string) => {
@@ -69,54 +67,57 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
 
   return (
     <>
-      <CollapsibleCallsRow onClick={() => setOpened(!opened)}>
-        <CallsColumn>
-          <Code>{event.serviceName}.{JSON.parse(event.request)?.operation}</Code>
-        </CallsColumn>
-        <CallsColumn>
-          {(Number(event.end) || maxTimestamp) - Number(event.start)} ms
-        </CallsColumn>
-        <CallDurationColumn>
-          <CallDurationContainer>
-            <ResourceAccessDurationGraph
-              status={event.status}
-              left={(Number(event.start) - Number(minTimestamp)) / totalDuration}
-              width={((Number(event.end) || maxTimestamp) - Number(event.start)) / totalDuration}
-            />
-          </CallDurationContainer>
-        </CallDurationColumn>
-      </CollapsibleCallsRow>
-      {opened
-      && (
-        <CallsRow>
-          <ResourceDetailsContainer colSpan="3">
+      <ClickableColumn onClick={() => setOpened(!opened)}>
+        <ExpandIconContainer>
+          {!opened && <ChevronDown />}
+          {opened && <ChevronUp />}
+        </ExpandIconContainer>
+        <CallName>
+          <Typography variant="caption">{event.serviceName}.{JSON.parse(event.request)?.operation}</Typography>
+        </CallName>
+      </ClickableColumn>
+      <ClickableDurationColumn onClick={() => setOpened(!opened)}>
+        <Typography variant="caption">{(Number(event.end) || maxTimestamp) - Number(event.start)} ms</Typography>
+      </ClickableDurationColumn>
+      <ClickableColumn onClick={() => setOpened(!opened)}>
+        <CallDurationContainer>
+          <ResourceAccessDurationGraph
+            status={event.status}
+            left={(Number(event.start) - Number(minTimestamp)) / totalDuration}
+            width={((Number(event.end) || maxTimestamp) - Number(event.start)) / totalDuration}
+          />
+        </CallDurationContainer>
+      </ClickableColumn>
+      {opened && (
+        <DetailsRow>
+          <ResourceDetailsContainer>
             <BasicDetails>
-              <Typography>Status</Typography>
-              <Typography variant="subtitle2">
-                <ExecutionStatusTag status={event.status} />
-              </Typography>
-              <Typography>Service Name</Typography>
-              <Typography variant="subtitle2">{event.serviceName}</Typography>
-              <Typography>Operation</Typography>
-              <Typography variant="subtitle2">{request.operation}</Typography>
+              <BasicDetailsItem variant="caption">Status</BasicDetailsItem>
+              <BasicDetailsItem variant="caption">
+                {event.status}
+              </BasicDetailsItem>
+              <BasicDetailsItem variant="caption">Service Name</BasicDetailsItem>
+              <BasicDetailsItem variant="caption">{event.serviceName}</BasicDetailsItem>
+              <BasicDetailsItem variant="caption">Operation</BasicDetailsItem>
+              <BasicDetailsItem variant="caption">{request.operation}</BasicDetailsItem>
               {map(resourceIdRows, (idRow, index) => (
                 <Fragment key={index}>
-                  <Typography>{idRow.title}</Typography>
-                  <Typography variant="subtitle2">{idRow.value}</Typography>
+                  <BasicDetailsItem variant="caption">{idRow.title}</BasicDetailsItem>
+                  <BasicDetailsItem variant="caption">{idRow.value}</BasicDetailsItem>
                 </Fragment>
               ))}
             </BasicDetails>
             <CardsContainer>
               {event.error && (
-                <JsonCard title="Error" src={event.error} />
+                <JsonCard elevation={2} title="Error" src={event.error} />
               )}
               <JsonCard title="Request" src={event.request} />
               {event.response && (
-                <JsonCard title="Response" src={event.response} />
+                <JsonCard elevation={2} title="Response" src={event.response} />
               )}
             </CardsContainer>
           </ResourceDetailsContainer>
-        </CallsRow>
+        </DetailsRow>
       )}
     </>
   )

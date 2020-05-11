@@ -1,58 +1,68 @@
 import styled from 'styled-components/macro'
+import { transparentize } from 'polished'
 
-export const CallsRow = styled.tr`
-  height: 40px;
+export const DetailsRow = styled.div`
+  grid-column: 1 / 4;
 `
-export const CallsColumn = styled.td`
+export const Column = styled.div`
   padding: 5px;
-  width: 200px;
   word-break: keep-all;
   white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 35px;
 `
-
-export const CallDurationColumn = styled.td`
-  width: 100%;
-  padding: 0 5px;
+export const DurationColumn = styled.div`
+  padding: 5px 20px;
+  display: flex;
+  word-break: keep-all;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+`
+export const ClickableDurationColumn = styled(DurationColumn)`
+  cursor: pointer;
 `
 export const CallDurationContainer = styled.div`
   width: 100%;
   height: 20px;
   position: relative;
 `
-
-const functionCallColor = 'rgb(49, 130, 189)'
-
-const functionCallColors: { [key: string]: string } = {
-  OK: functionCallColor,
-  ERROR: '#f5222d;',
-}
-
-const resourceAccessColor = '#a0d911'
-
-const resourceAccessColors: { [key: string]: string } = {
-  OK: resourceAccessColor,
-  ERROR: '#f5222d;',
-}
-
+export const SectionName = styled.div`
+  grid-column: 1 / 4;
+  padding: 5px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: ${({ theme }) => theme.palette.primary.main};
+`
+export const ExpandIconContainer = styled.div`
+  min-width: 24px;
+  height: 24px;
+  margin-right: 5px;
+`
+export const CallName = styled.div`
+`
 interface DurationGraphProps {
   width: number
   left: number
   status?: string
 }
-
 export const DurationGraph = styled.div<DurationGraphProps>`
   position: absolute;
-  border-radius: 4px;
+  border-radius: 10px;
   top: 0;
-  background: ${({ status }) => functionCallColors[status || 'OK']};
+  box-shadow: 0 4px 4px ${({ theme }) => transparentize(0.75, theme.palette.primary.main)};
+  background: ${({ theme }) => theme.palette.primary.main};
   height: 20px;
   width: ${({ width }) => width * 100}%;
-  left: ${({ left }) => left * 100}%
+  left: ${({ left }) => left * 100}%;
 `
-
 export const FunctionCallDurationGraph = styled(DurationGraph)`
 `
-
 export const ResourceAccessDurationGraph = styled(DurationGraph)`
-  background: ${({ status }) => resourceAccessColors[status || 'OK']};
+  background: ${({ status, theme }) => ((status === 'OK') ? theme.palette.primary.main : theme.palette.error.main)};
 `
