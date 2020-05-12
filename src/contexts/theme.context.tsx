@@ -32,7 +32,6 @@ const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
       type,
       primary: { main: '#0072F9' },
       secondary: { main: '#009688' },
-      error: { main: '#F44336' },
     },
   }), [type])
 
