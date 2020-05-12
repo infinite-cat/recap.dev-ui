@@ -37,7 +37,7 @@ export const SectionName = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  color: ${({ theme }) => theme.palette.primary.main};
+  color: ${(p) => p.theme.palette.primary.main};
 `
 export const ExpandIconContainer = styled.div`
   min-width: 24px;
@@ -55,14 +55,14 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   position: absolute;
   border-radius: 10px;
   top: 0;
-  box-shadow: 0 4px 4px ${({ theme }) => transparentize(0.75, theme.palette.primary.main)};
-  background: ${({ theme }) => theme.palette.primary.main};
+  box-shadow: 0 4px 4px ${(p) => transparentize(0.75, p.theme.palette.primary.main)};
+  background: ${(p) => p.theme.palette.primary.main};
   height: 20px;
-  width: ${({ width }) => width * 100}%;
-  left: ${({ left }) => left * 100}%;
+  width: ${(p) => p.width * 100}%;
+  left: ${(p) => p.left * 100}%;
 `
 export const FunctionCallDurationGraph = styled(DurationGraph)`
 `
 export const ResourceAccessDurationGraph = styled(DurationGraph)`
-  background: ${({ status, theme }) => ((status === 'OK') ? theme.palette.primary.main : theme.palette.error.main)};
+  background: ${(p) => ((p.status === 'OK') ? p.theme.palette.primary.main : p.theme.palette.error.main)};
 `
