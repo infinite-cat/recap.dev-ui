@@ -5,10 +5,12 @@ import { map } from 'lodash-es'
 import { ChevronDown, ChevronUp } from 'react-feather'
 
 import {
-  CallDurationContainer, CallName,
+  CallDurationContainer,
+  CallName,
   ClickableDurationColumn,
   Column,
-  DetailsRow, ExpandIconContainer,
+  DetailsRow,
+  ExpandIconContainer,
   ResourceAccessDurationGraph,
 } from './timeline.styles'
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
@@ -58,7 +60,8 @@ const parseResourceIdentifier = (resourceIdentifier: string) => {
   }))
 }
 
-export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, event }: ResourceAccessRowProps) => {
+export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
+  const { minTimestamp, maxTimestamp, totalDuration, event } = props
   const [opened, setOpened] = useState(false)
 
   const resourceIdRows = parseResourceIdentifier(event.resourceIdentifier)
@@ -73,11 +76,15 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
           {opened && <ChevronUp />}
         </ExpandIconContainer>
         <CallName>
-          <Typography variant="caption">{event.serviceName}.{JSON.parse(event.request)?.operation}</Typography>
+          <Typography variant="caption">
+            {event.serviceName}.{JSON.parse(event.request)?.operation}
+          </Typography>
         </CallName>
       </ClickableColumn>
       <ClickableDurationColumn onClick={() => setOpened(!opened)}>
-        <Typography variant="caption">{(Number(event.end) || maxTimestamp) - Number(event.start)} ms</Typography>
+        <Typography variant="caption">
+          {(Number(event.end) || maxTimestamp) - Number(event.start)} ms
+        </Typography>
       </ClickableDurationColumn>
       <ClickableColumn onClick={() => setOpened(!opened)}>
         <CallDurationContainer>
@@ -93,9 +100,7 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
           <ResourceDetailsContainer>
             <BasicDetails>
               <BasicDetailsItem variant="caption">Status</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">
-                {event.status}
-              </BasicDetailsItem>
+              <BasicDetailsItem variant="caption">{event.status}</BasicDetailsItem>
               <BasicDetailsItem variant="caption">Service Name</BasicDetailsItem>
               <BasicDetailsItem variant="caption">{event.serviceName}</BasicDetailsItem>
               <BasicDetailsItem variant="caption">Operation</BasicDetailsItem>
@@ -108,13 +113,9 @@ export const ResourceAccessRow = ({ minTimestamp, maxTimestamp, totalDuration, e
               ))}
             </BasicDetails>
             <CardsContainer>
-              {event.error && (
-                <JsonCard elevation={2} title="Error" src={event.error} />
-              )}
+              {event.error && <JsonCard elevation={2} title="Error" src={event.error} />}
               <JsonCard title="Request" src={event.request} />
-              {event.response && (
-                <JsonCard elevation={2} title="Response" src={event.response} />
-              )}
+              {event.response && <JsonCard elevation={2} title="Response" src={event.response} />}
             </CardsContainer>
           </ResourceDetailsContainer>
         </DetailsRow>

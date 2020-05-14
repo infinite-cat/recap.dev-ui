@@ -13,10 +13,10 @@ const BasicInfoCard = styled(Card)`
   margin: 10px 0;
   padding: 10px 20px;
   position: relative;
-  
+
   .ant-card-body {
     padding: 10px;
-    word-break: break-word;  
+    word-break: break-word;
   }
 `
 const ScrollContainer = styled.div`
@@ -40,14 +40,15 @@ export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
 
   return (
     <BasicInfoCard {...rest}>
-      <Typography color="textSecondary">
-        {title}
-      </Typography>
+      <Typography color="textSecondary">{title}</Typography>
       <ScrollContainer>
         <JsonViewer src={src} />
       </ScrollContainer>
       <Controls>
-        <CopyToClipboard text={src!} onCopy={() => enqueueSnackbar('Copied to clipboard', { variant: 'success' })}>
+        <CopyToClipboard
+          text={src!}
+          onCopy={() => enqueueSnackbar('Copied to clipboard', { variant: 'success' })}
+        >
           <IconButton>
             <FileCopyOutlinedIcon />
           </IconButton>

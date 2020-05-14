@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { StylesProvider, ThemeProvider as MuiProvider } from '@material-ui/styles'
+import { StylesProvider, ThemeProvider as MuiProvider } from '@material-ui/core/styles'
 import { ThemeProvider as StyledProvider } from 'styled-components/macro'
 import { createMuiTheme, Theme } from '@material-ui/core'
 import { includes } from 'lodash-es'
@@ -27,13 +27,17 @@ const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
   const [themeType, setTheme] = usePersistState('theme', 'light')
   const type = includes(themeTypes, themeType) ? themeType : 'light'
 
-  const theme = useMemo(() => createMuiTheme({
-    palette: {
-      type,
-      primary: { main: '#0072F9' },
-      secondary: { main: '#009688' },
-    },
-  }), [type])
+  const theme = useMemo(
+    () =>
+      createMuiTheme({
+        palette: {
+          type,
+          primary: { main: '#0072F9' },
+          secondary: { main: '#009688' },
+        },
+      }),
+    [type],
+  )
 
   const toggleTheme = useCallback(() => {
     setTheme((current: ThemeType) => (current === 'dark' ? 'light' : 'dark'))
@@ -45,9 +49,7 @@ const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
         <StylesProvider injectFirst>
           <CssBaseline />
           <GlobalStyles />
-          <StyledProvider theme={theme}>
-            {children}
-          </StyledProvider>
+          <StyledProvider theme={theme}>{children}</StyledProvider>
         </StylesProvider>
       </MuiProvider>
     </ThemeContext.Provider>

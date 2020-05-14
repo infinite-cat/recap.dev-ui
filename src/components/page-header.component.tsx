@@ -11,7 +11,7 @@ type Route = {
 }
 
 type Breadcrumb = {
-  routes: Route []
+  routes: Route[]
 }
 
 type PageHeaderProps = PropsWithChildren<{
@@ -27,42 +27,46 @@ const Header = styled(Typography)`
   align-items: center;
 `
 
-export const PageHeader = memo(({ title = '', subTitle = '', breadcrumb, onBack, children }: PageHeaderProps) => (
-  <Box p={2}>
-    <Header variant="h6">
-      {onBack && (
-        <IconButton onClick={onBack} color="inherit">
-          <ArrowLeft />
-        </IconButton>
-      )}
-      {title}
-    </Header>
+export const PageHeader = memo(
+  ({ title = '', subTitle = '', breadcrumb, onBack, children }: PageHeaderProps) => (
+    <Box p={2}>
+      <Header variant="h6">
+        {onBack && (
+          <IconButton onClick={onBack} color="inherit">
+            <ArrowLeft />
+          </IconButton>
+        )}
+        {title}
+      </Header>
 
-    <Typography color="textSecondary">
-      {subTitle}
-    </Typography>
+      <Typography color="textSecondary">{subTitle}</Typography>
 
-    {breadcrumb?.routes && (
-      <Box mb={2} mt={1}>
-        <Breadcrumbs aria-label="breadcrumb">
-          {breadcrumb.routes.map((route, index, arr) => {
-            if (route.path) {
+      {breadcrumb?.routes && (
+        <Box mb={2} mt={1}>
+          <Breadcrumbs aria-label="breadcrumb">
+            {breadcrumb.routes.map((route, index, arr) => {
+              if (route.path) {
+                return (
+                  <MaterialLink
+                    key={index}
+                    color={index === arr.length - 1 ? 'textPrimary' : 'inherit'}
+                    to={route.path}
+                    component={Link}
+                  >
+                    {route.breadcrumbName}
+                  </MaterialLink>
+                )
+              }
               return (
-                <MaterialLink
-                  key={index}
-                  color={index === arr.length - 1 ? 'textPrimary' : 'inherit'}
-                  to={route.path}
-                  component={Link}
-                >
+                <Typography key={index} color="textPrimary">
                   {route.breadcrumbName}
-                </MaterialLink>
+                </Typography>
               )
-            }
-            return <Typography key={index} color="textPrimary">{route.breadcrumbName}</Typography>
-          })}
-        </Breadcrumbs>
-      </Box>
-    )}
-    {children}
-  </Box>
-))
+            })}
+          </Breadcrumbs>
+        </Box>
+      )}
+      {children}
+    </Box>
+  ),
+)

@@ -6,7 +6,6 @@ import { map } from 'lodash-es'
 import { Dashboard, AccountTree, WarningOutlined, SettingsOutlined } from '@material-ui/icons'
 import { ListItem, ListItemIcon, ListItemText } from './drawer-layout.styles'
 
-
 const isActive = (pathname: string, to: string) => pathname === to
 
 interface MenuItemsProps {

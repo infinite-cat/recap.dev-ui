@@ -18,7 +18,7 @@ const isJsonString = (str?: string) => {
     // ignore
   }
 
-  return json && (typeof json === 'object')
+  return json && typeof json === 'object'
 }
 
 export const JsonViewer = ({ src, ...rest }: JsonViewerProps) => {
@@ -30,7 +30,5 @@ export const JsonViewer = ({ src, ...rest }: JsonViewerProps) => {
     )
   }
 
-  return (
-    <ReactJson src={JSON.parse(src!)} {...rest} />
-  )
+  return <ReactJson src={JSON.parse(src!)} {...rest} />
 }

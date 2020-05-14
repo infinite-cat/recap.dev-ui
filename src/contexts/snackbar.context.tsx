@@ -18,11 +18,7 @@ const SnackbarProvider = ({ children }: PropsWithChildren<{}>) => {
     <RawSnackbarProvider
       ref={stackRef}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      action={(key) => (
-        <DismissButton onClick={onClickDismiss(key)}>
-          Dismiss
-        </DismissButton>
-      )}
+      action={(key) => <DismissButton onClick={onClickDismiss(key)}>Dismiss</DismissButton>}
     >
       {children}
     </RawSnackbarProvider>
