@@ -1,7 +1,16 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
-  CircularProgress, Table, IconButton, InputBase, Paper, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  CircularProgress,
+  Table,
+  IconButton,
+  InputBase,
+  Paper,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   Link as MaterialLink,
 } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
@@ -16,8 +25,7 @@ import { GetTraces } from '../graphql/queries'
 import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
 import { ExecutionStatusTag, PageHeader } from '../components'
 
-const Content = styled.div`
-`
+const Content = styled.div``
 const Input = styled(InputBase)`
   flex: 1;
   padding: 10px 16px;
@@ -49,9 +57,13 @@ const TracesListContainer = () => {
     },
   })
 
-  const debouncedSetSearch = useCallback(debounce((newSearch: string) => {
-    setSearch(newSearch)
-  }, 500), [])
+  const debouncedSetSearch = useMemo(
+    () =>
+      debounce((newSearch: string) => {
+        setSearch(newSearch)
+      }, 500),
+    [setSearch],
+  )
 
   const fetchMoreTraces = useCallback(() => {
     if (loadingMore) {
@@ -72,7 +84,7 @@ const TracesListContainer = () => {
         return {
           ...prev,
           getTraces: {
-            ...prev.getTraces,
+            ...prev?.getTraces,
             traces: [...prev.getTraces.traces, ...fetchMoreResult.getTraces.traces],
             offset: fetchMoreResult.getTraces.offset,
             hasMore: fetchMoreResult.getTraces.hasMore,
@@ -82,13 +94,11 @@ const TracesListContainer = () => {
     }).then(() => {
       setLoadingMore(false)
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingMore, fetchMore, data])
 
   return (
-    <PageHeader
-      title="Traces"
-      subTitle="List of all your traces"
-    >
+    <PageHeader title="Traces" subTitle="List of all your traces">
       <Content>
         <StyledInfiniteScroll
           hasMore={data?.getTraces.hasMore}
@@ -118,12 +128,16 @@ const TracesListContainer = () => {
                   {data?.getTraces?.traces?.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell component="th" scope="row">
-                        <MaterialLink to={`/traces/${row.id}`} component={Link}>{row.id}</MaterialLink>
+                        <MaterialLink to={`/traces/${row.id}`} component={Link}>
+                          {row.id}
+                        </MaterialLink>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {row.unitName}
                       </TableCell>
-                      <TableCell><ExecutionStatusTag status={row.status} /></TableCell>
+                      <TableCell>
+                        <ExecutionStatusTag status={row.status} />
+                      </TableCell>
                       <TableCell>{row.duration} ms</TableCell>
                       <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>
                     </TableRow>

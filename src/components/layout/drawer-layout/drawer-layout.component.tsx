@@ -34,7 +34,7 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
   const openSidebar = useCallback(() => setOpen(true), [setOpen])
   const closeSidebar = useCallback(() => setOpen(false), [setOpen])
 
-  useEffect(closeSidebar, [pathname])
+  useEffect(closeSidebar, [pathname, closeSidebar])
 
   return (
     <Wrapper>
@@ -56,7 +56,9 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
         expanded={isExpanded}
         onClose={closeSidebar}
       >
-        <Link to="/"><FullLogo expanded={isExpanded} /></Link>
+        <Link to="/">
+          <FullLogo expanded={isExpanded} />
+        </Link>
         <Hr expanded={isExpanded} />
         <TopMenuItems isExpanded={isExpanded} />
         <Flex />

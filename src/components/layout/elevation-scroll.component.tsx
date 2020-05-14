@@ -3,8 +3,8 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger/useScrollTrigge
 
 interface Props {
   children: React.ReactElement
-  threshold?: number,
-  elevation?: number,
+  threshold?: number
+  elevation?: number
 }
 
 const defaultElevation = 4

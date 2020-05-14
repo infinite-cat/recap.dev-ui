@@ -11,19 +11,17 @@ import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
 
-const breadcrumb = (id: string) => (
-  {
-    routes: [
-      {
-        path: '/',
-        breadcrumbName: 'Traces',
-      },
-      {
-        breadcrumbName: id,
-      },
-    ],
-  }
-)
+const breadcrumb = (id: string) => ({
+  routes: [
+    {
+      path: '/',
+      breadcrumbName: 'Traces',
+    },
+    {
+      breadcrumbName: id,
+    },
+  ],
+})
 
 const TraceContainer = () => {
   const { id } = useParams()
@@ -37,40 +35,26 @@ const TraceContainer = () => {
   const trace = data?.getTrace
 
   return (
-    <PageHeader
-      title={id}
-      breadcrumb={breadcrumb(id!)}
-      onBack={() => history.goBack()}
-    >
+    <PageHeader title={id} breadcrumb={breadcrumb(id!)} onBack={() => history.goBack()}>
       <Content>
         {loading && <LoadingPage />}
         {!loading && data && (
           <>
             <TopCardsContainer>
               <BasicInfoCard>
-                <Typography color="textSecondary">
-                  Unit Name
-                </Typography>
+                <Typography color="textSecondary">Unit Name</Typography>
                 <div>
-                  <Typography>
-                    {data.getTrace?.unitName}
-                  </Typography>
+                  <Typography>{data.getTrace?.unitName}</Typography>
                 </div>
               </BasicInfoCard>
               <BasicInfoCard>
-                <Typography color="textSecondary">
-                  Status
-                </Typography>
+                <Typography color="textSecondary">Status</Typography>
                 <div>
-                  <Typography>
-                    {data.getTrace?.status}
-                  </Typography>
+                  <Typography>{data.getTrace?.status}</Typography>
                 </div>
               </BasicInfoCard>
               <BasicInfoCard>
-                <Typography color="textSecondary">
-                  When
-                </Typography>
+                <Typography color="textSecondary">When</Typography>
                 <div>
                   <Typography>
                     {DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
@@ -80,17 +64,11 @@ const TraceContainer = () => {
             </TopCardsContainer>
             <TopCardsContainer>
               <JsonCard title="Request" src={trace?.request} />
-              {trace?.error && (
-                <JsonCard title="Error" src={trace?.error} />
-              )}
-              {trace?.response && (
-                <JsonCard title="Response" src={trace?.response} />
-              )}
+              {trace?.error && <JsonCard title="Error" src={trace?.error} />}
+              {trace?.response && <JsonCard title="Response" src={trace?.response} />}
             </TopCardsContainer>
             <BasicInfoCard>
-              <Typography color="textSecondary">
-                Timeline
-              </Typography>
+              <Typography color="textSecondary">Timeline</Typography>
               <Timeline trace={trace!} />
             </BasicInfoCard>
           </>

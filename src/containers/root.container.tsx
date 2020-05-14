@@ -6,9 +6,10 @@ import loadable from '@loadable/component'
 import { getApolloClient } from '../config/apollo.config'
 import { DrawerLayout, LoadingPage } from '../components'
 
-const getLoadableContainer = (loader: any) => loadable(loader, {
-  fallback: <LoadingPage />,
-})
+const getLoadableContainer = (loader: any) =>
+  loadable(loader, {
+    fallback: <LoadingPage />,
+  })
 
 const Trace = getLoadableContainer(() => import('./trace/trace.container'))
 const TracesList = getLoadableContainer(() => import('./traces-list.container'))

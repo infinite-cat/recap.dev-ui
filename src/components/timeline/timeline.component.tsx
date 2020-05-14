@@ -5,7 +5,8 @@ import { Typography } from '@material-ui/core'
 
 import { getTrace_getTrace as Trace } from '../../graphql/queries/types/getTrace'
 import {
-  CallDurationContainer, CallName,
+  CallDurationContainer,
+  CallName,
   Column,
   DurationColumn,
   ExpandIconContainer,
@@ -37,20 +38,14 @@ export const Timeline = ({ trace }: TimelineProps) => {
   return (
     <CallsGrid>
       <Column>
-        <Typography>
-          Name
-        </Typography>
+        <Typography>Name</Typography>
       </Column>
       <DurationColumn>
-        <Typography>
-          Duration
-        </Typography>
+        <Typography>Duration</Typography>
       </DurationColumn>
       <Column />
       <SectionName>
-        <Typography variant="h5">
-          Functions
-        </Typography>
+        <Typography variant="h5">Functions</Typography>
       </SectionName>
       {map(functionCalls, (call, i) => (
         <Fragment key={i}>
@@ -61,7 +56,9 @@ export const Timeline = ({ trace }: TimelineProps) => {
             </CallName>
           </Column>
           <DurationColumn>
-            <Typography variant="caption">{(Number(call.end) || maxTimestamp) - Number(call.start)} ms</Typography>
+            <Typography variant="caption">
+              {(Number(call.end) || maxTimestamp) - Number(call.start)} ms
+            </Typography>
           </DurationColumn>
           <Column>
             <CallDurationContainer>
@@ -74,9 +71,7 @@ export const Timeline = ({ trace }: TimelineProps) => {
         </Fragment>
       ))}
       <SectionName>
-        <Typography variant="h5">
-          Resources
-        </Typography>
+        <Typography variant="h5">Resources</Typography>
       </SectionName>
       {map(resourceAccessEvents, (event, i) => (
         <ResourceAccessRow

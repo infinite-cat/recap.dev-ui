@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import styled from 'styled-components/macro'
 import { transparentize } from 'polished'
 
@@ -44,13 +45,14 @@ export const ExpandIconContainer = styled.div`
   height: 24px;
   margin-right: 5px;
 `
-export const CallName = styled.div`
-`
+export const CallName = styled.div``
+
 interface DurationGraphProps {
   width: number
   left: number
   status?: string
 }
+
 export const DurationGraph = styled.div<DurationGraphProps>`
   position: absolute;
   border-radius: 10px;
@@ -61,8 +63,8 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   width: ${(p) => p.width * 100}%;
   left: ${(p) => p.left * 100}%;
 `
-export const FunctionCallDurationGraph = styled(DurationGraph)`
-`
+export const FunctionCallDurationGraph = styled(DurationGraph)``
 export const ResourceAccessDurationGraph = styled(DurationGraph)`
-  background: ${(p) => ((p.status === 'OK') ? p.theme.palette.primary.main : p.theme.palette.error.main)};
+  background: ${(p) =>
+    p.status === 'OK' ? p.theme.palette.primary.main : p.theme.palette.error.main};
 `
