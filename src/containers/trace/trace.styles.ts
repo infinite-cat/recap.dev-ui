@@ -12,6 +12,6 @@ export const TopCardsContainer = styled.div`
   margin-bottom: 20px;
 `
 export const BasicInfoCard = styled(Card)`
-  padding: 10px 20px;
+  padding: ${(p) => `${p.theme.spacing(1)}px ${p.theme.spacing(2)}px`};
   word-break: break-word;
 `

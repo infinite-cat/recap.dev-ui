@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
@@ -42,24 +42,33 @@ const TraceContainer = () => {
           <>
             <TopCardsContainer>
               <BasicInfoCard>
-                <Typography color="textSecondary">Unit Name</Typography>
-                <div>
-                  <Typography>{data.getTrace?.unitName}</Typography>
-                </div>
+                <Typography color="textSecondary" variant="caption">
+                  Unit Name
+                </Typography>
+                <Tooltip title={data.getTrace?.unitName!} placement="top">
+                  <Typography noWrap>{data.getTrace?.unitName}</Typography>
+                </Tooltip>
               </BasicInfoCard>
               <BasicInfoCard>
-                <Typography color="textSecondary">Status</Typography>
+                <Typography color="textSecondary" variant="caption" noWrap>
+                  Status
+                </Typography>
                 <div>
                   <StatusTag status={data.getTrace?.status} />
                 </div>
               </BasicInfoCard>
               <BasicInfoCard>
-                <Typography color="textSecondary">When</Typography>
-                <div>
-                  <Typography>
+                <Typography color="textSecondary" variant="caption">
+                  When
+                </Typography>
+                <Tooltip
+                  title={DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
+                  placement="top"
+                >
+                  <Typography noWrap>
                     {DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
                   </Typography>
-                </div>
+                </Tooltip>
               </BasicInfoCard>
             </TopCardsContainer>
             <TopCardsContainer>
@@ -68,7 +77,9 @@ const TraceContainer = () => {
               {trace?.response && <JsonCard title="Response" src={trace?.response} />}
             </TopCardsContainer>
             <BasicInfoCard>
-              <Typography color="textSecondary">Timeline</Typography>
+              <Typography color="textSecondary" variant="caption">
+                Timeline
+              </Typography>
               <Timeline trace={trace!} />
             </BasicInfoCard>
           </>

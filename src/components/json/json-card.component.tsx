@@ -10,10 +10,10 @@ import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
 import { Card } from '../card.component'
 
-const BasicInfoCard = styled(Card)`
+const JSONCard = styled(Card)`
   position: relative;
   margin: 10px 0;
-  padding: 10px 20px;
+  padding: ${(p) => `${p.theme.spacing(1)}px ${p.theme.spacing(2)}px`};
 `
 const ScrollContainer = styled.div`
   margin-top: 10px;
@@ -35,8 +35,10 @@ export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
   const { enqueueSnackbar } = useSnackbar()
 
   return (
-    <BasicInfoCard {...rest}>
-      <Typography color="textSecondary">{title}</Typography>
+    <JSONCard {...rest}>
+      <Typography color="textSecondary" variant="caption">
+        {title}
+      </Typography>
       <ScrollContainer>
         <JsonViewer src={src} />
       </ScrollContainer>
@@ -50,6 +52,6 @@ export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
           </IconButton>
         </CopyToClipboard>
       </Controls>
-    </BasicInfoCard>
+    </JSONCard>
   )
 }
