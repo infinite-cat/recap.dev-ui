@@ -1,55 +1,76 @@
 # This file was generated based on ".graphqlconfig". Do not edit manually.
 
 schema {
-    query: Query
+  query: Query
 }
 
 type FunctionCall {
-    end: String
-    fileName: String!
-    functionName: String!
-    start: String!
+  end: String
+  fileName: String!
+  functionName: String!
+  start: String!
 }
 
 type GetTracesResponse {
-    hasMore: Boolean!
-    offset: Int!
-    traces: [Trace!]!
+  hasMore: Boolean!
+  offset: Int!
+  traces: [Trace!]!
+}
+
+type GetUnitErrorsResponse {
+  errors: [UnitError!]!
+  hasMore: Boolean!
+  offset: Int!
+}
+
+type GraphStats {
+  dateTime: String!
+  value: Int!
 }
 
 type Query {
-    getTrace(id: String): Trace
-    getTraces(offset: Int, search: String): GetTracesResponse!
+  getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
+  getTrace(id: String): Trace
+  getTraces(offset: Int, search: String): GetTracesResponse!
 }
 
 type ResourceAccessEvent {
-    end: String
-    error: String
-    request: String!
-    resourceIdentifier: String!
-    response: String!
-    serviceName: String!
-    start: String!
-    status: String!
+  end: String
+  error: String
+  request: String!
+  resourceIdentifier: String!
+  response: String!
+  serviceName: String!
+  start: String!
+  status: String!
 }
 
 type Trace {
-    duration: Int!
-    end: String!
-    error: String
-    functionCallEvents: [FunctionCall!]!
-    id: String!
-    request: String!
-    resourceAccessEvents: [ResourceAccessEvent!]!
-    response: String
-    start: String!
-    status: String!
-    unitName: String!
+  duration: Int!
+  end: String!
+  error: String
+  functionCallEvents: [FunctionCall!]!
+  id: String!
+  request: String!
+  resourceAccessEvents: [ResourceAccessEvent!]!
+  response: String
+  start: String!
+  status: String!
+  unitName: String!
+}
+
+type UnitError {
+  graphStats: [GraphStats!]!
+  id: Int!
+  lastEventDateTime: String!
+  message: String
+  type: String!
+  unitName: String!
 }
 
 enum CacheControlScope {
-    PRIVATE
-    PUBLIC
+  PRIVATE
+  PUBLIC
 }
 
 
