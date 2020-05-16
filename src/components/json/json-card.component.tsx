@@ -10,6 +10,7 @@ import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
 
 const BasicInfoCard = styled(Card)`
+  position: relative;
   margin: 10px 0;
   padding: 10px 20px;
 `

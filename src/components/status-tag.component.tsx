@@ -20,7 +20,7 @@ const ErrorChip = styled(BaseChip)`
   background-color: ${(p) => p.theme.palette.error.main};
 `
 
-export const ExecutionStatusTag = ({ status }: ExecutionStatusTagProps) => {
+export const StatusTag = ({ status }: ExecutionStatusTagProps) => {
   if (status === 'OK') {
     return <SuccessChip label="OK" size="small" />
   }

@@ -60,7 +60,7 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   top: 0;
   box-shadow: 0 4px 4px ${(p) => transparentize(0.75, p.theme.palette.primary.main)};
   background: ${(p) => p.theme.palette.primary.main};
-  height: 20px;
+  height: 18px;
   width: ${(p) => p.width * 100}%;
   left: ${(p) => p.left * 100}%;
 `
@@ -68,4 +68,10 @@ export const FunctionCallDurationGraph = styled(DurationGraph)``
 export const ResourceAccessDurationGraph = styled(DurationGraph)`
   background: ${(p) =>
     p.status === 'OK' ? p.theme.palette.primary.main : p.theme.palette.error.main};
+  box-shadow: 0 4px 4px
+    ${(p) =>
+      transparentize(
+        0.75,
+        p.status === 'OK' ? p.theme.palette.primary.main : p.theme.palette.error.main,
+      )};
 `

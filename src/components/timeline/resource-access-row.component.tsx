@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react'
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
 import { map } from 'lodash-es'
-import { ChevronDown } from 'react-feather'
+import { ChevronUp } from 'react-feather'
 
 import {
   CallDurationContainer,
@@ -16,7 +16,7 @@ import {
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
 import { camelToTitle, getFastTransition } from '../../utils'
 import { JsonCard } from '../json/json-card.component'
-import { ExecutionStatusTag } from '../execution-status.component'
+import { StatusTag } from '../status-tag.component'
 
 export interface ResourceAccessRowProps {
   minTimestamp: number
@@ -51,7 +51,7 @@ const BasicDetailsItem = styled(Typography)`
 const ClickableColumn = styled(Column)`
   cursor: pointer;
 `
-const ExpandIcon = styled(ChevronDown)<{ isOpen: boolean }>`
+const ExpandIcon = styled(ChevronUp)<{ isOpen: boolean }>`
   transform: ${(p) => (p.isOpen ? 'rotate(0)' : 'rotate(180deg)')};
   transition: ${(p) => getFastTransition(p.theme, ['transform'])};
 `
@@ -104,7 +104,7 @@ export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
           <BasicDetails>
             <BasicDetailsItem variant="caption">Status</BasicDetailsItem>
             <BasicDetailsItem variant="caption">
-              <ExecutionStatusTag status={event.status} />
+              <StatusTag status={event.status} />
             </BasicDetailsItem>
             <BasicDetailsItem variant="caption">Service Name</BasicDetailsItem>
             <BasicDetailsItem variant="caption">{event.serviceName}</BasicDetailsItem>

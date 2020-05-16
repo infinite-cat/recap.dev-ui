@@ -6,7 +6,7 @@ import { DateTime } from 'luxon'
 
 import { GetTrace } from '../../graphql/queries'
 import { getTrace } from '../../graphql/queries/types/getTrace'
-import { LoadingPage, PageHeader } from '../../components'
+import { StatusTag, LoadingPage, PageHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
@@ -50,7 +50,7 @@ const TraceContainer = () => {
               <BasicInfoCard>
                 <Typography color="textSecondary">Status</Typography>
                 <div>
-                  <Typography>{data.getTrace?.status}</Typography>
+                  <StatusTag status={data.getTrace?.status} />
                 </div>
               </BasicInfoCard>
               <BasicInfoCard>

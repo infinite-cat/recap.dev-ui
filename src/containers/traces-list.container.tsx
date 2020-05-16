@@ -23,7 +23,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 import { GetTraces } from '../graphql/queries'
 import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { ExecutionStatusTag, PageHeader } from '../components'
+import { StatusTag, PageHeader } from '../components'
 
 const Content = styled.div``
 const Input = styled(InputBase)`
@@ -126,7 +126,7 @@ const TracesListContainer = () => {
                 </TableHead>
                 <TableBody>
                   {data?.getTraces?.traces?.map((row) => (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.id} hover>
                       <TableCell component="th" scope="row">
                         <MaterialLink to={`/traces/${row.id}`} component={Link}>
                           {row.id}
@@ -136,7 +136,7 @@ const TracesListContainer = () => {
                         {row.unitName}
                       </TableCell>
                       <TableCell>
-                        <ExecutionStatusTag status={row.status} />
+                        <StatusTag status={row.status} />
                       </TableCell>
                       <TableCell>{row.duration} ms</TableCell>
                       <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>

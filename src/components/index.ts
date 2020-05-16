@@ -1,6 +1,6 @@
 export * from './layout'
 export * from './loading-page.component'
-export * from './execution-status.component'
+export * from './status-tag.component'
 export * from './theme-switcher.component'
 export * from './typography.component'
 export * from './page-header.component'
