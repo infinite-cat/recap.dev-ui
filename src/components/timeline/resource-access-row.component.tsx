@@ -2,7 +2,7 @@ import React, { useState, Fragment } from 'react'
 import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
 import { map } from 'lodash-es'
-import { ChevronDown, ChevronUp } from 'react-feather'
+import { ChevronDown } from 'react-feather'
 
 import {
   CallDurationContainer,
@@ -14,8 +14,9 @@ import {
   ResourceAccessDurationGraph,
 } from './timeline.styles'
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
-import { camelToTitle } from '../../utils'
+import { camelToTitle, getFastTransition } from '../../utils'
 import { JsonCard } from '../json/json-card.component'
+import { ExecutionStatusTag } from '../execution-status.component'
 
 export interface ResourceAccessRowProps {
   minTimestamp: number
@@ -35,7 +36,7 @@ const ResourceDetailsContainer = styled.div`
   margin: 14px;
   width: 100%;
   box-sizing: border-box;
-  border-left: 2px solid ${({ theme }) => theme.palette.primary.main};
+  border-left: 1px dashed ${({ theme }) => theme.palette.primary.main};
 `
 const BasicDetails = styled.div`
   display: grid;
@@ -49,6 +50,10 @@ const BasicDetailsItem = styled(Typography)`
 `
 const ClickableColumn = styled(Column)`
   cursor: pointer;
+`
+const ExpandIcon = styled(ChevronDown)<{ isOpen: boolean }>`
+  transform: ${(p) => (p.isOpen ? 'rotate(0)' : 'rotate(180deg)')};
+  transition: ${(p) => getFastTransition(p.theme, ['transform'])};
 `
 
 const parseResourceIdentifier = (resourceIdentifier: string) => {
@@ -72,8 +77,7 @@ export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
     <>
       <ClickableColumn onClick={() => setOpened(!opened)}>
         <ExpandIconContainer>
-          {!opened && <ChevronDown />}
-          {opened && <ChevronUp />}
+          <ExpandIcon isOpen={opened} />
         </ExpandIconContainer>
         <CallName>
           <Typography variant="caption">
@@ -95,31 +99,31 @@ export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
           />
         </CallDurationContainer>
       </ClickableColumn>
-      {opened && (
-        <DetailsRow>
-          <ResourceDetailsContainer>
-            <BasicDetails>
-              <BasicDetailsItem variant="caption">Status</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">{event.status}</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">Service Name</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">{event.serviceName}</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">Operation</BasicDetailsItem>
-              <BasicDetailsItem variant="caption">{request.operation}</BasicDetailsItem>
-              {map(resourceIdRows, (idRow, index) => (
-                <Fragment key={index}>
-                  <BasicDetailsItem variant="caption">{idRow.title}</BasicDetailsItem>
-                  <BasicDetailsItem variant="caption">{idRow.value}</BasicDetailsItem>
-                </Fragment>
-              ))}
-            </BasicDetails>
-            <CardsContainer>
-              {event.error && <JsonCard elevation={2} title="Error" src={event.error} />}
-              <JsonCard title="Request" src={event.request} />
-              {event.response && <JsonCard elevation={2} title="Response" src={event.response} />}
-            </CardsContainer>
-          </ResourceDetailsContainer>
-        </DetailsRow>
-      )}
+      <DetailsRow in={opened} timeout="auto" unmountOnExit style={{ gridColumn: '1 / 4' }}>
+        <ResourceDetailsContainer>
+          <BasicDetails>
+            <BasicDetailsItem variant="caption">Status</BasicDetailsItem>
+            <BasicDetailsItem variant="caption">
+              <ExecutionStatusTag status={event.status} />
+            </BasicDetailsItem>
+            <BasicDetailsItem variant="caption">Service Name</BasicDetailsItem>
+            <BasicDetailsItem variant="caption">{event.serviceName}</BasicDetailsItem>
+            <BasicDetailsItem variant="caption">Operation</BasicDetailsItem>
+            <BasicDetailsItem variant="caption">{request.operation}</BasicDetailsItem>
+            {map(resourceIdRows, (idRow, index) => (
+              <Fragment key={index}>
+                <BasicDetailsItem variant="caption">{idRow.title}</BasicDetailsItem>
+                <BasicDetailsItem variant="caption">{idRow.value}</BasicDetailsItem>
+              </Fragment>
+            ))}
+          </BasicDetails>
+          <CardsContainer>
+            {event.error && <JsonCard elevation={2} title="Error" src={event.error} />}
+            <JsonCard title="Request" src={event.request} />
+            {event.response && <JsonCard elevation={2} title="Response" src={event.response} />}
+          </CardsContainer>
+        </ResourceDetailsContainer>
+      </DetailsRow>
     </>
   )
 }

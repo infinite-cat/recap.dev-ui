@@ -12,12 +12,6 @@ import { JsonViewer } from './json-viewer.component'
 const BasicInfoCard = styled(Card)`
   margin: 10px 0;
   padding: 10px 20px;
-  position: relative;
-
-  .ant-card-body {
-    padding: 10px;
-    word-break: break-word;
-  }
 `
 const ScrollContainer = styled.div`
   margin-top: 10px;

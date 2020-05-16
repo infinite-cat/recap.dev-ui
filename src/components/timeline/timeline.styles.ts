@@ -1,8 +1,9 @@
 /* eslint-disable no-confusing-arrow */
 import styled from 'styled-components/macro'
+import { Collapse, IconButton } from '@material-ui/core'
 import { transparentize } from 'polished'
 
-export const DetailsRow = styled.div`
+export const DetailsRow = styled(Collapse)`
   grid-column: 1 / 4;
 `
 export const Column = styled.div`
@@ -40,10 +41,10 @@ export const SectionName = styled.div`
   justify-content: flex-start;
   color: ${(p) => p.theme.palette.primary.main};
 `
-export const ExpandIconContainer = styled.div`
-  min-width: 24px;
-  height: 24px;
+export const ExpandIconContainer = styled(IconButton)`
   margin-right: 5px;
+  margin-left: -13px;
+  color: ${(p) => p.theme.palette.text.primary};
 `
 export const CallName = styled.div``
 

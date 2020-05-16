@@ -6,23 +6,32 @@ interface ExecutionStatusTagProps {
   status?: 'OK' | 'ERROR' | string
 }
 
-const SuccessChip = styled(Chip)`
-  border-color: ${(p) => p.theme.palette.success.main};
-  color: ${(p) => p.theme.palette.success.main};
+const BaseChip = styled(Chip)`
+  padding: 0 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  height: 21px;
+  color: white;
 `
-const ErrorChip = styled(Chip)`
-  border-color: ${(p) => p.theme.palette.error.main};
-  color: ${(p) => p.theme.palette.error.main};
+const SuccessChip = styled(BaseChip)`
+  background-color: ${(p) => p.theme.palette.success.main};
+`
+const ErrorChip = styled(BaseChip)`
+  background-color: ${(p) => p.theme.palette.error.main};
 `
 
 export const ExecutionStatusTag = ({ status }: ExecutionStatusTagProps) => {
   if (status === 'OK') {
-    return <SuccessChip label="OK" variant="outlined" />
+    return <SuccessChip label="OK" size="small" />
   }
 
   if (status === 'ERROR') {
-    return <ErrorChip label="Error" variant="outlined" />
+    return <ErrorChip label="Error" size="small" />
   }
 
-  return <Chip variant="outlined">Unknown</Chip>
+  return (
+    <BaseChip variant="outlined" size="small">
+      Unknown
+    </BaseChip>
+  )
 }
