@@ -61,7 +61,7 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   background: ${(p) => p.theme.palette.primary.main};
   height: 18px;
   width: ${(p) => p.width * 100}%;
-  min-width: 15px;
+  min-width: 18px;
   left: ${(p) => p.left * 100}%;
 `
 export const FunctionCallDurationGraph = styled(DurationGraph)``

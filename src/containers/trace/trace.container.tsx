@@ -14,7 +14,7 @@ import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
 const breadcrumb = (id: string) => ({
   routes: [
     {
-      path: '/',
+      path: '/traces',
       breadcrumbName: 'Traces',
     },
     {
