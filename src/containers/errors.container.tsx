@@ -15,9 +15,8 @@ import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 
-import { getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
 import { PageHeader, Card } from '../components'
-import { getErrors } from '../graphql/queries/types/getErrors'
+import { getErrors_getErrors_errors as Error, getErrors } from '../graphql/queries/types/getErrors'
 import { GetErrors } from '../graphql/queries'
 
 const Content = styled.div`
@@ -42,11 +41,10 @@ const ErrorMessage = styled.div`
 `
 
 const columns = [
-  { title: 'Error', dataIndex: 'id' as keyof Trace, key: 'id' },
-  { title: 'Unit Name', dataIndex: 'unitName' as keyof Trace, key: 'id' },
-  { title: 'Last Seen', dataIndex: 'status' as keyof Trace, key: 'id' },
+  { title: 'Error', dataIndex: 'id' as keyof Error, key: 'id' },
+  { title: 'Unit Name', dataIndex: 'unitName' as keyof Error, key: 'id' },
+  { title: 'Last Seen', dataIndex: 'lastEventDateTime' as keyof Error, key: 'id' },
 ]
-
 
 const ErrorsListContainer = () => {
   const [graphSince] = useState(DateTime.utc().minus({ hours: 23 }).toMillis().toString())
@@ -119,9 +117,7 @@ const ErrorsListContainer = () => {
                         </MaterialLink>
                       </TableCell>
                       <NoBreakTableCell scope="row">{row.unitName}</NoBreakTableCell>
-                      <NoBreakTableCell>
-                        {row.lastEventDateTime}
-                      </NoBreakTableCell>
+                      <NoBreakTableCell>{row.lastEventDateTime}</NoBreakTableCell>
                     </TableRow>
                   ))}
                 </TableBody>
