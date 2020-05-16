@@ -5,7 +5,7 @@ import { AppBarProvider, SnackbarProvider, ThemeProvider } from './contexts'
 import RootContainer from './containers/root.container'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <ThemeProvider>
       <SnackbarProvider>
         <AppBarProvider>
@@ -13,6 +13,6 @@ ReactDOM.render(
         </AppBarProvider>
       </SnackbarProvider>
     </ThemeProvider>
-  </React.StrictMode>,
+  </>,
   document.getElementById('root'),
 )

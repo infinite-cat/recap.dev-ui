@@ -51,7 +51,7 @@ const BasicDetailsItem = styled(Typography)`
 const ClickableColumn = styled(Column)`
   cursor: pointer;
 `
-const ExpandIcon = styled(ChevronUp)<{ isOpen: boolean }>`
+const ExpandIcon = styled(({ isOpen, ...props }) => <ChevronUp {...props} />)<{ isOpen: boolean }>`
   transform: ${(p) => (p.isOpen ? 'rotate(0)' : 'rotate(180deg)')};
   transition: ${(p) => getFastTransition(p.theme, ['transform'])};
 `
