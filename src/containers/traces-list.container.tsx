@@ -5,7 +5,6 @@ import {
   Table,
   IconButton,
   InputBase,
-  Paper,
   TableBody,
   TableCell,
   TableContainer,
@@ -23,17 +22,24 @@ import SearchIcon from '@material-ui/icons/Search'
 
 import { GetTraces } from '../graphql/queries'
 import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { StatusTag, PageHeader } from '../components'
+import { StatusTag, PageHeader, Card } from '../components'
 
 const Content = styled.div``
 const Input = styled(InputBase)`
   flex: 1;
   padding: 10px 16px;
 `
-const Controls = styled(Paper)`
+const Controls = styled(Card)`
   display: flex;
   width: 100%;
   margin: 16px 0;
+`
+const Traces = styled(Table)`
+  tr:last-child {
+    td {
+      border: none;
+    }
+  }
 `
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
@@ -115,8 +121,8 @@ const TracesListContainer = () => {
             </IconButton>
           </Controls>
           {!loading && data && (
-            <TableContainer component={Paper}>
-              <Table aria-label="traces table">
+            <TableContainer component={Card}>
+              <Traces aria-label="traces table">
                 <TableHead>
                   <TableRow>
                     {columns.map((column) => (
@@ -127,14 +133,12 @@ const TracesListContainer = () => {
                 <TableBody>
                   {data?.getTraces?.traces?.map((row) => (
                     <TableRow key={row.id} hover>
-                      <TableCell component="th" scope="row">
+                      <TableCell scope="row">
                         <MaterialLink to={`/traces/${row.id}`} component={Link}>
                           {row.id}
                         </MaterialLink>
                       </TableCell>
-                      <TableCell component="th" scope="row">
-                        {row.unitName}
-                      </TableCell>
+                      <TableCell scope="row">{row.unitName}</TableCell>
                       <TableCell>
                         <StatusTag status={row.status} />
                       </TableCell>
@@ -143,7 +147,7 @@ const TracesListContainer = () => {
                     </TableRow>
                   ))}
                 </TableBody>
-              </Table>
+              </Traces>
             </TableContainer>
           )}
           {(loading || loadingMore) && <CircularProgress />}

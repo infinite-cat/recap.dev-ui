@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
-import { Card } from '@material-ui/core'
+
+import { Card } from '../../components'
 
 export const Content = styled.div``
 

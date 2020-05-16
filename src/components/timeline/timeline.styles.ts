@@ -1,4 +1,3 @@
-/* eslint-disable no-confusing-arrow */
 import styled from 'styled-components/macro'
 import { Collapse, IconButton } from '@material-ui/core'
 import { transparentize } from 'polished'
@@ -56,12 +55,13 @@ interface DurationGraphProps {
 
 export const DurationGraph = styled.div<DurationGraphProps>`
   position: absolute;
-  border-radius: 10px;
+  border-radius: 4px;
   top: 0;
   box-shadow: 0 4px 4px ${(p) => transparentize(0.75, p.theme.palette.primary.main)};
   background: ${(p) => p.theme.palette.primary.main};
   height: 18px;
   width: ${(p) => p.width * 100}%;
+  min-width: 15px;
   left: ${(p) => p.left * 100}%;
 `
 export const FunctionCallDurationGraph = styled(DurationGraph)``

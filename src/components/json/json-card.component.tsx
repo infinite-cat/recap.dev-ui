@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { Card, IconButton, Typography } from '@material-ui/core'
+import { IconButton, Typography } from '@material-ui/core'
 import { useSnackbar } from 'notistack'
 
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
@@ -8,6 +8,7 @@ import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
+import { Card } from '../card.component'
 
 const BasicInfoCard = styled(Card)`
   position: relative;

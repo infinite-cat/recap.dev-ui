@@ -3,6 +3,7 @@ import styled from 'styled-components/macro'
 import { Typography } from '@material-ui/core'
 import { map } from 'lodash-es'
 import { ChevronUp } from 'react-feather'
+import { transparentize } from 'polished'
 
 import {
   CallDurationContainer,
@@ -36,7 +37,7 @@ const ResourceDetailsContainer = styled.div`
   margin: 14px;
   width: 100%;
   box-sizing: border-box;
-  border-left: 1px dashed ${({ theme }) => theme.palette.primary.main};
+  border-left: 2px solid ${(p) => transparentize(0.7, p.theme.palette.primary.main)};
 `
 const BasicDetails = styled.div`
   display: grid;
