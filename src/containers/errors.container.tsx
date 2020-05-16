@@ -47,7 +47,9 @@ const columns = [
 ]
 
 const ErrorsListContainer = () => {
-  const [graphSince] = useState(DateTime.utc().minus({ hours: 23 }).toMillis().toString())
+  const [graphSince] = useState(
+    DateTime.utc().minus({ hours: 23 }).startOf('hour').toMillis().toString(),
+  )
 
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore } = useQuery<getErrors>(GetErrors, {
