@@ -1,0 +1,32 @@
+name: dev-deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  dev-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          config: ${{ secrets.CONFIG }}
+      - name: install dependencies
+        run: yarn
+      - name: lint
+        run: yarn lint
+      - name: tsc
+        run: yarn tsc
+      - name: build
+        run: yarn build
+      - name: upload
+        run: scp -r build/ ec2-user@autotracer-dev:traceman/public/
