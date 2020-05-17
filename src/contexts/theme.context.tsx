@@ -44,6 +44,9 @@ const darkOverrides = {
     type: 'dark',
     primary: { main: '#90CAF9' },
     secondary: { main: '#f48fb1' },
+    success: { main: '#81c784' },
+    info: { main: '#64b5f6' },
+    error: { main: '#ef5350' },
   },
   custom: {
     errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
