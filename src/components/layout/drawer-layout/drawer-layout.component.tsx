@@ -45,7 +45,6 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
               <IconButton onClick={openSidebar}>
                 <Menu color="#fff" />
               </IconButton>
-              <Flex />
             </Toolbar>
           </AppBar>
         </ElevationScroll>

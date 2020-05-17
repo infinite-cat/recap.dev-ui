@@ -8,7 +8,7 @@ interface ThemeSwitcherProps {
   className?: string
 }
 
-export default ({ className }: ThemeSwitcherProps) => {
+export const ThemeSwitcher = ({ className }: ThemeSwitcherProps) => {
   const { toggleTheme, themeType } = useContext(ThemeContext)
 
   return (

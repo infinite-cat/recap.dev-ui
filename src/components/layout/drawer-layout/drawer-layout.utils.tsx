@@ -2,14 +2,8 @@ import React, { memo } from 'react'
 import { List, Tooltip } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import { includes, map } from 'lodash-es'
-
-import {
-  Dashboard,
-  AccountTree,
-  WarningOutlined,
-  SettingsOutlined,
-  LineWeight,
-} from '@material-ui/icons'
+import { Cpu } from 'react-feather'
+import { Dashboard, AccountTree, WarningOutlined, SettingsOutlined } from '@material-ui/icons'
 import { ListItem, ListItemIcon, ListItemText } from './drawer-layout.styles'
 
 const isActive = (pathname: string, to: string) => {
@@ -25,7 +19,7 @@ interface MenuItemsProps {
 
 export const topMenuItems = [
   { primary: 'Dashboard', to: '/', icon: <Dashboard /> },
-  { primary: 'Units', to: '/units', icon: <LineWeight /> },
+  { primary: 'Units', to: '/units', icon: <Cpu /> },
   { primary: 'Errors', to: '/errors', icon: <WarningOutlined /> },
   { primary: 'Traces', to: '/traces', icon: <AccountTree /> },
 ]
