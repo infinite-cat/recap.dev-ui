@@ -14,6 +14,7 @@ import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 
+import styled from 'styled-components/macro'
 import { GetError, GetTraces } from '../../graphql/queries'
 import { Card, LoadingPage, PageHeader, StatusTag } from '../../components'
 import { Content, TopCardsContainer, BasicInfoCard } from './error.styles'
@@ -22,7 +23,6 @@ import {
   getTraces,
   getTraces_getTraces_traces as Trace,
 } from '../../graphql/queries/types/getTraces'
-import styled from 'styled-components/macro'
 
 const breadcrumb = (errorName: string = '') => ({
   routes: [
