@@ -34,4 +34,6 @@ export interface getTraces {
 export interface getTracesVariables {
   search?: string | null;
   offset?: number | null;
+  unitName?: string | null;
+  unitErrorId?: string | null;
 }

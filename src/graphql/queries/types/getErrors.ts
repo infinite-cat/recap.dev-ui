@@ -14,7 +14,7 @@ export interface getErrors_getErrors_errors_graphStats {
 }
 
 export interface getErrors_getErrors_errors {
-  __typename: "UnitError";
+  __typename: "UnitErrorListitem";
   id: number;
   unitName: string;
   type: string;

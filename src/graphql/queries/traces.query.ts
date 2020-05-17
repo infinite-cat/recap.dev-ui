@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const GetTraces = gql`
-  query getTraces($search: String, $offset: Int) {
-    getTraces(search: $search, offset: $offset) {
+  query getTraces($search: String, $offset: Int, $unitName: String, $unitErrorId: String) {
+    getTraces(search: $search, offset: $offset, unitName: $unitName, unitErrorId: $unitErrorId) {
       traces {
         id
         unitName

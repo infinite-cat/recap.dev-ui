@@ -19,3 +19,22 @@ export const GetErrors = gql`
     }
   }
 `
+
+export const GetError = gql`
+  query getError($graphSince: String!, $id: String!) {
+    getError(graphSince: $graphSince, id: $id) {
+      id
+      unitName
+      type
+      message
+      rawError
+      lastEventDateTime
+      graphStats {
+        invocations
+        errors
+        currentErrors
+        dateTime
+      }
+    }
+  }
+`

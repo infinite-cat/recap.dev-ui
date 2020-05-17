@@ -4,6 +4,13 @@ schema {
   query: Query
 }
 
+type FullGraphStats {
+  currentErrors: Int!
+  dateTime: String!
+  errors: Int!
+  invocations: Int!
+}
+
 type FunctionCall {
   end: String
   fileName: String!
@@ -18,7 +25,7 @@ type GetTracesResponse {
 }
 
 type GetUnitErrorsResponse {
-  errors: [UnitError!]!
+  errors: [UnitErrorListitem!]!
   hasMore: Boolean!
   offset: Int!
 }
@@ -29,9 +36,10 @@ type GraphStats {
 }
 
 type Query {
+  getError(graphSince: String!, id: String!): UnitErrorDetails
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
-  getTrace(id: String): Trace
-  getTraces(offset: Int, search: String): GetTracesResponse!
+  getTrace(id: String!): Trace
+  getTraces(offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
 }
 
 type ResourceAccessEvent {
@@ -59,7 +67,17 @@ type Trace {
   unitName: String!
 }
 
-type UnitError {
+type UnitErrorDetails {
+  graphStats: [FullGraphStats!]!
+  id: Int!
+  lastEventDateTime: String!
+  message: String
+  rawError: String!
+  type: String!
+  unitName: String!
+}
+
+type UnitErrorListitem {
   graphStats: [GraphStats!]!
   id: Int!
   lastEventDateTime: String!

@@ -15,6 +15,7 @@ const Trace = getLoadableContainer(() => import('./trace/trace.container'))
 const TracesList = getLoadableContainer(() => import('./traces-list.container'))
 const Dashboard = getLoadableContainer(() => import('./dashboard.container'))
 const Errors = getLoadableContainer(() => import('./errors.container'))
+const Error = getLoadableContainer(() => import('./error/error.container'))
 const Units = getLoadableContainer(() => import('./units.container'))
 
 function RootContainer() {
@@ -28,6 +29,9 @@ function RootContainer() {
             </Route>
             <Route path="/units">
               <Units />
+            </Route>
+            <Route path="/errors/:id">
+              <Error />
             </Route>
             <Route path="/errors">
               <Errors />
