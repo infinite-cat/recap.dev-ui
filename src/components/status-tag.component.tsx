@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Chip } from '@material-ui/core'
 
@@ -20,7 +20,7 @@ const ErrorChip = styled(BaseChip)`
   background-color: ${(p) => p.theme.palette.error.main};
 `
 
-export const StatusTag = ({ status }: ExecutionStatusTagProps) => {
+export const StatusTag = memo(({ status }: ExecutionStatusTagProps) => {
   if (status === 'OK') {
     return <SuccessChip label="OK" size="small" />
   }
@@ -34,4 +34,4 @@ export const StatusTag = ({ status }: ExecutionStatusTagProps) => {
       Unknown
     </BaseChip>
   )
-}
+})

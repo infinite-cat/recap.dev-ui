@@ -1,6 +1,6 @@
 // import original module declarations
 import 'styled-components'
-import { Theme } from '@material-ui/core'
+import { Theme } from './models'
 
 declare module 'styled-components' {
   export interface DefaultTheme extends Theme {}

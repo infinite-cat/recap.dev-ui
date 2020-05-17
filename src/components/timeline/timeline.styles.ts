@@ -1,6 +1,5 @@
 import styled from 'styled-components/macro'
 import { Collapse, IconButton } from '@material-ui/core'
-import { transparentize } from 'polished'
 
 export const DetailsRow = styled(Collapse)`
   grid-column: 1 / 4;
@@ -57,8 +56,7 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   position: absolute;
   border-radius: 4px;
   top: 0;
-  box-shadow: 0 4px 4px ${(p) => transparentize(0.75, p.theme.palette.primary.main)};
-  background: ${(p) => p.theme.palette.primary.main};
+  background: ${(p) => p.theme.palette.info.main};
   height: 18px;
   width: ${(p) => p.width * 100}%;
   min-width: 18px;
@@ -67,11 +65,5 @@ export const DurationGraph = styled.div<DurationGraphProps>`
 export const FunctionCallDurationGraph = styled(DurationGraph)``
 export const ResourceAccessDurationGraph = styled(DurationGraph)`
   background: ${(p) =>
-    p.status === 'OK' ? p.theme.palette.primary.main : p.theme.palette.error.main};
-  box-shadow: 0 4px 4px
-    ${(p) =>
-      transparentize(
-        0.75,
-        p.status === 'OK' ? p.theme.palette.primary.main : p.theme.palette.error.main,
-      )};
+    p.status === 'OK' ? p.theme.palette.info.main : p.theme.palette.error.main};
 `

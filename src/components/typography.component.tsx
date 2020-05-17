@@ -7,3 +7,10 @@ export const Code = styled.code`
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 3px;
 `
+export const CardHeader = styled.span`
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 19px;
+  text-transform: uppercase;
+  opacity: 0.75;
+`

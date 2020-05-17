@@ -3,10 +3,11 @@ import { Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
+import { capitalize, toLower } from 'lodash-es'
 
 import { GetTrace } from '../../graphql/queries'
 import { getTrace } from '../../graphql/queries/types/getTrace'
-import { StatusTag, LoadingPage, PageHeader } from '../../components'
+import { LoadingPage, PageHeader, DataCard, CardHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
@@ -41,26 +42,18 @@ const TraceContainer = () => {
         {!loading && data && (
           <>
             <TopCardsContainer>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption">
-                  Unit Name
-                </Typography>
+              <DataCard>
+                <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getTrace?.unitName!} placement="top">
                   <Typography noWrap>{data.getTrace?.unitName}</Typography>
                 </Tooltip>
-              </BasicInfoCard>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption" noWrap>
-                  Status
-                </Typography>
-                <div>
-                  <StatusTag status={data.getTrace?.status} />
-                </div>
-              </BasicInfoCard>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption">
-                  When
-                </Typography>
+              </DataCard>
+              <DataCard type={toLower(data.getTrace?.status)}>
+                <CardHeader>Status</CardHeader>
+                <div>{capitalize(data.getTrace?.status)}</div>
+              </DataCard>
+              <DataCard>
+                <CardHeader>When</CardHeader>
                 <Tooltip
                   title={DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
                   placement="top"
@@ -69,7 +62,7 @@ const TraceContainer = () => {
                     {DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
                   </Typography>
                 </Tooltip>
-              </BasicInfoCard>
+              </DataCard>
             </TopCardsContainer>
             <TopCardsContainer>
               <JsonCard title="Request" src={trace?.request} />
@@ -77,9 +70,7 @@ const TraceContainer = () => {
               {trace?.response && <JsonCard title="Response" src={trace?.response} />}
             </TopCardsContainer>
             <BasicInfoCard>
-              <Typography color="textSecondary" variant="caption">
-                Timeline
-              </Typography>
+              <CardHeader>Timeline</CardHeader>
               <Timeline trace={trace!} />
             </BasicInfoCard>
           </>

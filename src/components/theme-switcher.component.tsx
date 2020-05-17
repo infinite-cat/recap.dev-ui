@@ -4,7 +4,7 @@ import { Sun, Moon } from 'react-feather'
 
 import { ThemeContext } from '../contexts'
 
-interface ThemeSwitcherProps {
+type ThemeSwitcherProps = {
   className?: string
 }
 

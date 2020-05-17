@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { IconButton, Typography } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import { useSnackbar } from 'notistack'
 
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
@@ -8,7 +8,8 @@ import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
-import { Card } from '../card.component'
+import { Card } from '../cards'
+import { CardHeader } from '../typography.component'
 
 const JSONCard = styled(Card)`
   position: relative;
@@ -26,7 +27,7 @@ const Controls = styled.div`
   right: 10px;
 `
 
-export interface JsonCardProps extends CardProps {
+export type JsonCardProps = CardProps & {
   title: string
   src?: string
 }
@@ -36,9 +37,7 @@ export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
 
   return (
     <JSONCard {...rest}>
-      <Typography color="textSecondary" variant="caption">
-        {title}
-      </Typography>
+      <CardHeader>{title}</CardHeader>
       <ScrollContainer>
         <JsonViewer src={src} />
       </ScrollContainer>

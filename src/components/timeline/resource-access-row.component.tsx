@@ -119,9 +119,13 @@ export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
             ))}
           </BasicDetails>
           <CardsContainer>
-            {event.error && <JsonCard elevation={2} title="Error" src={event.error} />}
-            <JsonCard title="Request" src={event.request} />
-            {event.response && <JsonCard elevation={2} title="Response" src={event.response} />}
+            {event.error && (
+              <JsonCard elevation={2} title="Error" src={event.error} variant="outlined" />
+            )}
+            <JsonCard title="Request" src={event.request} variant="outlined" />
+            {event.response && (
+              <JsonCard elevation={2} title="Response" src={event.response} variant="outlined" />
+            )}
           </CardsContainer>
         </ResourceDetailsContainer>
       </DetailsRow>

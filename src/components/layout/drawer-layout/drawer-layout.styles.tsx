@@ -97,7 +97,7 @@ export const ArrowWrapper = styled(Toolbar)`
   justify-content: flex-end;
   padding: 0 6px;
   svg {
-    color: ${(p) => p.theme.palette.text.primary};
+    color: ${(p) => p.theme.palette.text.secondary};
   }
 `
 export const ArrowIcon = styled(({ expanded, ...props }) => <ChevronLeft {...props} />)<{
@@ -127,7 +127,7 @@ export const ListItem = styled(({ active, ...props }) => <MaterialListItem {...p
   background: ${(p) => (p.active ? transparentize(0.9, p.theme.palette.primary.main) : '')};
   border-left: ${(p) =>
     p.active ? `4px solid ${p.theme.palette.primary.main}` : '4px solid transparent'};
-  color: ${(p) => (p.active ? p.theme.palette.primary.main : '')};
+  color: ${(p) => (p.active ? p.theme.palette.primary.main : p.theme.palette.text.secondary)};
 `
 
 interface StyledListItemTextProps extends ListItemTextProps {

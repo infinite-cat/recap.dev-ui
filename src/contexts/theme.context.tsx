@@ -1,13 +1,17 @@
 import React, { memo, useCallback, useMemo } from 'react'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import { StylesProvider, ThemeProvider as MuiProvider } from '@material-ui/core/styles'
+import {
+  StylesProvider,
+  ThemeOptions,
+  ThemeProvider as MuiProvider,
+} from '@material-ui/core/styles'
 import { ThemeProvider as StyledProvider } from 'styled-components/macro'
-import { createMuiTheme, Theme } from '@material-ui/core'
+import { createMuiTheme } from '@material-ui/core'
 import { includes } from 'lodash-es'
 
 import { GlobalStyles } from '../styles'
 import { usePersistState } from '../hooks'
-import { ThemeType } from '../models'
+import { ThemeType, Theme } from '../models'
 
 type ThemeProviderProps = {
   children: JSX.Element
@@ -21,6 +25,33 @@ type ThemeState = {
 
 const themeTypes = ['light', 'dark']
 
+const lightOverrides = {
+  palette: {
+    type: 'light',
+    primary: { main: '#0072F9' },
+    secondary: { main: '#009688' },
+    background: { default: '#F4F6F8' },
+  },
+  custom: {
+    errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
+    successGradient: 'linear-gradient(78.1deg, #4CAF50 1.58%, #81C784 100%);',
+    infoGradient: 'linear-gradient(76.54deg, #1976D2 1.58%, #64B5F6 99.72%);',
+  },
+} as ThemeOptions
+
+const darkOverrides = {
+  palette: {
+    type: 'dark',
+    primary: { main: '#90CAF9' },
+    secondary: { main: '#f48fb1' },
+  },
+  custom: {
+    errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
+    successGradient: 'linear-gradient(78.1deg, #4CAF50 1.58%, #81C784 100%);',
+    infoGradient: 'linear-gradient(76.54deg, #1976D2 1.58%, #64B5F6 99.72%);',
+  },
+} as ThemeOptions
+
 const ThemeContext = React.createContext({} as ThemeState)
 
 const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
@@ -28,15 +59,7 @@ const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
   const type = includes(themeTypes, themeType) ? themeType : 'light'
 
   const theme = useMemo(
-    () =>
-      createMuiTheme({
-        palette: {
-          type,
-          primary: { main: '#0072F9' },
-          secondary: { main: '#009688' },
-          background: { default: '#F4F6F8' },
-        },
-      }),
+    () => createMuiTheme(type === 'dark' ? darkOverrides : lightOverrides) as Theme,
     [type],
   )
 
