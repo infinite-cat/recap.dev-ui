@@ -30,6 +30,12 @@ type GetUnitErrorsResponse {
   offset: Int!
 }
 
+type GetUnitsResponse {
+  hasMore: Boolean!
+  offset: Int!
+  units: [UnitListDetails!]!
+}
+
 type GraphStats {
   dateTime: String!
   value: Int!
@@ -40,6 +46,7 @@ type Query {
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
   getTrace(id: String!): Trace
   getTraces(offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
+  getUnits(offset: Int, search: String, since: String!): GetUnitsResponse!
 }
 
 type ResourceAccessEvent {
@@ -83,6 +90,14 @@ type UnitErrorListitem {
   lastEventDateTime: String!
   message: String
   type: String!
+  unitName: String!
+}
+
+type UnitListDetails {
+  averageDuration: Float
+  errorRate: Float
+  errors: String!
+  invocations: String!
   unitName: String!
 }
 
