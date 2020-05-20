@@ -16,6 +16,7 @@ const TracesList = getLoadableContainer(() => import('./traces-list.container'))
 const Dashboard = getLoadableContainer(() => import('./dashboard.container'))
 const Errors = getLoadableContainer(() => import('./errors.container'))
 const Error = getLoadableContainer(() => import('./error/error.container'))
+const Unit = getLoadableContainer(() => import('./unit/unit.container'))
 const Units = getLoadableContainer(() => import('./units.container'))
 
 function RootContainer() {
@@ -26,6 +27,9 @@ function RootContainer() {
           <Switch>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/units/:unitName">
+              <Unit />
             </Route>
             <Route path="/units">
               <Units />

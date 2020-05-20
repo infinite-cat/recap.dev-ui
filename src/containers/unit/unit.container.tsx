@@ -13,25 +13,25 @@ import {
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
-
 import styled from 'styled-components/macro'
-import { GetError, GetTraces } from '../../graphql/queries'
+
+import { GetTraces, GetUnit } from '../../graphql/queries'
 import { Card, LoadingPage, PageHeader, StatusTag } from '../../components'
 import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
-import { getError } from '../../graphql/queries/types/getError'
 import {
   getTraces,
   getTraces_getTraces_traces as Trace,
 } from '../../graphql/queries/types/getTraces'
+import { getUnit } from '../../graphql/queries/types/getUnit'
 
-const breadcrumb = (errorName: string = '') => ({
+const breadcrumb = (unitName: string = '') => ({
   routes: [
     {
-      path: '/errors',
-      breadcrumbName: 'Errors',
+      path: '/units',
+      breadcrumbName: 'Units',
     },
     {
-      breadcrumbName: errorName,
+      breadcrumbName: unitName,
     },
   ],
 })
@@ -52,32 +52,30 @@ const Traces = styled(Table)`
   }
 `
 
-const ErrorContainer = () => {
-  const { id } = useParams()
+const UnitContainer = () => {
+  const { unitName } = useParams()
   const history = useHistory()
 
   const [graphSince] = useState(
-    DateTime.utc().minus({ hours: 23 }).startOf('hour').toMillis().toString(),
+    DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
   )
 
-  const { data, loading } = useQuery<getError>(GetError, {
+  const { data, loading } = useQuery<getUnit>(GetUnit, {
     variables: {
-      id,
+      unitName,
       graphSince,
     },
   })
 
   const { data: tracesData, loading: tracesLoading } = useQuery<getTraces>(GetTraces, {
     variables: {
-      unitErrorId: id,
+      unitName,
       offset: 0,
     },
   })
 
-  const title = data?.getError ? `${data?.getError?.type}: ${data?.getError?.message}` : ''
-
   return (
-    <PageHeader title={id} breadcrumb={breadcrumb(title)} onBack={() => history.goBack()}>
+    <PageHeader title={unitName} breadcrumb={breadcrumb(unitName)} onBack={() => history.goBack()}>
       <Content>
         {(loading || tracesLoading) && <LoadingPage />}
         {!loading && !tracesLoading && data && (
@@ -87,21 +85,16 @@ const ErrorContainer = () => {
                 <Typography color="textSecondary" variant="caption">
                   Unit Name
                 </Typography>
-                <Tooltip title={data.getError?.unitName!} placement="top">
-                  <Typography noWrap>{data.getError?.unitName}</Typography>
+                <Tooltip title={data.getUnit?.unitName!} placement="top">
+                  <Typography noWrap>{data.getUnit?.unitName}</Typography>
                 </Tooltip>
               </BasicInfoCard>
               <BasicInfoCard>
                 <Typography color="textSecondary" variant="caption" noWrap>
-                  Last Seen
+                  Error Rate
                 </Typography>
-                <Tooltip
-                  title={DateTime.fromMillis(Number(data.getError?.lastEventDateTime)).toISO()}
-                  placement="top"
-                >
-                  <Typography noWrap>
-                    {DateTime.fromMillis(Number(data.getError?.lastEventDateTime)).toISO()}
-                  </Typography>
+                <Tooltip title={`${Number(data.getUnit?.errorRate) / 100}%`} placement="top">
+                  <Typography noWrap>{`${Number(data.getUnit?.errorRate) / 100}%`}</Typography>
                 </Tooltip>
               </BasicInfoCard>
             </TopCardsContainer>
@@ -140,4 +133,4 @@ const ErrorContainer = () => {
   )
 }
 
-export default ErrorContainer
+export default UnitContainer

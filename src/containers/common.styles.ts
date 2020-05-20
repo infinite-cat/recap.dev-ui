@@ -1,6 +1,5 @@
 import styled from 'styled-components/macro'
-
-import { Card } from '../../components'
+import { Card } from '../components/cards'
 
 export const Content = styled.div``
 

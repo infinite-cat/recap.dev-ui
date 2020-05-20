@@ -10,7 +10,7 @@ import { getTrace } from '../../graphql/queries/types/getTrace'
 import { LoadingPage, PageHeader, DataCard, CardHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
-import { Content, TopCardsContainer, BasicInfoCard } from './trace.styles'
+import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
 
 const breadcrumb = (id: string) => ({
   routes: [

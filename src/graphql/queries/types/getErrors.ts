@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface getErrors_getErrors_errors_graphStats {
-  __typename: "GraphStats";
+  __typename: "UnitErrorGraphStats";
   value: number;
   dateTime: string;
 }

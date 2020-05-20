@@ -15,3 +15,18 @@ export const GetUnits = gql`
     }
   }
 `
+
+export const GetUnit = gql`
+  query getUnit($unitName: String!, $graphSince: String!) {
+    getUnit(unitName: $unitName, graphSince: $graphSince) {
+      unitName
+      errorRate
+      graphStats {
+        invocations
+        errors
+        averageDuration
+        dateTime
+      }
+    }
+  }
+`

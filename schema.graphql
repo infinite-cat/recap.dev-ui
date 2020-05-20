@@ -36,16 +36,12 @@ type GetUnitsResponse {
   units: [UnitListDetails!]!
 }
 
-type GraphStats {
-  dateTime: String!
-  value: Int!
-}
-
 type Query {
   getError(graphSince: String!, id: String!): UnitErrorDetails
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
   getTrace(id: String!): Trace
   getTraces(offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
+  getUnit(graphSince: String!, unitName: String!): UnitDetails
   getUnits(offset: Int, search: String, since: String!): GetUnitsResponse!
 }
 
@@ -74,6 +70,19 @@ type Trace {
   unitName: String!
 }
 
+type UnitDetails {
+  errorRate: Float
+  graphStats: [UnitDetailsGraphStats!]!
+  unitName: String!
+}
+
+type UnitDetailsGraphStats {
+  averageDuration: Float!
+  dateTime: String!
+  errors: String!
+  invocations: String!
+}
+
 type UnitErrorDetails {
   graphStats: [FullGraphStats!]!
   id: Int!
@@ -84,8 +93,13 @@ type UnitErrorDetails {
   unitName: String!
 }
 
+type UnitErrorGraphStats {
+  dateTime: String!
+  value: Int!
+}
+
 type UnitErrorListitem {
-  graphStats: [GraphStats!]!
+  graphStats: [UnitErrorGraphStats!]!
   id: Int!
   lastEventDateTime: String!
   message: String
