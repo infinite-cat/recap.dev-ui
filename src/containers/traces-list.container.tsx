@@ -1,28 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
-import {
-  CircularProgress,
-  Table,
-  IconButton,
-  InputBase,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Link as MaterialLink,
-} from '@material-ui/core'
+import { CircularProgress, IconButton, InputBase } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
-import { DateTime } from 'luxon'
-import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import { debounce } from 'lodash-es'
 
 import SearchIcon from '@material-ui/icons/Search'
 
 import { GetTraces } from '../graphql/queries'
-import { getTraces, getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { StatusTag, PageHeader, Card } from '../components'
+import { getTraces } from '../graphql/queries/types/getTraces'
+import { PageHeader, Card } from '../components'
+import { TracesCard } from '../components/traces-card.component'
 
 const Content = styled.div``
 const Input = styled(InputBase)`
@@ -34,24 +22,10 @@ const Controls = styled(Card)`
   width: 100%;
   margin: 16px 0;
 `
-const Traces = styled(Table)`
-  tr:last-child {
-    td {
-      border: none;
-    }
-  }
-`
+
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `
-
-const columns = [
-  { title: 'Request Id', dataIndex: 'id' as keyof Trace, key: 'id' },
-  { title: 'Unit Name', dataIndex: 'unitName' as keyof Trace, key: 'id' },
-  { title: 'Status', dataIndex: 'status' as keyof Trace, key: 'id' },
-  { title: 'Duration', dataIndex: 'duration' as keyof Trace, key: 'id' },
-  { title: 'Time', dataIndex: 'start' as keyof Trace, key: 'id' },
-]
 
 const TracesListContainer = () => {
   const [search, setSearch] = useState('')
@@ -120,36 +94,7 @@ const TracesListContainer = () => {
               <SearchIcon />
             </IconButton>
           </Controls>
-          {!loading && data && (
-            <TableContainer component={Card}>
-              <Traces aria-label="traces table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell key={column.dataIndex}>{column.title}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {data?.getTraces?.traces?.map((row) => (
-                    <TableRow key={row.id} hover>
-                      <TableCell scope="row">
-                        <MaterialLink to={`/traces/${row.id}`} component={Link}>
-                          {row.id}
-                        </MaterialLink>
-                      </TableCell>
-                      <TableCell scope="row">{row.unitName}</TableCell>
-                      <TableCell>
-                        <StatusTag status={row.status} />
-                      </TableCell>
-                      <TableCell>{row.duration} ms</TableCell>
-                      <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Traces>
-            </TableContainer>
-          )}
+          {!loading && data && <TracesCard traces={data?.getTraces?.traces} />}
           {(loading || loadingMore) && <CircularProgress />}
         </StyledInfiniteScroll>
       </Content>

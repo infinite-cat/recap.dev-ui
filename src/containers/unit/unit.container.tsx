@@ -1,28 +1,15 @@
 import React, { useState } from 'react'
-import {
-  Link as MaterialLink,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from '@material-ui/core'
-import { useParams, useHistory, Link } from 'react-router-dom'
+import { Tooltip, Typography } from '@material-ui/core'
+import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
-import styled from 'styled-components/macro'
 
 import { GetTraces, GetUnit } from '../../graphql/queries'
-import { Card, LoadingPage, PageHeader, StatusTag } from '../../components'
+import { LoadingPage, PageHeader } from '../../components'
 import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
-import {
-  getTraces,
-  getTraces_getTraces_traces as Trace,
-} from '../../graphql/queries/types/getTraces'
+import { getTraces } from '../../graphql/queries/types/getTraces'
 import { getUnit } from '../../graphql/queries/types/getUnit'
+import { TracesCard } from '../../components/traces-card.component'
 
 const breadcrumb = (unitName: string = '') => ({
   routes: [
@@ -35,22 +22,6 @@ const breadcrumb = (unitName: string = '') => ({
     },
   ],
 })
-
-const columns = [
-  { title: 'Request Id', dataIndex: 'id' as keyof Trace, key: 'id' },
-  { title: 'Unit Name', dataIndex: 'unitName' as keyof Trace, key: 'id' },
-  { title: 'Status', dataIndex: 'status' as keyof Trace, key: 'id' },
-  { title: 'Duration', dataIndex: 'duration' as keyof Trace, key: 'id' },
-  { title: 'Time', dataIndex: 'start' as keyof Trace, key: 'id' },
-]
-
-const Traces = styled(Table)`
-  tr:last-child {
-    td {
-      border: none;
-    }
-  }
-`
 
 const UnitContainer = () => {
   const { unitName } = useParams()
@@ -98,34 +69,7 @@ const UnitContainer = () => {
                 </Tooltip>
               </BasicInfoCard>
             </TopCardsContainer>
-            <TableContainer component={Card}>
-              <Traces aria-label="traces table">
-                <TableHead>
-                  <TableRow>
-                    {columns.map((column) => (
-                      <TableCell key={column.dataIndex}>{column.title}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {tracesData?.getTraces?.traces?.map((row) => (
-                    <TableRow key={row.id} hover>
-                      <TableCell scope="row">
-                        <MaterialLink to={`/traces/${row.id}`} component={Link}>
-                          {row.id}
-                        </MaterialLink>
-                      </TableCell>
-                      <TableCell scope="row">{row.unitName}</TableCell>
-                      <TableCell>
-                        <StatusTag status={row.status} />
-                      </TableCell>
-                      <TableCell>{row.duration} ms</TableCell>
-                      <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Traces>
-            </TableContainer>
+            <TracesCard traces={tracesData?.getTraces?.traces} />
           </>
         )}
       </Content>
