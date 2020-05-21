@@ -27,7 +27,7 @@ const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `
 
-const TracesListContainer = () => {
+const TracesContainer = () => {
   const [search, setSearch] = useState('')
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore } = useQuery<getTraces>(GetTraces, {
@@ -102,4 +102,4 @@ const TracesListContainer = () => {
   )
 }
 
-export default TracesListContainer
+export default TracesContainer

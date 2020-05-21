@@ -12,7 +12,7 @@ const getLoadableContainer = (loader: any) =>
   })
 
 const Trace = getLoadableContainer(() => import('./trace/trace.container'))
-const TracesList = getLoadableContainer(() => import('./traces-list.container'))
+const TracesList = getLoadableContainer(() => import('./traces.container'))
 const Dashboard = getLoadableContainer(() => import('./dashboard.container'))
 const Errors = getLoadableContainer(() => import('./errors.container'))
 const Error = getLoadableContainer(() => import('./error/error.container'))

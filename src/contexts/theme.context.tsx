@@ -36,6 +36,7 @@ const lightOverrides = {
     errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
     successGradient: 'linear-gradient(78.1deg, #4CAF50 1.58%, #81C784 100%);',
     infoGradient: 'linear-gradient(76.54deg, #1976D2 1.58%, #64B5F6 99.72%);',
+    boxShadow: '0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15)',
   },
 } as ThemeOptions
 
@@ -52,6 +53,7 @@ const darkOverrides = {
     errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
     successGradient: 'linear-gradient(78.1deg, #4CAF50 1.58%, #81C784 100%);',
     infoGradient: 'linear-gradient(76.54deg, #1976D2 1.58%, #64B5F6 99.72%);',
+    boxShadow: '0 0 0 1px rgba(192, 192, 192, 0.15)',
   },
 } as ThemeOptions
 

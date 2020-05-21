@@ -15,7 +15,7 @@ import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 
-import { PageHeader, Card } from '../components'
+import { PageHeader, Card, ErrorsListGraph } from '../components'
 import { getErrors_getErrors_errors as Error, getErrors } from '../graphql/queries/types/getErrors'
 import { GetErrors } from '../graphql/queries'
 
@@ -43,6 +43,7 @@ const ErrorMessage = styled.div`
 const columns = [
   { title: 'Error', dataIndex: 'id' as keyof Error, key: 'id' },
   { title: 'Unit Name', dataIndex: 'unitName' as keyof Error, key: 'id' },
+  { title: 'Graph', dataIndex: 'graphStats' as keyof Error, key: 'id' },
   { title: 'Last Seen', dataIndex: 'lastEventDateTime' as keyof Error, key: 'id' },
 ]
 
@@ -119,7 +120,14 @@ const ErrorsListContainer = () => {
                         </MaterialLink>
                       </TableCell>
                       <NoBreakTableCell scope="row">{row.unitName}</NoBreakTableCell>
-                      <NoBreakTableCell>{row.lastEventDateTime}</NoBreakTableCell>
+                      <NoBreakTableCell>
+                        <ErrorsListGraph data={row.graphStats} />
+                      </NoBreakTableCell>
+                      <NoBreakTableCell>
+                        {DateTime.fromMillis(Number(row.lastEventDateTime)).toLocaleString(
+                          DateTime.DATETIME_SHORT,
+                        )}
+                      </NoBreakTableCell>
                     </TableRow>
                   ))}
                 </TableBody>

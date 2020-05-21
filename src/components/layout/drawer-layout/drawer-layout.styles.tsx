@@ -34,7 +34,7 @@ export const Drawer = styled(({ expanded, ...props }) => <MaterialDrawer {...pro
   .MuiPaper-root {
     width: ${(p) => (p.expanded ? `${width}px` : `${smallWidth}px`)};
     background: ${(p) => p.theme.palette.background.paper};
-    box-shadow: 0 0 0 1px rgba(63, 63, 68, 0.05), 0 1px 3px 0 rgba(63, 63, 68, 0.15);
+    box-shadow: ${(p) => p.theme.custom.boxShadow};
     overflow-x: hidden;
     flex-shrink: 0;
     white-space: nowrap;

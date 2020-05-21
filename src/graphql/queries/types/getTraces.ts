@@ -8,32 +8,32 @@
 // ====================================================
 
 export interface getTraces_getTraces_traces {
-  __typename: "Trace";
-  id: string;
-  unitName: string;
-  start: string;
-  end: string;
-  duration: number;
-  status: string;
-  request: string;
-  response: string | null;
-  error: string | null;
+  __typename: 'Trace'
+  id: string
+  unitName: string
+  start: string
+  end: string
+  duration: number
+  status: string
+  request: string
+  response: string | null
+  error: string | null
 }
 
 export interface getTraces_getTraces {
-  __typename: "GetTracesResponse";
-  traces: getTraces_getTraces_traces[];
-  offset: number;
-  hasMore: boolean;
+  __typename: 'GetTracesResponse'
+  traces: getTraces_getTraces_traces[]
+  offset: number
+  hasMore: boolean
 }
 
 export interface getTraces {
-  getTraces: getTraces_getTraces;
+  getTraces: getTraces_getTraces
 }
 
 export interface getTracesVariables {
-  search?: string | null;
-  offset?: number | null;
-  unitName?: string | null;
-  unitErrorId?: string | null;
+  search?: string | null
+  offset?: number | null
+  unitName?: string | null
+  unitErrorId?: string | null
 }

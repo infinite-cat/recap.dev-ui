@@ -8,27 +8,27 @@
 // ====================================================
 
 export interface getUnits_getUnits_units {
-  __typename: "UnitListDetails";
-  unitName: string;
-  invocations: string;
-  errors: string;
-  errorRate: number | null;
-  averageDuration: number | null;
+  __typename: 'UnitListDetails'
+  unitName: string
+  invocations: string
+  errors: string
+  errorRate: number | null
+  averageDuration: number | null
 }
 
 export interface getUnits_getUnits {
-  __typename: "GetUnitsResponse";
-  units: getUnits_getUnits_units[];
-  offset: number;
-  hasMore: boolean;
+  __typename: 'GetUnitsResponse'
+  units: getUnits_getUnits_units[]
+  offset: number
+  hasMore: boolean
 }
 
 export interface getUnits {
-  getUnits: getUnits_getUnits;
+  getUnits: getUnits_getUnits
 }
 
 export interface getUnitsVariables {
-  search?: string | null;
-  offset?: number | null;
-  since: string;
+  search?: string | null
+  offset?: number | null
+  since: string
 }

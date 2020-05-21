@@ -6,5 +6,6 @@ export type Theme = MaterialTheme & {
     errorGradient: string
     successGradient: string
     infoGradient: string
+    boxShadow: string
   }
 }

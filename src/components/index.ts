@@ -1,5 +1,6 @@
 export * from './layout'
 export * from './cards'
+export * from './graphs'
 export * from './loading-page.component'
 export * from './status-tag.component'
 export * from './theme-switcher.component'

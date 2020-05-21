@@ -1,2 +1,2 @@
 export * from './trace'
-export * from './traces-list.container'
+export * from './traces.container'

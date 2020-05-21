@@ -8,29 +8,29 @@
 // ====================================================
 
 export interface getError_getError_graphStats {
-  __typename: "UnitErrorDetailsGraphStats";
-  invocations: number;
-  errors: number;
-  currentErrors: number;
-  dateTime: string;
+  __typename: 'UnitErrorDetailsGraphStats'
+  invocations: number
+  errors: number
+  currentErrors: number
+  dateTime: string
 }
 
 export interface getError_getError {
-  __typename: "UnitErrorDetails";
-  id: number;
-  unitName: string;
-  type: string;
-  message: string | null;
-  rawError: string;
-  lastEventDateTime: string;
-  graphStats: getError_getError_graphStats[];
+  __typename: 'UnitErrorDetails'
+  id: number
+  unitName: string
+  type: string
+  message: string | null
+  rawError: string
+  lastEventDateTime: string
+  graphStats: getError_getError_graphStats[]
 }
 
 export interface getError {
-  getError: getError_getError | null;
+  getError: getError_getError | null
 }
 
 export interface getErrorVariables {
-  graphSince: string;
-  id: string;
+  graphSince: string
+  id: string
 }
