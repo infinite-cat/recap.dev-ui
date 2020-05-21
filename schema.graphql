@@ -4,13 +4,6 @@ schema {
   query: Query
 }
 
-type FullGraphStats {
-  currentErrors: Int!
-  dateTime: String!
-  errors: Int!
-  invocations: Int!
-}
-
 type FunctionCall {
   end: String
   fileName: String!
@@ -36,9 +29,17 @@ type GetUnitsResponse {
   units: [UnitListDetails!]!
 }
 
+type Insight {
+  message: String!
+}
+
 type Query {
   getError(graphSince: String!, id: String!): UnitErrorDetails
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
+  getInsights(since: String!): [Insight!]!
+  getNewestErrors(since: String!): [UnitError!]!
+  getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
+  getTotalStats(since: String!): TotalStats!
   getTrace(id: String!): Trace
   getTraces(offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
   getUnit(graphSince: String!, unitName: String!): UnitDetails
@@ -54,6 +55,25 @@ type ResourceAccessEvent {
   serviceName: String!
   start: String!
   status: String!
+}
+
+type TopInvokedUnit {
+  errors: String!
+  invocations: String!
+  unitName: String!
+}
+
+type TotalGraphStats {
+  dateTime: String!
+  errors: String!
+  invocations: String!
+}
+
+type TotalStats {
+  errorRate: Float
+  errors: String!
+  graphStats: [TotalGraphStats!]!
+  invocations: String!
 }
 
 type Trace {
@@ -83,14 +103,31 @@ type UnitDetailsGraphStats {
   invocations: String!
 }
 
-type UnitErrorDetails {
-  graphStats: [FullGraphStats!]!
+type UnitError {
+  firstEventDateTime: String!
   id: Int!
   lastEventDateTime: String!
   message: String
   rawError: String!
   type: String!
   unitName: String!
+}
+
+type UnitErrorDetails {
+  graphStats: [UnitErrorDetailsGraphStats!]!
+  id: Int!
+  lastEventDateTime: String!
+  message: String
+  rawError: String!
+  type: String!
+  unitName: String!
+}
+
+type UnitErrorDetailsGraphStats {
+  currentErrors: Int!
+  dateTime: String!
+  errors: Int!
+  invocations: Int!
 }
 
 type UnitErrorGraphStats {

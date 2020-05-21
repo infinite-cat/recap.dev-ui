@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface getError_getError_graphStats {
-  __typename: "FullGraphStats";
+  __typename: "UnitErrorDetailsGraphStats";
   invocations: number;
   errors: number;
   currentErrors: number;
