@@ -10,6 +10,7 @@ import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
+import { formatDateTime } from '../../utils'
 
 const breadcrumb = (errorName: string = '') => ({
   routes: [
@@ -50,7 +51,7 @@ const ErrorContainer = () => {
   return (
     <PageHeader title={id} breadcrumb={breadcrumb(title)} onBack={() => history.goBack()}>
       <Content>
-        {(loading || tracesLoading) && <LoadingPage />}
+        {(loading || tracesLoading) && <LoadingPage height="calc(100vh - 128px)" />}
         {!loading && !tracesLoading && data && (
           <>
             <TopCardsContainer>
@@ -66,13 +67,8 @@ const ErrorContainer = () => {
                 <Typography color="textSecondary" variant="caption" noWrap>
                   Last Seen
                 </Typography>
-                <Tooltip
-                  title={DateTime.fromMillis(Number(data.getError?.lastEventDateTime)).toISO()}
-                  placement="top"
-                >
-                  <Typography noWrap>
-                    {DateTime.fromMillis(Number(data.getError?.lastEventDateTime)).toISO()}
-                  </Typography>
+                <Tooltip title={formatDateTime(data.getError?.lastEventDateTime)} placement="top">
+                  <Typography noWrap>{formatDateTime(data.getError?.lastEventDateTime)}</Typography>
                 </Tooltip>
               </BasicInfoCard>
             </TopCardsContainer>

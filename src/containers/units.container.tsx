@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
-  CircularProgress,
   Table,
   IconButton,
   InputBase,
@@ -16,12 +15,12 @@ import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
-import { debounce } from 'lodash-es'
+import { debounce, isEmpty } from 'lodash-es'
 
 import SearchIcon from '@material-ui/icons/Search'
 
 import { GetUnits } from '../graphql/queries'
-import { PageHeader, Card } from '../components'
+import { PageHeader, Card, Empty, LoadingOverlay, FullWidthSpinner } from '../components'
 import { getUnits, getUnits_getUnits_units as Unit } from '../graphql/queries/types/getUnits'
 
 const Content = styled.div``
@@ -124,8 +123,8 @@ const UnitsContainer = () => {
               <SearchIcon />
             </IconButton>
           </Controls>
-          {!loading && data && (
-            <TableContainer component={Card}>
+          <TableContainer component={Card} style={{ position: 'relative', minHeight: 300 }}>
+            {!isEmpty(data?.getUnits?.units) && (
               <Units aria-label="units table">
                 <TableHead>
                   <TableRow>
@@ -150,9 +149,11 @@ const UnitsContainer = () => {
                   ))}
                 </TableBody>
               </Units>
-            </TableContainer>
-          )}
-          {(loading || loadingMore) && <CircularProgress />}
+            )}
+            {isEmpty(data?.getUnits?.units) && !loading && <Empty />}
+            {loading && <LoadingOverlay />}
+          </TableContainer>
+          {loadingMore && <FullWidthSpinner />}
         </StyledInfiniteScroll>
       </Content>
     </PageHeader>

@@ -48,7 +48,7 @@ const UnitContainer = () => {
   return (
     <PageHeader title={unitName} breadcrumb={breadcrumb(unitName)} onBack={() => history.goBack()}>
       <Content>
-        {(loading || tracesLoading) && <LoadingPage />}
+        {(loading || tracesLoading) && <LoadingPage height="calc(100vh - 128px)" />}
         {!loading && !tracesLoading && data && (
           <>
             <TopCardsContainer>

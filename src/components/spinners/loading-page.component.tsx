@@ -2,9 +2,9 @@ import React, { memo } from 'react'
 import styled from 'styled-components/macro'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const SpinnerWrapper = styled.div`
+const SpinnerWrapper = styled.div<{ height?: string }>`
   width: 100%;
-  height: calc(100vh - 104px);
+  height: ${(p) => p.height || 'calc(100vh - 104px)'};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,10 +12,11 @@ const SpinnerWrapper = styled.div`
 
 interface LoadingProps {
   className?: any
+  height?: string
 }
 
-export const LoadingPage = memo(({ className }: LoadingProps) => (
-  <SpinnerWrapper className={className}>
+export const LoadingPage = memo(({ className, height }: LoadingProps) => (
+  <SpinnerWrapper className={className} height={height}>
     <CircularProgress />
   </SpinnerWrapper>
 ))

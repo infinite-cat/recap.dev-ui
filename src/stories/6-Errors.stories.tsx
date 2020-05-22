@@ -1,4 +1,5 @@
 import React from 'react'
+import { Box } from '@material-ui/core'
 
 import { ErrorsListGraph } from '../components'
 import { getErrors_getErrors_errors_graphStats as GraphStats } from '../graphql/queries/types/getErrors'
@@ -7,7 +8,7 @@ export default {
   title: 'Errors',
 }
 
-const Data = [
+const MOCK_DATA = [
   { value: 0, dateTime: '1590094800000', __typename: 'UnitErrorGraphStats' },
   { value: 0, dateTime: '1590091200000', __typename: 'UnitErrorGraphStats' },
   { value: 0, dateTime: '1590087600000', __typename: 'UnitErrorGraphStats' },
@@ -34,4 +35,14 @@ const Data = [
   { value: 0, dateTime: '1590012000000', __typename: 'UnitErrorGraphStats' },
 ] as GraphStats[]
 
-export const ListGraphStory = () => <ErrorsListGraph data={Data} />
+const EMPTY_MOCK = MOCK_DATA.map((x) => ({ ...x, value: 0 }))
+
+export const ListGraphStory = () => (
+  <div>
+    <ErrorsListGraph data={MOCK_DATA} />
+    <Box mt={2} />
+    <ErrorsListGraph data={[]} />
+    <Box mt={2} />
+    <ErrorsListGraph data={EMPTY_MOCK} />
+  </div>
+)

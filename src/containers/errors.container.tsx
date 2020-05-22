@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
-  CircularProgress,
   Table,
   TableBody,
   TableCell,
@@ -14,10 +13,19 @@ import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
+import { isEmpty } from 'lodash-es'
 
-import { PageHeader, Card, ErrorsListGraph } from '../components'
+import {
+  PageHeader,
+  Card,
+  ErrorsListGraph,
+  Empty,
+  LoadingOverlay,
+  FullWidthSpinner,
+} from '../components'
 import { getErrors_getErrors_errors as Error, getErrors } from '../graphql/queries/types/getErrors'
 import { GetErrors } from '../graphql/queries'
+import { formatDateTime } from '../utils'
 
 const Content = styled.div`
   padding-top: 16px;
@@ -100,8 +108,8 @@ const ErrorsListContainer = () => {
           loadMore={fetchMoreErrors}
           threshold={500}
         >
-          {!loading && data && (
-            <TableContainer component={Card}>
+          <TableContainer component={Card} style={{ position: 'relative', minHeight: 300 }}>
+            {!isEmpty(data?.getErrors?.errors) && (
               <Errors aria-label="errors table">
                 <TableHead>
                   <TableRow>
@@ -123,18 +131,16 @@ const ErrorsListContainer = () => {
                       <NoBreakTableCell>
                         <ErrorsListGraph data={row.graphStats} />
                       </NoBreakTableCell>
-                      <NoBreakTableCell>
-                        {DateTime.fromMillis(Number(row.lastEventDateTime)).toLocaleString(
-                          DateTime.DATETIME_SHORT,
-                        )}
-                      </NoBreakTableCell>
+                      <NoBreakTableCell>{formatDateTime(row.lastEventDateTime)}</NoBreakTableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Errors>
-            </TableContainer>
-          )}
-          {(loading || loadingMore) && <CircularProgress />}
+            )}
+            {isEmpty(data?.getErrors?.errors) && !loading && <Empty />}
+            {loading && <LoadingOverlay />}
+          </TableContainer>
+          {loadingMore && <FullWidthSpinner />}
         </StyledInfiniteScroll>
       </Content>
     </PageHeader>

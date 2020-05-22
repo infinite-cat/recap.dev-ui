@@ -2,12 +2,12 @@ import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { ResponsiveLine } from '@nivo/line'
 import { capitalize, maxBy } from 'lodash-es'
-import { DateTime } from 'luxon'
 import { transparentize } from 'polished'
 
 import { getErrors_getErrors_errors_graphStats as GraphStats } from '../../graphql/queries/types/getErrors'
 import { ThemeContext } from '../../contexts'
 import { Card } from '../cards'
+import { formatDateTime } from '../../utils'
 
 const Wrapper = styled(Card)`
   width: 200px;
@@ -58,11 +58,7 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
           <Tooltip>
             {slice.points.map((point) => (
               <div key={point.id}>
-                <div>
-                  {DateTime.fromMillis(Number(point.data.x)).toLocaleString(
-                    DateTime.DATETIME_SHORT,
-                  )}
-                </div>
+                <div>{formatDateTime(point.data.x as number)}</div>
                 <div style={{ color: point.serieColor }}>
                   {point.data.yFormatted} {capitalize(String(point.serieId))}
                 </div>

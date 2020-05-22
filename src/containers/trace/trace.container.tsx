@@ -2,7 +2,6 @@ import React from 'react'
 import { Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
-import { DateTime } from 'luxon'
 import { capitalize, toLower } from 'lodash-es'
 
 import { GetTrace } from '../../graphql/queries'
@@ -11,6 +10,7 @@ import { LoadingPage, PageHeader, DataCard, CardHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
+import { formatDateTime } from '../../utils'
 
 const breadcrumb = (id: string) => ({
   routes: [
@@ -38,7 +38,7 @@ const TraceContainer = () => {
   return (
     <PageHeader title={id} breadcrumb={breadcrumb(id!)} onBack={() => history.goBack()}>
       <Content>
-        {loading && <LoadingPage />}
+        {loading && <LoadingPage height="calc(100vh - 128px)" />}
         {!loading && data && (
           <>
             <TopCardsContainer>
@@ -54,13 +54,8 @@ const TraceContainer = () => {
               </DataCard>
               <DataCard>
                 <CardHeader>When</CardHeader>
-                <Tooltip
-                  title={DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
-                  placement="top"
-                >
-                  <Typography noWrap>
-                    {DateTime.fromMillis(Number(data.getTrace?.start)).toISO()}
-                  </Typography>
+                <Tooltip title={formatDateTime(data.getTrace?.start)} placement="top">
+                  <Typography noWrap>{formatDateTime(data.getTrace?.start)}</Typography>
                 </Tooltip>
               </DataCard>
             </TopCardsContainer>

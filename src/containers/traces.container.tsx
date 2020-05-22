@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
-import { CircularProgress, IconButton, InputBase } from '@material-ui/core'
+import { IconButton, InputBase } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
 import InfiniteScroll from 'react-infinite-scroller'
 import { debounce } from 'lodash-es'
@@ -9,7 +9,7 @@ import SearchIcon from '@material-ui/icons/Search'
 
 import { GetTraces } from '../graphql/queries'
 import { getTraces } from '../graphql/queries/types/getTraces'
-import { PageHeader, Card } from '../components'
+import { PageHeader, Card, FullWidthSpinner } from '../components'
 import { TracesCard } from '../components/traces-card.component'
 
 const Content = styled.div``
@@ -95,7 +95,7 @@ const TracesContainer = () => {
             </IconButton>
           </Controls>
           {!loading && data && <TracesCard traces={data?.getTraces?.traces} />}
-          {(loading || loadingMore) && <CircularProgress />}
+          {(loading || loadingMore) && <FullWidthSpinner />}
         </StyledInfiniteScroll>
       </Content>
     </PageHeader>

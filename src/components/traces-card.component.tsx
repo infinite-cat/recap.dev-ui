@@ -9,12 +9,12 @@ import {
   TableRow,
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
-import { DateTime } from 'luxon'
 import styled from 'styled-components/macro'
 
 import { Card } from './cards'
 import { StatusTag } from '.'
 import { getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
+import { formatDateTime } from '../utils'
 
 const Traces = styled(Table)`
   tr:last-child {
@@ -60,7 +60,7 @@ export const TracesCard = ({ traces }: TracesCardProps) => {
                 <StatusTag status={row.status} />
               </TableCell>
               <TableCell>{row.duration} ms</TableCell>
-              <TableCell>{DateTime.fromMillis(Number(row.start)).toISO()}</TableCell>
+              <TableCell>{formatDateTime(row.start)}</TableCell>
             </TableRow>
           ))}
         </TableBody>
