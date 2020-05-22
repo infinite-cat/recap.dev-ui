@@ -16,8 +16,8 @@ const Wrapper = styled(Card)`
 `
 const Tooltip = styled.div`
   padding: 9px 12px;
-  background: ${(p) => transparentize(0.45, p.theme.palette.background.default)};
-  border: 1px solid #ccc;
+  background: ${(p) => transparentize(0.2, p.theme.palette.background.default)};
+  box-shadow: ${(p) => p.theme.custom.boxShadow};
 `
 
 type ErrorsListGraphProps = {
@@ -45,6 +45,15 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
         enableGridY={false}
         enableSlices="x"
         areaOpacity={0.15}
+        theme={
+          {
+            crosshair: {
+              line: {
+                stroke: theme.palette.text.primary,
+              },
+            },
+          } as any
+        }
         sliceTooltip={({ slice }) => (
           <Tooltip>
             {slice.points.map((point) => (
