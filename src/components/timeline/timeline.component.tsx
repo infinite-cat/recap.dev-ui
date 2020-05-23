@@ -23,6 +23,7 @@ const CallsGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: min-content min-content 1fr;
+  margin-top: 10px;
 `
 
 export const Timeline = ({ trace }: TimelineProps) => {
@@ -37,15 +38,11 @@ export const Timeline = ({ trace }: TimelineProps) => {
 
   return (
     <CallsGrid>
-      <Column>
-        <Typography>Name</Typography>
-      </Column>
-      <DurationColumn>
-        <Typography>Duration</Typography>
-      </DurationColumn>
-      <Column />
+      <Column active>Name</Column>
+      <DurationColumn active>Duration</DurationColumn>
+      <Column active />
       <SectionName>
-        <Typography variant="h5">Functions</Typography>
+        <Typography>Functions</Typography>
       </SectionName>
       {map(functionCalls, (call, i) => (
         <Fragment key={i}>
@@ -71,7 +68,7 @@ export const Timeline = ({ trace }: TimelineProps) => {
         </Fragment>
       ))}
       <SectionName>
-        <Typography variant="h5">Resources</Typography>
+        <Typography>Resources</Typography>
       </SectionName>
       {map(resourceAccessEvents, (event, i) => (
         <ResourceAccessRow

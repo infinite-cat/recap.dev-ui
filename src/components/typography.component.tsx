@@ -8,6 +8,8 @@ export const Code = styled.code`
   border-radius: 3px;
 `
 export const CardHeader = styled.span`
+  display: flex;
+  align-items: center;
   font-weight: bold;
   font-size: 14px;
   line-height: 19px;
