@@ -34,11 +34,12 @@ const columns = [
 
 interface TracesCardProps {
   traces?: Trace[]
+  className?: string
 }
 
-export const TracesCard = ({ traces }: TracesCardProps) => {
+export const TracesCard = ({ className, traces }: TracesCardProps) => {
   return (
-    <TableContainer component={Card}>
+    <TableContainer component={Card} className={className}>
       <Traces aria-label="traces table">
         <TableHead>
           <TableRow>

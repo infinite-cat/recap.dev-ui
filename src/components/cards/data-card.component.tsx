@@ -13,15 +13,15 @@ const BaseCard = styled(Card)`
   word-break: break-word;
 `
 const SuccessCard = styled(BaseCard)`
-  background: ${(p) => p.theme.palette.success.main};
+  background: ${(p) => p.theme.custom.successGradient};
   box-shadow: none;
 `
 const ErrorCard = styled(BaseCard)`
-  background: ${(p) => p.theme.palette.error.main};
+  background: ${(p) => p.theme.custom.errorGradient};
   box-shadow: none;
 `
 const InfoCard = styled(BaseCard)`
-  background: ${(p) => p.theme.palette.info.main};
+  background: ${(p) => p.theme.custom.infoGradient};
   box-shadow: none;
 `
 

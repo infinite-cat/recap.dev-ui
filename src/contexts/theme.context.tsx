@@ -50,9 +50,9 @@ const darkOverrides = {
     error: { main: '#ef5350' },
   },
   custom: {
-    errorGradient: 'linear-gradient(76.47deg, #D32F2F 0.27%, #E57373 100%)',
-    successGradient: 'linear-gradient(78.1deg, #4CAF50 1.58%, #81C784 100%);',
-    infoGradient: 'linear-gradient(76.54deg, #1976D2 1.58%, #64B5F6 99.72%);',
+    errorGradient: 'linear-gradient(76.47deg, #ef5350 0.27%, #e76b69 100%)',
+    infoGradient: 'linear-gradient(76.54deg, #64b5f6 1.58%, #6fb7ee 99.72%);',
+    successGradient: 'linear-gradient(78.1deg, #81c784 1.58%, #94c996 100%);',
     boxShadow: '0 0 0 1px rgba(192, 192, 192, 0.15)',
   },
 } as ThemeOptions

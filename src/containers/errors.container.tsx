@@ -30,13 +30,7 @@ import { formatDateTime } from '../utils'
 const Content = styled.div`
   padding-top: 16px;
 `
-const Errors = styled(Table)`
-  tr:last-child {
-    td {
-      border: none;
-    }
-  }
-`
+const Errors = styled(Table)``
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `

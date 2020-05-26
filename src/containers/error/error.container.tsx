@@ -1,16 +1,43 @@
 import React, { useState } from 'react'
-import { Tooltip, Typography } from '@material-ui/core'
+import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
+import { transparentize } from 'polished'
+import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 
 import { GetError, GetTraces } from '../../graphql/queries'
-import { LoadingPage, PageHeader } from '../../components'
+import { Card, CardHeader, ErrorGraph, LoadingPage, PageHeader } from '../../components'
 import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
 import { formatDateTime } from '../../utils'
+import { JsonCard } from '../../components/json/json-card.component'
+
+const MidCards = styled.div`
+  display: grid;
+  column-gap: 20px;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr 1fr;
+  margin-bottom: 20px;
+`
+const GraphCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 10px 0 0 0;
+  overflow: visible;
+`
+const Traces = styled(Card)`
+  .MuiCard-root {
+    border-radius: 0;
+  }
+  .MuiTableCell-head {
+    background: ${(p) => transparentize(0.9, p.theme.palette.info.main)};
+  }
+`
 
 const breadcrumb = (errorName: string = '') => ({
   routes: [
@@ -72,7 +99,21 @@ const ErrorContainer = () => {
                 </Tooltip>
               </BasicInfoCard>
             </TopCardsContainer>
-            <TracesCard traces={tracesData?.getTraces?.traces} />
+            <MidCards>
+              <JsonCard title="Response" src={data.getError?.rawError} />
+              <GraphCard>
+                <Box ml={2}>
+                  <CardHeader>Frequency</CardHeader>
+                </Box>
+                <ErrorGraph data={data.getError?.graphStats} />
+              </GraphCard>
+            </MidCards>
+            <Traces>
+              <Box ml={2} mt={1} mb={1.5}>
+                <CardHeader>Traces</CardHeader>
+              </Box>
+              <TracesCard traces={tracesData?.getTraces?.traces} />
+            </Traces>
           </>
         )}
       </Content>

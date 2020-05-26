@@ -33,13 +33,7 @@ const Controls = styled(Card)`
   width: 100%;
   margin: 16px 0;
 `
-const Units = styled(Table)`
-  tr:last-child {
-    td {
-      border: none;
-    }
-  }
-`
+const Units = styled(Table)``
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
 `
