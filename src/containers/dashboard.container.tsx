@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
-import { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash-es'
 
 import { Typography } from '@material-ui/core'
 import { CardHeader, LoadingPage, PageHeader } from '../components'
