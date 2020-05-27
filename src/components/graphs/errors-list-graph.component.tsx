@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { ResponsiveLine } from '@nivo/line'
-import { capitalize, maxBy, orderBy } from 'lodash-es'
+import { ResponsiveContainer, AreaChart, Area, Tooltip, YAxis, XAxis } from 'recharts'
+import { maxBy, orderBy } from 'lodash-es'
 import { transparentize } from 'polished'
 
 import { getErrors_getErrors_errors_graphStats as GraphStats } from '../../graphql/queries/types/getErrors'
@@ -13,11 +13,6 @@ const Wrapper = styled(Card)`
   width: 200px;
   height: 45px;
   overflow: visible;
-`
-const Tooltip = styled.div`
-  padding: 9px 12px;
-  background: ${(p) => transparentize(0.2, p.theme.palette.background.default)};
-  box-shadow: ${(p) => p.theme.custom.boxShadow};
 `
 
 type ErrorsListGraphProps = {
@@ -35,44 +30,39 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
     [data],
   )
 
-  const maxScale = (maxBy(graphData, (point) => point.y)?.y ?? 0) * 1.2 ?? 'auto'
+  const maxValue = maxBy(graphData, (point) => point.y)?.y ?? 0
 
   return (
     <Wrapper>
-      <ResponsiveLine
-        data={[{ data: graphData, color: theme.palette.error.light, id: 'error' }]}
-        colors={{ datum: 'color' }}
-        yScale={{ type: 'linear', min: 'auto', max: maxScale, stacked: true, reverse: false }}
-        enablePoints={false}
-        enableGridX={false}
-        enableGridY={false}
-        enableSlices="x"
-        areaOpacity={0.15}
-        theme={
-          {
-            crosshair: {
-              line: {
-                stroke: theme.palette.text.primary,
-              },
-            },
-          } as any
-        }
-        sliceTooltip={({ slice }) => (
-          <Tooltip>
-            {slice.points.map((point) => (
-              <div key={point.id}>
-                <div>{formatDateTime(point.data.x as number)}</div>
-                <div style={{ color: point.serieColor }}>
-                  {point.data.yFormatted} {capitalize(String(point.serieId))}
-                </div>
-              </div>
-            ))}
-          </Tooltip>
-        )}
-        animate
-        useMesh
-        enableArea
-      />
+      <ResponsiveContainer>
+        <AreaChart width={200} height={60} data={graphData} margin={{ left: -5 }}>
+          <Area
+            type="monotone"
+            dataKey="y"
+            stroke={theme.palette.error.main}
+            fill={transparentize(0.8, theme.palette.error.main)}
+          />
+          <XAxis hide dataKey="x" />
+          <YAxis
+            hide
+            type="number"
+            domain={[
+              (dataMin: number) => (maxValue ? dataMin : -1),
+              (dataMax: number) => dataMax * 1.2 + 1,
+            ]}
+          />
+          <Tooltip
+            contentStyle={{
+              background: transparentize(0.33, theme.palette.background.default),
+              border: 'none',
+              boxShadow: theme.custom.boxShadow,
+            }}
+            separator=""
+            formatter={(value: number) => [`${value} errors`, '']}
+            labelFormatter={formatDateTime}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </Wrapper>
   )
 }

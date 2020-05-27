@@ -1,8 +1,8 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { ResponsiveLine } from '@nivo/line'
-import { capitalize, orderBy } from 'lodash-es'
+import { max, orderBy, startCase, toLower } from 'lodash-es'
 import { transparentize } from 'polished'
+import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
 import { ThemeContext } from '../../contexts'
 import { formatDateTime } from '../../utils'
@@ -12,11 +12,6 @@ const Wrapper = styled.div`
   width: 100%;
   height: 300px;
   overflow: visible;
-`
-const Tooltip = styled.div`
-  padding: 9px 12px;
-  background: ${(p) => transparentize(0.2, p.theme.palette.background.default)};
-  box-shadow: ${(p) => p.theme.custom.boxShadow};
 `
 
 type ErrorsListGraphProps = {
@@ -28,63 +23,65 @@ export const ErrorGraph = ({ data }: ErrorsListGraphProps) => {
   const graphData = useMemo(
     () => {
       const orderedData = orderBy(data, 'dateTime')
-      const currentError = orderedData.map((stat) => ({
+      return orderedData.map((stat) => ({
         x: Number(stat.dateTime),
-        y: stat.currentErrors,
+        currentErrors: stat.currentErrors,
+        errors: stat.errors,
+        invocations: stat.invocations,
       }))
-      const errors = orderedData.map((stat) => ({ x: Number(stat.dateTime), y: stat.errors }))
-      const invocations = orderedData.map((stat) => ({
-        x: Number(stat.dateTime),
-        y: stat.invocations,
-      }))
-
-      return [
-        { data: currentError, color: theme.palette.error.dark, id: 'currentError' },
-        { data: errors, color: theme.palette.error.light, id: 'errors' },
-        { data: invocations, color: theme.palette.info.light, id: 'invocations' },
-      ]
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [data],
   )
 
-  // const maxScale = (maxBy(graphData, (point) => point.y)?.y ?? 0) * 1.2 ?? 'auto'
+  const maxValue = max(graphData.map((x) => max([x.currentErrors, x.errors, x.invocations])))
 
   return (
     <Wrapper>
-      <ResponsiveLine
-        data={graphData}
-        colors={{ datum: 'color' }}
-        enablePoints={false}
-        enableGridX={false}
-        enableGridY={false}
-        enableSlices="x"
-        areaOpacity={0.15}
-        theme={
-          {
-            crosshair: {
-              line: {
-                stroke: theme.palette.text.primary,
-              },
-            },
-          } as any
-        }
-        sliceTooltip={({ slice }) => (
-          <Tooltip>
-            <div>{formatDateTime(slice.points?.[0]?.data?.x as number)}</div>
-            {slice.points.map((point) => (
-              <div key={point.id}>
-                <div style={{ color: point.serieColor }}>
-                  {point.data.yFormatted} {capitalize(String(point.serieId))}
-                </div>
-              </div>
-            ))}
-          </Tooltip>
-        )}
-        animate
-        useMesh
-        enableArea
-      />
+      <ResponsiveContainer>
+        <AreaChart width={200} height={60} data={graphData} margin={{ left: -5 }}>
+          <Area
+            type="monotone"
+            dataKey="invocations"
+            stroke={theme.palette.info.main}
+            fill={transparentize(0.8, theme.palette.info.main)}
+          />
+          <Area
+            type="monotone"
+            dataKey="errors"
+            stroke={theme.palette.error.light}
+            fill={transparentize(0.8, theme.palette.error.light)}
+          />
+          <Area
+            type="monotone"
+            dataKey="currentErrors"
+            stroke={theme.palette.error.dark}
+            fill={transparentize(0.8, theme.palette.error.dark)}
+          />
+          <XAxis hide dataKey="x" />
+          <YAxis
+            hide
+            type="number"
+            domain={[
+              (dataMin: number) => (maxValue ? dataMin : -1),
+              (dataMax: number) => dataMax * 1.2 + 1,
+            ]}
+          />
+          <Tooltip
+            contentStyle={{
+              background: transparentize(0.33, theme.palette.background.default),
+              border: 'none',
+              boxShadow: theme.custom.boxShadow,
+            }}
+            separator=""
+            formatter={(value: number, name: string) => [
+              `${value} ${toLower(startCase(name))}`,
+              '',
+            ]}
+            labelFormatter={formatDateTime}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </Wrapper>
   )
 }
