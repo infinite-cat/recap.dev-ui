@@ -78,7 +78,7 @@ const ErrorContainer = () => {
   return (
     <PageHeader title={id} breadcrumb={breadcrumb(title)} onBack={() => history.goBack()}>
       <Content>
-        {(loading || tracesLoading) && <LoadingPage height="calc(100vh - 128px)" />}
+        {(loading || tracesLoading) && <LoadingPage />}
         {!loading && !tracesLoading && data && (
           <>
             <TopCardsContainer>

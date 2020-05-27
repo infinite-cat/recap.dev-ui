@@ -46,7 +46,7 @@ const TraceContainer = () => {
   return (
     <PageHeader title={id} breadcrumb={breadcrumb(id!)} onBack={() => history.goBack()}>
       <Content>
-        {loading && <LoadingPage height="calc(100vh - 128px)" />}
+        {loading && <LoadingPage />}
         {!loading && data && (
           <>
             <TopCardsContainer>

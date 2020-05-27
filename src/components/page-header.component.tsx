@@ -28,13 +28,19 @@ const Header = styled(Typography)`
   align-items: center;
 `
 
+const StyledBox = styled(Box)`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`
+
 export const PageHeader = memo(
   ({ title = '', subTitle = '', breadcrumb, onBack, children }: PageHeaderProps) => (
     <>
       <Helmet>
         <title>Traceman {title && `| ${title}`}</title>
       </Helmet>
-      <Box p={2}>
+      <StyledBox p={2}>
         <Header variant="h6">
           {onBack && (
             <IconButton onClick={onBack} color="inherit">
@@ -72,7 +78,7 @@ export const PageHeader = memo(
           </Box>
         )}
         {children}
-      </Box>
+      </StyledBox>
     </>
   ),
 )

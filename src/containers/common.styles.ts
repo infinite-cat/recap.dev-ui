@@ -1,7 +1,11 @@
 import styled from 'styled-components/macro'
 import { Card } from '../components/cards'
 
-export const Content = styled.div``
+export const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`
 
 export const TopCardsContainer = styled.div`
   display: grid;
