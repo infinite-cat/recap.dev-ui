@@ -8,7 +8,7 @@ import { DrawerLayout, LoadingPage } from '../components'
 
 const getLoadableContainer = (loader: any) =>
   loadable(loader, {
-    fallback: <LoadingPage />,
+    fallback: <LoadingPage height="100vh" />,
   })
 
 const Trace = getLoadableContainer(() => import('./trace/trace.container'))
