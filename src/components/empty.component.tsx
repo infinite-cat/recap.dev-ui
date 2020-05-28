@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, ReactNode } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 
 import { ReactComponent as NoData } from '../svg/no-data.svg'
@@ -20,11 +20,12 @@ const Wrapper = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  height: 300px;
+  min-height: 300px;
+  height: 100%;
   animation: 300ms cubic-bezier(0, 0, 0.2, 1) ${appearAnimation};
 `
 const Text = styled.div`
-  width: 97px;
+  margin-top: 15px;
   text-align: center;
 `
 
@@ -33,9 +34,23 @@ type EmptyProps = {
   text?: string
 }
 
-export const Empty = memo(({ className, text = 'No data to display' }: EmptyProps) => (
+type ResultProps = {
+  icon?: ReactNode
+  className?: string
+  text?: string
+}
+
+export const Result = memo(({ className, text, icon }: ResultProps) => (
   <Wrapper className={className}>
-    <NoData />
+    {icon}
     <Text>{text}</Text>
   </Wrapper>
+))
+
+export const Empty = memo(({ className, text = 'No data to display' }: EmptyProps) => (
+  <Result
+    icon={<NoData />}
+    text={text}
+    className={className}
+  />
 ))

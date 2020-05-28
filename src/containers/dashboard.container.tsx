@@ -3,21 +3,28 @@ import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
-
 import { Typography } from '@material-ui/core'
-import { CardHeader, LoadingPage, PageHeader } from '../components'
+
+import { CardHeader, LoadingPage, PageHeader, Result } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
+import { ReactComponent as Success } from '../svg/check-circle.svg'
 
 const Content = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
 `
-
 const StyledPageHeader = styled(PageHeader)`
   min-height: 100vh;
 `
-
+const DashboardCard = styled(BasicInfoCard)`
+  width: 100%;
+  min-width: 320px;
+  min-height: 300px;
+  max-height: 600px;
+`
 export const CardsContainer = styled.div`
   display: grid;
   column-gap: 20px;
@@ -26,6 +33,15 @@ export const CardsContainer = styled.div`
   grid-auto-columns: 1fr;
   grid-template-rows: repeat(2, 1fr);
   margin-top: 20px;
+`
+const Insights = styled.div`
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`
+const Insight = styled.div`
+  margin-bottom: 10px;
 `
 
 const DashboardContainer = memo(() => {
@@ -43,25 +59,35 @@ const DashboardContainer = memo(() => {
     <StyledPageHeader title="Dashboard" subTitle="Status of your system">
       <Content>
         {loading && <LoadingPage />}
-        {!loading && data && (
+        {!loading && (
           <CardsContainer>
-            <BasicInfoCard>
+            <DashboardCard>
               <CardHeader>Insights</CardHeader>
-              {data &&
-                isEmpty(data.getInsights) &&
-                data?.getInsights?.map((insight) => <Typography noWrap>{insight}</Typography>)}
-            </BasicInfoCard>
-            <BasicInfoCard>
+              <Insights>
+                {!isEmpty(data?.getInsights) && (
+                  data?.getInsights?.map((insight, index) => (
+                    <Insight key={index}>
+                      <Typography variant="body2">{insight.message}</Typography>
+                    </Insight>
+                  )
+                ))}
+                {isEmpty(data?.getInsights) && (
+                  <Result
+                    text="All good, system is stable."
+                    icon={<Success />}
+                  />
+                )}
+              </Insights>
+            </DashboardCard>
+            <DashboardCard>
               <CardHeader>New Errors</CardHeader>
-            </BasicInfoCard>
-            <BasicInfoCard>
-              <Typography color="textSecondary" variant="caption" noWrap>
-                System Health
-              </Typography>
-            </BasicInfoCard>
-            <BasicInfoCard>
+            </DashboardCard>
+            <DashboardCard>
+              <CardHeader>System Health</CardHeader>
+            </DashboardCard>
+            <DashboardCard>
               <CardHeader>Top Invoked Units</CardHeader>
-            </BasicInfoCard>
+            </DashboardCard>
           </CardsContainer>
         )}
       </Content>
