@@ -21,9 +21,7 @@ const StyledPageHeader = styled(PageHeader)`
 `
 const DashboardCard = styled(BasicInfoCard)`
   width: 100%;
-  min-width: 320px;
   min-height: 300px;
-  max-height: 600px;
 `
 export const CardsContainer = styled.div`
   display: grid;
