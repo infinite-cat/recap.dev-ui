@@ -33,6 +33,9 @@ export const CardsContainer = styled.div`
   grid-auto-columns: 1fr;
   grid-template-rows: repeat(2, 1fr);
   margin-top: 20px;
+  @media (max-width: 960px) {
+    grid-template-rows: repeat(4, 1fr);
+  }
 `
 const Insights = styled.div`
   margin-top: 15px;
