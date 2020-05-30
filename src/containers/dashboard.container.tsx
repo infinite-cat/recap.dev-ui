@@ -56,7 +56,7 @@ const Insight = styled.div`
   margin-bottom: 10px;
 `
 
-const NewestError = styled(Table)`
+const NewErrors = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
@@ -110,7 +110,7 @@ const DashboardContainer = memo(() => {
               <TableCardHeader>New Errors</TableCardHeader>
               <TableContainer style={{ position: 'relative', minHeight: 300 }}>
                 {!isEmpty(data?.getNewestErrors) && (
-                  <NewestError aria-label="units table">
+                  <NewErrors aria-label="units table">
                     <TableHead>
                       <TableRow>
                         <TableCell>Error</TableCell>
@@ -133,7 +133,7 @@ const DashboardContainer = memo(() => {
                         </TableRow>
                       ))}
                     </TableBody>
-                  </NewestError>
+                  </NewErrors>
                 )}
                 {isEmpty(data?.getNewestErrors) && !loading && <Empty />}
                 {loading && <LoadingOverlay />}
