@@ -3,9 +3,20 @@ import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
-import { Typography } from '@material-ui/core'
+import {
+  Link as MaterialLink,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import Tooltip from '@material-ui/core/Tooltip'
 
-import { CardHeader, LoadingPage, PageHeader, Result } from '../components'
+import { CardHeader, Empty, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
@@ -45,6 +56,21 @@ const Insight = styled.div`
   margin-bottom: 10px;
 `
 
+const NewErrors = styled(Table)`
+  table-layout: fixed;
+  padding: 0;
+  margin-top: 10px;
+  max-width: 100%;
+`
+
+const TableCard = styled(DashboardCard)`
+  padding: 8px 0;
+`
+
+const TableCardHeader = styled(CardHeader)`
+  margin: 0 16px;
+`
+
 const DashboardContainer = memo(() => {
   const [since] = useState(
     DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
@@ -80,9 +106,39 @@ const DashboardContainer = memo(() => {
                 )}
               </Insights>
             </DashboardCard>
-            <DashboardCard>
-              <CardHeader>New Errors</CardHeader>
-            </DashboardCard>
+            <TableCard>
+              <TableCardHeader>New Errors</TableCardHeader>
+              <TableContainer style={{ position: 'relative', minHeight: 300 }}>
+                {!isEmpty(data?.getNewestErrors) && (
+                  <NewErrors aria-label="units table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Error</TableCell>
+                        <TableCell>Unit Name</TableCell>
+                        <TableCell>First seen</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {data?.getNewestErrors?.map((error) => (
+                        <TableRow key={error.id} hover>
+                          <TableCell scope="row">
+                            <MaterialLink to={`/errors/${error.id}`} component={Link}>
+                              <Tooltip title={`${error.type}: ${error.message}`} placement="top">
+                                <Typography variant="body2" noWrap>{error.type}: {error.message}</Typography>
+                              </Tooltip>
+                            </MaterialLink>
+                          </TableCell>
+                          <TableCell>{error.unitName}</TableCell>
+                          <TableCell>{error.firstEventDateTime}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </NewErrors>
+                )}
+                {isEmpty(data?.getNewestErrors) && !loading && <Empty />}
+                {loading && <LoadingOverlay />}
+              </TableContainer>
+            </TableCard>
             <DashboardCard>
               <CardHeader>System Health</CardHeader>
             </DashboardCard>
