@@ -62,7 +62,7 @@ const TraceContainer = () => {
               </DataCard>
               <DataCard type={toLower(data.getTrace?.status)}>
                 <CardHeader>Status</CardHeader>
-                <div>{capitalize(data.getTrace?.status)}</div>
+                <Typography noWrap>{capitalize(data.getTrace?.status)}</Typography>
               </DataCard>
               <DataCard>
                 <CardHeader>
