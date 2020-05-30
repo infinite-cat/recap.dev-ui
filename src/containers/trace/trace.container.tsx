@@ -1,6 +1,5 @@
 import React from 'react'
-import styled from 'styled-components/macro'
-import { Box, Tooltip, Typography, Link as MaterialLink } from '@material-ui/core'
+import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { capitalize, toLower } from 'lodash-es'
@@ -11,14 +10,8 @@ import { getTrace } from '../../graphql/queries/types/getTrace'
 import { LoadingPage, PageHeader, DataCard, CardHeader } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
-import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
+import { Content, TopCardsContainer, BasicInfoCard, UnitLink } from '../common.styles'
 import { formatDateTime } from '../../utils'
-
-const UnitLink = styled(MaterialLink)`
-  display: flex;
-  align-items: center;
-  color: inherit;
-` as typeof MaterialLink
 
 const breadcrumb = (id: string) => ({
   routes: [
@@ -60,18 +53,16 @@ const TraceContainer = () => {
                   </UnitLink>
                 </Tooltip>
               </DataCard>
-              <DataCard type={toLower(data.getTrace?.status)}>
-                <CardHeader>Status</CardHeader>
-                <Typography noWrap>{capitalize(data.getTrace?.status)}</Typography>
-              </DataCard>
               <DataCard>
                 <CardHeader>
                   <Clock size={15} />
                   <Box ml={1}>When</Box>
                 </CardHeader>
-                <Tooltip title={formatDateTime(data.getTrace?.start)} placement="top">
-                  <Typography noWrap>{formatDateTime(data.getTrace?.start)}</Typography>
-                </Tooltip>
+                <Typography noWrap>{formatDateTime(data.getTrace?.start)}</Typography>
+              </DataCard>
+              <DataCard type={toLower(data.getTrace?.status)}>
+                <CardHeader>Status</CardHeader>
+                <Typography noWrap>{capitalize(data.getTrace?.status)}</Typography>
               </DataCard>
             </TopCardsContainer>
             <TopCardsContainer>

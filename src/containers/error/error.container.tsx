@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
-import { transparentize } from 'polished'
 import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
+import { Clock, Link as LinkIcon } from 'react-feather'
 
 import { GetError, GetTraces } from '../../graphql/queries'
-import { Card, CardHeader, ErrorGraph, LoadingPage, PageHeader } from '../../components'
-import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
+import { Card, CardHeader, DataCard, ErrorGraph, LoadingPage, PageHeader } from '../../components'
+import { Content, TableCard, TopCardsContainer, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
@@ -29,14 +29,6 @@ const GraphCard = styled(Card)`
   margin: 10px 0;
   padding: 10px 0 0 0;
   overflow: visible;
-`
-const Traces = styled(Card)`
-  .MuiCard-root {
-    border-radius: 0;
-  }
-  .MuiTableCell-head {
-    background: ${(p) => transparentize(0.9, p.theme.palette.info.main)};
-  }
 `
 
 const breadcrumb = (errorName: string = '') => ({
@@ -82,22 +74,23 @@ const ErrorContainer = () => {
         {!loading && !tracesLoading && data && (
           <>
             <TopCardsContainer>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption">
-                  Unit Name
-                </Typography>
+              <DataCard>
+                <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getError?.unitName!} placement="top">
-                  <Typography noWrap>{data.getError?.unitName}</Typography>
+                  <UnitLink to={`/units/${data.getError?.unitName}`} component={Link}>
+                    <LinkIcon size={14} />
+                    <Box ml={1} />
+                    <Typography noWrap>{data.getError?.unitName}</Typography>
+                  </UnitLink>
                 </Tooltip>
-              </BasicInfoCard>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption" noWrap>
-                  Last Seen
-                </Typography>
-                <Tooltip title={formatDateTime(data.getError?.lastEventDateTime)} placement="top">
-                  <Typography noWrap>{formatDateTime(data.getError?.lastEventDateTime)}</Typography>
-                </Tooltip>
-              </BasicInfoCard>
+              </DataCard>
+              <DataCard>
+                <CardHeader>
+                  <Clock size={15} />
+                  <Box ml={1}>Last Seen</Box>
+                </CardHeader>
+                <Typography noWrap>{formatDateTime(data.getError?.lastEventDateTime)}</Typography>
+              </DataCard>
             </TopCardsContainer>
             <MidCards>
               <JsonCard title="Response" src={data.getError?.rawError} />
@@ -108,12 +101,12 @@ const ErrorContainer = () => {
                 <ErrorGraph data={data.getError?.graphStats} />
               </GraphCard>
             </MidCards>
-            <Traces>
+            <TableCard>
               <Box ml={2} mt={1} mb={1.5}>
                 <CardHeader>Traces</CardHeader>
               </Box>
               <TracesCard traces={tracesData?.getTraces?.traces} />
-            </Traces>
+            </TableCard>
           </>
         )}
       </Content>

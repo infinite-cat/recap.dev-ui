@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { Tooltip, Typography } from '@material-ui/core'
+import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 
 import { GetTraces, GetUnit } from '../../graphql/queries'
-import { LoadingPage, PageHeader } from '../../components'
-import { Content, TopCardsContainer, BasicInfoCard } from '../common.styles'
+import { CardHeader, DataCard, LoadingPage, PageHeader } from '../../components'
+import { Content, TableCard, TopCardsContainer } from '../common.styles'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { getUnit } from '../../graphql/queries/types/getUnit'
 import { TracesCard } from '../../components/traces-card.component'
@@ -52,24 +52,25 @@ const UnitContainer = () => {
         {!loading && !tracesLoading && data && (
           <>
             <TopCardsContainer>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption">
-                  Unit Name
-                </Typography>
+              <DataCard>
+                <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getUnit?.unitName!} placement="top">
                   <Typography noWrap>{data.getUnit?.unitName}</Typography>
                 </Tooltip>
-              </BasicInfoCard>
-              <BasicInfoCard>
-                <Typography color="textSecondary" variant="caption" noWrap>
-                  Error Rate
-                </Typography>
+              </DataCard>
+              <DataCard>
+                <CardHeader>Error Rate</CardHeader>
                 <Tooltip title={`${Number(data.getUnit?.errorRate) / 100}%`} placement="top">
                   <Typography noWrap>{`${Number(data.getUnit?.errorRate) / 100}%`}</Typography>
                 </Tooltip>
-              </BasicInfoCard>
+              </DataCard>
             </TopCardsContainer>
-            <TracesCard traces={tracesData?.getTraces?.traces} />
+            <TableCard>
+              <Box ml={2} mt={1} mb={1.5}>
+                <CardHeader>Traces</CardHeader>
+              </Box>
+              <TracesCard traces={tracesData?.getTraces?.traces} />
+            </TableCard>
           </>
         )}
       </Content>

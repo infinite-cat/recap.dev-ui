@@ -8,19 +8,21 @@ type DataCardProps = PropsWithChildren<{
 }>
 
 const BaseCard = styled(Card)`
-  color: ${(p) => p.theme.palette.common.white};
   padding: ${(p) => `${p.theme.spacing(1)}px ${p.theme.spacing(2)}px`};
   word-break: break-word;
 `
 const SuccessCard = styled(BaseCard)`
+  color: ${(p) => p.theme.palette.common.white};
   background: ${(p) => p.theme.custom.successGradient};
   box-shadow: none;
 `
 const ErrorCard = styled(BaseCard)`
+  color: ${(p) => p.theme.palette.common.white};
   background: ${(p) => p.theme.custom.errorGradient};
   box-shadow: none;
 `
 const InfoCard = styled(BaseCard)`
+  color: ${(p) => p.theme.palette.common.white};
   background: ${(p) => p.theme.custom.infoGradient};
   box-shadow: none;
 `
@@ -34,5 +36,9 @@ export const DataCard = memo(({ type, children }: DataCardProps) => {
     return <ErrorCard>{children}</ErrorCard>
   }
 
-  return <InfoCard>{children}</InfoCard>
+  if (type === 'info') {
+    return <InfoCard>{children}</InfoCard>
+  }
+
+  return <BaseCard>{children}</BaseCard>
 })

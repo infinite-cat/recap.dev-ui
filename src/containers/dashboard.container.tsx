@@ -4,6 +4,7 @@ import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
 import {
+  Box,
   Link as MaterialLink,
   Table,
   TableBody,
@@ -18,9 +19,10 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import { CardHeader, Empty, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
-import { BasicInfoCard } from './common.styles'
+import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { ReactComponent as Success } from '../svg/check-circle.svg'
+import { formatDateTime } from '../utils'
 
 const Content = styled.div`
   flex: 1;
@@ -55,16 +57,11 @@ const Insights = styled.div`
 const Insight = styled.div`
   margin-bottom: 10px;
 `
-
 const NewErrors = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
   max-width: 100%;
-`
-
-const TableCard = styled(DashboardCard)`
-  padding: 8px 0;
 `
 
 const TableCardHeader = styled(CardHeader)`
@@ -91,23 +88,21 @@ const DashboardContainer = memo(() => {
             <DashboardCard>
               <CardHeader>Insights</CardHeader>
               <Insights>
-                {!isEmpty(data?.getInsights) && (
+                {!isEmpty(data?.getInsights) &&
                   data?.getInsights?.map((insight, index) => (
                     <Insight key={index}>
                       <Typography variant="body2">{insight.message}</Typography>
                     </Insight>
-                  )
-                ))}
+                  ))}
                 {isEmpty(data?.getInsights) && (
-                  <Result
-                    text="All good, system is stable."
-                    icon={<Success />}
-                  />
+                  <Result text="All good, system is stable." icon={<Success />} />
                 )}
               </Insights>
             </DashboardCard>
             <TableCard>
-              <TableCardHeader>New Errors</TableCardHeader>
+              <Box mt={1}>
+                <TableCardHeader>New Errors</TableCardHeader>
+              </Box>
               <TableContainer style={{ position: 'relative', minHeight: 300 }}>
                 {!isEmpty(data?.getNewestErrors) && (
                   <NewErrors aria-label="units table">
@@ -124,12 +119,14 @@ const DashboardContainer = memo(() => {
                           <TableCell scope="row">
                             <MaterialLink to={`/errors/${error.id}`} component={Link}>
                               <Tooltip title={`${error.type}: ${error.message}`} placement="top">
-                                <Typography variant="body2" noWrap>{error.type}: {error.message}</Typography>
+                                <Typography variant="body2" noWrap>
+                                  {error.type}: {error.message}
+                                </Typography>
                               </Tooltip>
                             </MaterialLink>
                           </TableCell>
                           <TableCell>{error.unitName}</TableCell>
-                          <TableCell>{error.firstEventDateTime}</TableCell>
+                          <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

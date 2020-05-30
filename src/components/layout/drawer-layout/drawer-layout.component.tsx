@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { Toolbar, IconButton, useMediaQuery, Box } from '@material-ui/core'
+import { Toolbar, IconButton, useMediaQuery } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { Menu } from 'react-feather'
 import { useLocation } from 'react-use'
@@ -19,7 +19,6 @@ import {
   FullLogo,
   Hr,
 } from './drawer-layout.styles'
-import { ThemeSwitcher } from '../../theme-switcher.component'
 
 interface DrawerLayoutProps {
   children: React.ReactElement
@@ -62,9 +61,6 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
         <Hr expanded={isExpanded} />
         <TopMenuItems isExpanded={isExpanded} />
         <Flex />
-        <Box p={1}>
-          <ThemeSwitcher />
-        </Box>
         <BottomMenuItems isExpanded={isExpanded} />
         {!isMobile && (
           <ArrowWrapper>

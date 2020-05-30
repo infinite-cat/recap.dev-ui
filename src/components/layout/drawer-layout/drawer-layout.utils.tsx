@@ -1,10 +1,12 @@
-import React, { memo } from 'react'
+import React, { memo, useContext } from 'react'
 import { List, Tooltip } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import { includes, map } from 'lodash-es'
-import { Cpu } from 'react-feather'
-import { Dashboard, AccountTree, WarningOutlined, SettingsOutlined } from '@material-ui/icons'
+import { Cpu, Moon, Sun } from 'react-feather'
+import { Dashboard, AccountTree, WarningOutlined } from '@material-ui/icons'
+
 import { ListItem, ListItemIcon, ListItemText } from './drawer-layout.styles'
+import { ThemeContext } from '../../../contexts'
 
 const isActive = (pathname: string, to: string) => {
   if (to === '/') {
@@ -50,15 +52,20 @@ export const TopMenuItems = memo((props: MenuItemsProps) => {
 })
 
 export const bottomMenuItems = [
-  { primary: 'Settings', to: '/settings', icon: <SettingsOutlined /> },
-]
+  // { primary: 'Settings', to: '/settings', icon: <SettingsOutlined /> },
+] as any[]
 
 export const BottomMenuItems = memo((props: MenuItemsProps) => {
   const { pathname } = useLocation()
+  const { toggleTheme, themeType } = useContext(ThemeContext)
   const { isExpanded } = props
 
   return (
     <List>
+      <ListItem button onClick={toggleTheme}>
+        <ListItemIcon>{themeType === 'dark' ? <Sun /> : <Moon />}</ListItemIcon>
+        <ListItemText primary="Toggle Theme" isExpanded={isExpanded} />
+      </ListItem>
       {map(bottomMenuItems, (item) => {
         if (item.to) {
           return (
