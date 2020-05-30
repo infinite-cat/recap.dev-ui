@@ -4,7 +4,8 @@ import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
 import {
-  Link as MaterialLink, Table,
+  Link as MaterialLink,
+  Table,
   TableBody,
   TableCell,
   TableContainer,
@@ -12,15 +13,14 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core'
+import { Link } from 'react-router-dom'
+import Tooltip from '@material-ui/core/Tooltip'
 
-import { Card, CardHeader, Empty, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
+import { CardHeader, Empty, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { ReactComponent as Success } from '../svg/check-circle.svg'
-import { Link } from 'react-router-dom'
-import InfiniteScroll from 'react-infinite-scroller'
-import Tooltip from '@material-ui/core/Tooltip'
 
 const Content = styled.div`
   flex: 1;
@@ -57,10 +57,18 @@ const Insight = styled.div`
 `
 
 const NewestError = styled(Table)`
+  table-layout: fixed;
+  padding: 0;
+  margin-top: 10px;
   max-width: 100%;
 `
-const StyledInfiniteScroll = styled(InfiniteScroll)`
-  width: 100%;
+
+const TableCard = styled(DashboardCard)`
+  padding: 8px 0;
+`
+
+const TableCardHeader = styled(CardHeader)`
+  margin: 0 16px;
 `
 
 const DashboardContainer = memo(() => {
@@ -73,8 +81,6 @@ const DashboardContainer = memo(() => {
       since,
     },
   })
-
-  console.log(data?.getNewestErrors)
 
   return (
     <StyledPageHeader title="Dashboard" subTitle="Status of your system">
@@ -100,16 +106,16 @@ const DashboardContainer = memo(() => {
                 )}
               </Insights>
             </DashboardCard>
-            <DashboardCard>
-              <CardHeader>New Errors</CardHeader>
+            <TableCard>
+              <TableCardHeader>New Errors</TableCardHeader>
               <TableContainer style={{ position: 'relative', minHeight: 300 }}>
                 {!isEmpty(data?.getNewestErrors) && (
                   <NewestError aria-label="units table">
                     <TableHead>
                       <TableRow>
-                          <TableCell>Error</TableCell>
-                          <TableCell>Unit Name</TableCell>
-                          <TableCell>First seen</TableCell>
+                        <TableCell>Error</TableCell>
+                        <TableCell>Unit Name</TableCell>
+                        <TableCell>First seen</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -118,7 +124,7 @@ const DashboardContainer = memo(() => {
                           <TableCell scope="row">
                             <MaterialLink to={`/errors/${error.id}`} component={Link}>
                               <Tooltip title={`${error.type}: ${error.message}`} placement="top">
-                                <Typography noWrap>{error.type}: {error.message}</Typography>
+                                <Typography variant="body2" noWrap>{error.type}: {error.message}</Typography>
                               </Tooltip>
                             </MaterialLink>
                           </TableCell>
@@ -132,7 +138,7 @@ const DashboardContainer = memo(() => {
                 {isEmpty(data?.getNewestErrors) && !loading && <Empty />}
                 {loading && <LoadingOverlay />}
               </TableContainer>
-            </DashboardCard>
+            </TableCard>
             <DashboardCard>
               <CardHeader>System Health</CardHeader>
             </DashboardCard>
