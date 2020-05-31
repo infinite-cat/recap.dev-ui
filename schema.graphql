@@ -30,14 +30,16 @@ type GetUnitsResponse {
 }
 
 type Insight {
+  detailsLink: String!
   message: String!
+  type: String!
 }
 
 type Query {
   getError(graphSince: String!, id: String!): UnitErrorDetails
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
   getInsights(since: String!): [Insight!]!
-  getNewestErrors(since: String!): [UnitError!]!
+  getNewErrors(since: String!): [UnitError!]!
   getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
   getTotalStats(since: String!): TotalStats!
   getTrace(id: String!): Trace

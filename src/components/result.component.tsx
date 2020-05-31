@@ -1,6 +1,7 @@
 import React, { memo, ReactNode } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 
+import { ReactComponent as SuccessIcon } from '../svg/check-circle.svg'
 import { ReactComponent as NoData } from '../svg/no-data.svg'
 
 const appearAnimation = keyframes`
@@ -29,7 +30,7 @@ const Text = styled.div`
   text-align: center;
 `
 
-type EmptyProps = {
+type PredefinedResultProps = {
   className?: string
   text?: string
 }
@@ -47,9 +48,17 @@ export const Result = memo(({ className, text, icon }: ResultProps) => (
   </Wrapper>
 ))
 
-export const Empty = memo(({ className, text = 'No data to display' }: EmptyProps) => (
+export const Empty = memo(({ className, text = 'No data to display' }: PredefinedResultProps) => (
   <Result
     icon={<NoData />}
+    text={text}
+    className={className}
+  />
+))
+
+export const Success = memo(({ className, text = 'All good, system is stable' }: PredefinedResultProps) => (
+  <Result
+    icon={<SuccessIcon />}
     text={text}
     className={className}
   />

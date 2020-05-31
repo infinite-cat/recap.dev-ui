@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState, ReactElement } from 'react'
 import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
@@ -16,8 +16,9 @@ import {
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import Tooltip from '@material-ui/core/Tooltip'
+import { AlertTriangle } from 'react-feather'
 
-import { CardHeader, Empty, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
+import { CardHeader, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
@@ -56,6 +57,9 @@ const Insights = styled.div`
 `
 const Insight = styled.div`
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `
 const NewErrors = styled(Table)`
   table-layout: fixed;
@@ -67,6 +71,15 @@ const NewErrors = styled(Table)`
 const TableCardHeader = styled(CardHeader)`
   margin: 0 16px;
 `
+const ErrorInsightIcon = styled(AlertTriangle)`
+  color: ${(p) => p.theme.palette.error.main};
+  min-width: 24px;
+  margin-right: 5px;
+`
+
+const insightIcons: { [key: string]: ReactElement } = {
+  'ERROR': <ErrorInsightIcon />
+}
 
 const DashboardContainer = memo(() => {
   const [since] = useState(
@@ -90,9 +103,12 @@ const DashboardContainer = memo(() => {
               <Insights>
                 {!isEmpty(data?.getInsights) &&
                   data?.getInsights?.map((insight, index) => (
-                    <Insight key={index}>
-                      <Typography variant="body2">{insight.message}</Typography>
-                    </Insight>
+                    <MaterialLink to={insight.detailsLink} component={Link} key={index}>
+                      <Insight>
+                        {insightIcons[insight.type]}
+                        <Typography variant="body2">{insight.message}</Typography>
+                      </Insight>
+                    </MaterialLink>
                   ))}
                 {isEmpty(data?.getInsights) && (
                   <Result text="All good, system is stable." icon={<Success />} />
@@ -104,7 +120,7 @@ const DashboardContainer = memo(() => {
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
               <TableContainer style={{ position: 'relative', minHeight: 300 }}>
-                {!isEmpty(data?.getNewestErrors) && (
+                {!isEmpty(data?.getNewErrors) && (
                   <NewErrors aria-label="units table">
                     <TableHead>
                       <TableRow>
@@ -114,7 +130,7 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {data?.getNewestErrors?.map((error) => (
+                      {data?.getNewErrors?.map((error) => (
                         <TableRow key={error.id} hover>
                           <TableCell scope="row">
                             <MaterialLink to={`/errors/${error.id}`} component={Link}>
@@ -132,7 +148,9 @@ const DashboardContainer = memo(() => {
                     </TableBody>
                   </NewErrors>
                 )}
-                {isEmpty(data?.getNewestErrors) && !loading && <Empty />}
+                {isEmpty(data?.getNewErrors) && !loading && (
+                  <Result text="All good, no new errors" icon={<Success />} />
+                )}
                 {loading && <LoadingOverlay />}
               </TableContainer>
             </TableCard>

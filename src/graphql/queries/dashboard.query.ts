@@ -3,7 +3,9 @@ import { gql } from 'apollo-boost'
 export const GetDashboardData = gql`
   query getDashboardData($since: String!) {
     getInsights(since: $since) {
+      type
       message
+      detailsLink
     }
     getTotalStats(since: $since) {
       invocations
@@ -15,7 +17,7 @@ export const GetDashboardData = gql`
         dateTime
       }
     }
-    getNewestErrors(since: $since) {
+    getNewErrors(since: $since) {
       id
       unitName
       type
