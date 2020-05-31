@@ -1,2 +1,2 @@
 export * from './errors-list-graph.component'
-export * from './error-graph.component'
+export * from './simple-area-graph'

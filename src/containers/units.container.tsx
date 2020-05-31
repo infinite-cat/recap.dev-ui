@@ -20,7 +20,7 @@ import { debounce, isEmpty } from 'lodash-es'
 import SearchIcon from '@material-ui/icons/Search'
 
 import { GetUnits } from '../graphql/queries'
-import { PageHeader, Card, Empty, LoadingOverlay, FullWidthSpinner } from '../components'
+import { PageHeader, Card, LoadingOverlay, FullWidthSpinner, Result } from '../components'
 import { getUnits, getUnits_getUnits_units as Unit } from '../graphql/queries/types/getUnits'
 
 const Content = styled.div``
@@ -144,7 +144,7 @@ const UnitsContainer = () => {
                 </TableBody>
               </Units>
             )}
-            {isEmpty(data?.getUnits?.units) && !loading && <Empty />}
+            {isEmpty(data?.getUnits?.units) && !loading && <Result type="empty" />}
             {loading && <LoadingOverlay />}
           </TableContainer>
           {loadingMore && <FullWidthSpinner />}

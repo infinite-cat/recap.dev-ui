@@ -1,4 +1,4 @@
-import React, { memo, useState, ReactElement } from 'react'
+import React, { memo, useState, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
 import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
@@ -9,7 +9,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -17,13 +16,14 @@ import {
 import { Link } from 'react-router-dom'
 import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
+import { transparentize } from 'polished'
 
-import { CardHeader, LoadingOverlay, LoadingPage, PageHeader, Result } from '../components'
+import { Card, CardHeader, LoadingPage, PageHeader, Result, SimpleAreaGraph } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
-import { ReactComponent as Success } from '../svg/check-circle.svg'
 import { formatDateTime } from '../utils'
+import { ThemeContext } from '../contexts'
 
 const Content = styled.div`
   flex: 1;
@@ -67,7 +67,23 @@ const NewErrors = styled(Table)`
   margin-top: 10px;
   max-width: 100%;
 `
-
+const SystemHealthDataGrid = styled.div`
+  display: grid;
+  column-gap: 20px;
+  grid-template-columns: min-content min-content;
+  margin: 0 16px;
+`
+const SystemHealthItem = styled(Typography)`
+  word-break: keep-all;
+  white-space: nowrap;
+`
+const GraphCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 0 0 0;
+  overflow: visible;
+`
 const TableCardHeader = styled(CardHeader)`
   margin: 0 16px;
 `
@@ -78,10 +94,12 @@ const ErrorInsightIcon = styled(AlertTriangle)`
 `
 
 const insightIcons: { [key: string]: ReactElement } = {
-  'ERROR': <ErrorInsightIcon />
+  ERROR: <ErrorInsightIcon />,
 }
 
 const DashboardContainer = memo(() => {
+  const { theme } = useContext(ThemeContext)
+
   const [since] = useState(
     DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
   )
@@ -111,7 +129,7 @@ const DashboardContainer = memo(() => {
                     </MaterialLink>
                   ))}
                 {isEmpty(data?.getInsights) && (
-                  <Result text="All good, system is stable." icon={<Success />} />
+                  <Result type="success" text="All good, system is stable" />
                 )}
               </Insights>
             </DashboardCard>
@@ -119,44 +137,65 @@ const DashboardContainer = memo(() => {
               <Box mt={1}>
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
-              <TableContainer style={{ position: 'relative', minHeight: 300 }}>
-                {!isEmpty(data?.getNewErrors) && (
-                  <NewErrors aria-label="units table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Error</TableCell>
-                        <TableCell>Unit Name</TableCell>
-                        <TableCell>First seen</TableCell>
+              {!isEmpty(data?.getNewErrors) && (
+                <NewErrors aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Error</TableCell>
+                      <TableCell>Unit Name</TableCell>
+                      <TableCell>First seen</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getNewErrors?.map((error) => (
+                      <TableRow key={error.id} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/errors/${error.id}`} component={Link}>
+                            <Tooltip title={`${error.type}: ${error.message}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {error.type}: {error.message}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <TableCell>{error.unitName}</TableCell>
+                        <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data?.getNewErrors?.map((error) => (
-                        <TableRow key={error.id} hover>
-                          <TableCell scope="row">
-                            <MaterialLink to={`/errors/${error.id}`} component={Link}>
-                              <Tooltip title={`${error.type}: ${error.message}`} placement="top">
-                                <Typography variant="body2" noWrap>
-                                  {error.type}: {error.message}
-                                </Typography>
-                              </Tooltip>
-                            </MaterialLink>
-                          </TableCell>
-                          <TableCell>{error.unitName}</TableCell>
-                          <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </NewErrors>
-                )}
-                {isEmpty(data?.getNewErrors) && !loading && (
-                  <Result text="All good, no new errors" icon={<Success />} />
-                )}
-                {loading && <LoadingOverlay />}
-              </TableContainer>
+                    ))}
+                  </TableBody>
+                </NewErrors>
+              )}
+              {isEmpty(data?.getNewErrors) && (
+                <Result type="success" text="All good, no new errors" />
+              )}
             </TableCard>
-            <DashboardCard>
-              <CardHeader>System Health</CardHeader>
-            </DashboardCard>
+            <GraphCard>
+              <SystemHealthDataGrid>
+                <SystemHealthItem variant="h6">System Health</SystemHealthItem>
+                <SystemHealthItem variant="h6">
+                  {100 - data?.getTotalStats?.errorRate!}%
+                </SystemHealthItem>
+                <SystemHealthItem variant="h6">Traces</SystemHealthItem>
+                <SystemHealthItem variant="h6">{data?.getTotalStats?.invocations}</SystemHealthItem>
+                <SystemHealthItem variant="h6">Errors</SystemHealthItem>
+                <SystemHealthItem variant="h6">{data?.getTotalStats?.errors}</SystemHealthItem>
+              </SystemHealthDataGrid>
+              <SimpleAreaGraph
+                data={data?.getTotalStats.graphStats}
+                lines={[
+                  {
+                    dataKey: 'invocations',
+                    stroke: theme.palette.info.main,
+                    fill: transparentize(0.8, theme.palette.info.main),
+                  },
+                  {
+                    dataKey: 'errors',
+                    stroke: theme.palette.error.light,
+                    fill: transparentize(0.8, theme.palette.error.light),
+                  },
+                ]}
+              />
+            </GraphCard>
             <DashboardCard>
               <CardHeader>Top Invoked Units</CardHeader>
             </DashboardCard>

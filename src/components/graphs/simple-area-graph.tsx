@@ -1,12 +1,11 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { max, orderBy, startCase, toLower } from 'lodash-es'
+import { max, orderBy, startCase, toLower, mapValues } from 'lodash-es'
 import { transparentize } from 'polished'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
 import { ThemeContext } from '../../contexts'
 import { formatDateTime } from '../../utils'
-import { getError_getError_graphStats as GraphStats } from '../../graphql/queries/types/getError'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,50 +13,38 @@ const Wrapper = styled.div`
   overflow: visible;
 `
 
-type ErrorsListGraphProps = {
-  data?: GraphStats[]
+interface AreaProps {
+  dataKey: string
+  stroke?: string
+  fill?: string
 }
 
-export const ErrorGraph = ({ data }: ErrorsListGraphProps) => {
-  const { theme } = useContext(ThemeContext)
-  const graphData = useMemo(
-    () => {
-      const orderedData = orderBy(data, 'dateTime')
-      return orderedData.map((stat) => ({
-        x: Number(stat.dateTime),
-        currentErrors: stat.currentErrors,
-        errors: stat.errors,
-        invocations: stat.invocations,
-      }))
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data],
-  )
+type AreaGraphGraphProps = {
+  data?: any[]
+  lines: AreaProps[]
+  xAxis?: string
+}
 
-  const maxValue = max(graphData.map((x) => max([x.currentErrors, x.errors, x.invocations])))
+export const SimpleAreaGraph = ({ data, lines, xAxis = 'dateTime' }: AreaGraphGraphProps) => {
+  const { theme } = useContext(ThemeContext)
+
+  const graphData = useMemo(() => {
+    const orderedData = orderBy(data, xAxis)
+    return orderedData.map((stat) => ({
+      ...mapValues(stat, Number),
+      x: Number(stat[xAxis]),
+    }))
+  }, [data, xAxis])
+
+  const maxValue = max(data?.map((x) => max(lines.map((line) => x[line.dataKey as string]))))
 
   return (
     <Wrapper>
       <ResponsiveContainer>
         <AreaChart width={200} height={60} data={graphData} margin={{ left: -5 }}>
-          <Area
-            type="monotone"
-            dataKey="invocations"
-            stroke={theme.palette.info.main}
-            fill={transparentize(0.8, theme.palette.info.main)}
-          />
-          <Area
-            type="monotone"
-            dataKey="errors"
-            stroke={theme.palette.error.light}
-            fill={transparentize(0.8, theme.palette.error.light)}
-          />
-          <Area
-            type="monotone"
-            dataKey="currentErrors"
-            stroke={theme.palette.error.dark}
-            fill={transparentize(0.8, theme.palette.error.dark)}
-          />
+          {lines.map((line) => (
+            <Area key={line.dataKey as string} type="monotone" {...line} />
+          ))}
           <XAxis hide dataKey="x" />
           <YAxis
             hide

@@ -1,4 +1,4 @@
-import React, { memo, ReactNode } from 'react'
+import React, { memo } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 
 import { ReactComponent as SuccessIcon } from '../svg/check-circle.svg'
@@ -30,36 +30,25 @@ const Text = styled.div`
   text-align: center;
 `
 
-type PredefinedResultProps = {
-  className?: string
-  text?: string
-}
-
 type ResultProps = {
-  icon?: ReactNode
+  type: 'empty' | 'success'
   className?: string
   text?: string
 }
 
-export const Result = memo(({ className, text, icon }: ResultProps) => (
+const typeIcons = {
+  empty: <NoData />,
+  success: <SuccessIcon />,
+}
+
+const defaultTexts = {
+  empty: 'No Data',
+  success: 'All good',
+}
+
+export const Result = memo(({ className, text, type }: ResultProps) => (
   <Wrapper className={className}>
-    {icon}
-    <Text>{text}</Text>
+    {typeIcons[type]}
+    <Text>{text || defaultTexts[type]}</Text>
   </Wrapper>
-))
-
-export const Empty = memo(({ className, text = 'No data to display' }: PredefinedResultProps) => (
-  <Result
-    icon={<NoData />}
-    text={text}
-    className={className}
-  />
-))
-
-export const Success = memo(({ className, text = 'All good, system is stable' }: PredefinedResultProps) => (
-  <Result
-    icon={<SuccessIcon />}
-    text={text}
-    className={className}
-  />
 ))
