@@ -14,7 +14,7 @@ import {
   DataCard,
   LoadingPage,
   PageHeader,
-  SimpleAreaGraph,
+  SimpleAreaGraphComponent,
 } from '../../components'
 import { Content, TableCard, TopCardsContainer, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
@@ -109,7 +109,7 @@ const ErrorContainer = () => {
                 <Box ml={2}>
                   <CardHeader>Frequency</CardHeader>
                 </Box>
-                <SimpleAreaGraph
+                <SimpleAreaGraphComponent
                   data={data.getError?.graphStats}
                   lines={[
                     {

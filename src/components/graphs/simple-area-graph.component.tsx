@@ -25,7 +25,11 @@ type AreaGraphGraphProps = {
   xAxis?: string
 }
 
-export const SimpleAreaGraph = ({ data, lines, xAxis = 'dateTime' }: AreaGraphGraphProps) => {
+export const SimpleAreaGraphComponent = ({
+  data,
+  lines,
+  xAxis = 'dateTime',
+}: AreaGraphGraphProps) => {
   const { theme } = useContext(ThemeContext)
 
   const graphData = useMemo(() => {

@@ -18,12 +18,20 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
 import { transparentize } from 'polished'
 
-import { Card, CardHeader, LoadingPage, PageHeader, Result, SimpleAreaGraph } from '../components'
+import {
+  Card,
+  CardHeader,
+  LoadingPage,
+  PageHeader,
+  Result,
+  SimpleAreaGraphComponent,
+} from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { formatDateTime } from '../utils'
 import { ThemeContext } from '../contexts'
+import { DateRangePicker } from '../components/date-range-picker'
 
 const Content = styled.div`
   flex: 1;
@@ -104,6 +112,8 @@ const DashboardContainer = memo(() => {
     DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
   )
 
+  const [dateRange, setDateRange] = useState('24 hours')
+
   const { data, loading } = useQuery<getDashboardData>(GetDashboardData, {
     variables: {
       since,
@@ -111,7 +121,13 @@ const DashboardContainer = memo(() => {
   })
 
   return (
-    <StyledPageHeader title="Dashboard" subTitle="Status of your system">
+    <StyledPageHeader
+      title="Dashboard"
+      subTitle="Status of your system"
+      actions={
+        <DateRangePicker range={dateRange} onRangeChange={(newRange) => setDateRange(newRange)} />
+      }
+    >
       <Content>
         {loading && <LoadingPage />}
         {!loading && (
@@ -180,7 +196,7 @@ const DashboardContainer = memo(() => {
                 <SystemHealthItem variant="h6">Errors</SystemHealthItem>
                 <SystemHealthItem variant="h6">{data?.getTotalStats?.errors}</SystemHealthItem>
               </SystemHealthDataGrid>
-              <SimpleAreaGraph
+              <SimpleAreaGraphComponent
                 data={data?.getTotalStats.graphStats}
                 lines={[
                   {

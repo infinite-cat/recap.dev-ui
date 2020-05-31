@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { memo, PropsWithChildren } from 'react'
+import React, { memo, PropsWithChildren, ReactElement } from 'react'
 import { Breadcrumbs, IconButton, Typography, Link as MaterialLink, Box } from '@material-ui/core'
 import { ArrowLeft } from 'react-feather'
 import { Link } from 'react-router-dom'
@@ -20,13 +20,24 @@ type PageHeaderProps = PropsWithChildren<{
   subTitle?: string
   breadcrumb?: Breadcrumb
   onBack?: () => void
+  actions?: ReactElement
 }>
 
-const Header = styled(Typography)`
+const Title = styled(Typography)`
   display: flex;
   flex-direction: row;
   align-items: center;
 `
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`
+const Actions = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+const HeaderText = styled.div``
 
 const StyledBox = styled(Box)`
   min-height: 100vh;
@@ -35,22 +46,27 @@ const StyledBox = styled(Box)`
 `
 
 export const PageHeader = memo(
-  ({ title = '', subTitle = '', breadcrumb, onBack, children }: PageHeaderProps) => (
+  ({ title = '', subTitle = '', breadcrumb, onBack, children, actions }: PageHeaderProps) => (
     <>
       <Helmet>
         <title>Traceman {title && `| ${title}`}</title>
       </Helmet>
       <StyledBox p={2}>
-        <Header variant="h6">
-          {onBack && (
-            <IconButton onClick={onBack} color="inherit">
-              <ArrowLeft />
-            </IconButton>
-          )}
-          {title}
-        </Header>
+        <Header>
+          <HeaderText>
+            <Title variant="h6">
+              {onBack && (
+                <IconButton onClick={onBack} color="inherit">
+                  <ArrowLeft />
+                </IconButton>
+              )}
+              {title}
+            </Title>
 
-        <Typography color="textSecondary">{subTitle}</Typography>
+            <Typography color="textSecondary">{subTitle}</Typography>
+          </HeaderText>
+          <Actions>{actions}</Actions>
+        </Header>
 
         {breadcrumb?.routes && (
           <Box mb={2} mt={1}>
