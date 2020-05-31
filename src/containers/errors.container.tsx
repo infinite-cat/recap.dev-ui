@@ -19,9 +19,9 @@ import {
   PageHeader,
   Card,
   ErrorsListGraph,
-  Empty,
   LoadingOverlay,
   FullWidthSpinner,
+  Result,
 } from '../components'
 import { getErrors_getErrors_errors as Error, getErrors } from '../graphql/queries/types/getErrors'
 import { GetErrors } from '../graphql/queries'
@@ -131,7 +131,7 @@ const ErrorsListContainer = () => {
                 </TableBody>
               </Errors>
             )}
-            {isEmpty(data?.getErrors?.errors) && !loading && <Empty />}
+            {isEmpty(data?.getErrors?.errors) && !loading && <Result type="empty" />}
             {loading && <LoadingOverlay />}
           </TableContainer>
           {loadingMore && <FullWidthSpinner />}
