@@ -8,14 +8,20 @@ import { Clock, Link as LinkIcon } from 'react-feather'
 import { transparentize } from 'polished'
 
 import { GetError, GetTraces } from '../../graphql/queries'
-import { Card, CardHeader, DataCard, LoadingPage, PageHeader } from '../../components'
+import {
+  Card,
+  CardHeader,
+  DataCard,
+  LoadingPage,
+  PageHeader,
+  SimpleAreaGraph,
+} from '../../components'
 import { Content, TableCard, TopCardsContainer, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
 import { formatDateTime } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
-import { SimpleAreaGraph } from '../../components/graphs/simple-area-graph'
 import { ThemeContext } from '../../contexts'
 
 const MidCards = styled.div`

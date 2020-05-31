@@ -18,13 +18,12 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
 import { transparentize } from 'polished'
 
-import { Card, CardHeader, LoadingPage, PageHeader, Result } from '../components'
+import { Card, CardHeader, LoadingPage, PageHeader, SimpleAreaGraph } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { ReactComponent as Success } from '../svg/check-circle.svg'
 import { formatDateTime } from '../utils'
-import { SimpleAreaGraph } from '../components/graphs/simple-area-graph'
 import { ThemeContext } from '../contexts'
 
 const Content = styled.div`
@@ -130,9 +129,7 @@ const DashboardContainer = memo(() => {
                       </Insight>
                     </MaterialLink>
                   ))}
-                {isEmpty(data?.getInsights) && (
-                  <Result text="All good, system is stable." icon={<Success />} />
-                )}
+                {isEmpty(data?.getInsights) && <Success text="All good, system is stable." />}
               </Insights>
             </DashboardCard>
             <TableCard>
@@ -167,9 +164,7 @@ const DashboardContainer = memo(() => {
                   </TableBody>
                 </NewErrors>
               )}
-              {isEmpty(data?.getNewErrors) && (
-                <Result text="All good, no new errors" icon={<Success />} />
-              )}
+              {isEmpty(data?.getNewErrors) && <Success text="All good, no new errors" />}
             </TableCard>
             <GraphCard>
               <SystemHealthDataGrid>
