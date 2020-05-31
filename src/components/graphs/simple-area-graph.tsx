@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { max, orderBy, startCase, toLower } from 'lodash-es'
+import { max, orderBy, startCase, toLower, mapValues } from 'lodash-es'
 import { transparentize } from 'polished'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
@@ -28,16 +28,13 @@ type AreaGraphGraphProps = {
 export const SimpleAreaGraph = ({ data, lines, xAxis = 'dateTime' }: AreaGraphGraphProps) => {
   const { theme } = useContext(ThemeContext)
 
-  const graphData = useMemo(
-    () => {
-      const orderedData = orderBy(data, xAxis)
-      return orderedData.map((stat) => ({
-        ...stat,
-        x: Number(stat[xAxis]),
-      }))
-    },
-    [data, xAxis],
-  )
+  const graphData = useMemo(() => {
+    const orderedData = orderBy(data, xAxis)
+    return orderedData.map((stat) => ({
+      ...mapValues(stat, Number),
+      x: Number(stat[xAxis]),
+    }))
+  }, [data, xAxis])
 
   const maxValue = max(data?.map((x) => max(lines.map((line) => x[line.dataKey as string]))))
 
@@ -46,11 +43,7 @@ export const SimpleAreaGraph = ({ data, lines, xAxis = 'dateTime' }: AreaGraphGr
       <ResponsiveContainer>
         <AreaChart width={200} height={60} data={graphData} margin={{ left: -5 }}>
           {lines.map((line) => (
-            <Area
-              key={line.dataKey as string}
-              type="monotone"
-              {...line}
-            />
+            <Area key={line.dataKey as string} type="monotone" {...line} />
           ))}
           <XAxis hide dataKey="x" />
           <YAxis

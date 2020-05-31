@@ -140,39 +140,37 @@ const DashboardContainer = memo(() => {
               <Box mt={1}>
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
-              <TableContainer style={{ position: 'relative', minHeight: 300 }}>
-                {!isEmpty(data?.getNewErrors) && (
-                  <NewErrors aria-label="units table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Error</TableCell>
-                        <TableCell>Unit Name</TableCell>
-                        <TableCell>First seen</TableCell>
+              {!isEmpty(data?.getNewErrors) && (
+                <NewErrors aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Error</TableCell>
+                      <TableCell>Unit Name</TableCell>
+                      <TableCell>First seen</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getNewErrors?.map((error) => (
+                      <TableRow key={error.id} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/errors/${error.id}`} component={Link}>
+                            <Tooltip title={`${error.type}: ${error.message}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {error.type}: {error.message}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <TableCell>{error.unitName}</TableCell>
+                        <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
                       </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {data?.getNewErrors?.map((error) => (
-                        <TableRow key={error.id} hover>
-                          <TableCell scope="row">
-                            <MaterialLink to={`/errors/${error.id}`} component={Link}>
-                              <Tooltip title={`${error.type}: ${error.message}`} placement="top">
-                                <Typography variant="body2" noWrap>
-                                  {error.type}: {error.message}
-                                </Typography>
-                              </Tooltip>
-                            </MaterialLink>
-                          </TableCell>
-                          <TableCell>{error.unitName}</TableCell>
-                          <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </NewErrors>
-                )}
-                {isEmpty(data?.getNewErrors) && (
-                  <Result text="All good, no new errors" icon={<Success />} />
-                )}
-              </TableContainer>
+                    ))}
+                  </TableBody>
+                </NewErrors>
+              )}
+              {isEmpty(data?.getNewErrors) && (
+                <Result text="All good, no new errors" icon={<Success />} />
+              )}
             </TableCard>
             <GraphCard>
               <SystemHealthDataGrid>
