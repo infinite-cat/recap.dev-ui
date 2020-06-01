@@ -196,9 +196,42 @@ const DashboardContainer = memo(() => {
                 ]}
               />
             </GraphCard>
-            <DashboardCard>
-              <CardHeader>Top Invoked Units</CardHeader>
-            </DashboardCard>
+            <TableCard>
+              <Box mt={1}>
+                <TableCardHeader>TOP INVOKED UNITS</TableCardHeader>
+              </Box>
+              {!isEmpty(data?.getNewErrors) && (
+                <NewErrors aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Unit Name</TableCell>
+                      <TableCell>Invocations</TableCell>
+                      <TableCell>Errors</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getTopInvokedUnits?.map((unit) => (
+                      <TableRow key={unit.unitName} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/units/${unit.unitName}`} component={Link}>
+                            <Tooltip title={`${unit.unitName}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {unit.unitName}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <TableCell>{unit.invocations}</TableCell>
+                        <TableCell>{unit.errors}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </NewErrors>
+              )}
+              {isEmpty(data?.getNewErrors) && (
+                <Result type="success" text="All good, no new errors" />
+              )}
+            </TableCard>
           </CardsContainer>
         )}
       </Content>
