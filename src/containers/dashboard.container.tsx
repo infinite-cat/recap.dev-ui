@@ -138,7 +138,7 @@ const DashboardContainer = memo(() => {
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
               {!isEmpty(data?.getNewErrors) && (
-                <StyledTables aria-label="units table">
+                <StyledTable aria-label="units table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Error</TableCell>
@@ -163,7 +163,7 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </StyledTables>
+                </StyledTable>
               )}
               {isEmpty(data?.getNewErrors) && (
                 <Result type="success" text="All good, no new errors" />
@@ -201,7 +201,7 @@ const DashboardContainer = memo(() => {
                 <TableCardHeader>Top Invoked Units</TableCardHeader>
               </Box>
               {!isEmpty(data?.getTopInvokedUnits) && (
-                <StyledTables aria-label="units table">
+                <StyledTable aria-label="units table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Unit Name</TableCell>
@@ -226,7 +226,7 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </StyledTables>
+                </StyledTable>
               )}
               {isEmpty(data?.getTopInvokedUnits) && (
                 <Result type="empty" text="No Data" />
