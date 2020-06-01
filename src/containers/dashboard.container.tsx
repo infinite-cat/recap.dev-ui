@@ -61,7 +61,7 @@ const Insight = styled.div`
   flex-direction: row;
   align-items: center;
 `
-const StyledTables = styled(Table)`
+const StyledTable = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
