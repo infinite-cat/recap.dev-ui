@@ -41,12 +41,10 @@ export const CardsContainer = styled.div`
   display: grid;
   column-gap: 20px;
   row-gap: 20px;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 1fr 50%;
   margin-top: 20px;
   @media (max-width: 960px) {
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: 1fr;
   }
 `
 const Insights = styled.div`
@@ -133,6 +131,40 @@ const DashboardContainer = memo(() => {
                 )}
               </Insights>
             </DashboardCard>
+            <GraphCard>
+              <Box ml={2} mb={1}>
+                <CardHeader>System Status</CardHeader>
+              </Box>
+              <SystemHealthDataGrid>
+                <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
+                  {100 - data?.getTotalStats?.errorRate!}%
+                </SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
+                  {data?.getTotalStats?.invocations}
+                </SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">Errors</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
+                  {data?.getTotalStats?.errors}
+                </SystemHealthItem>
+              </SystemHealthDataGrid>
+              <SimpleAreaGraph
+                data={data?.getTotalStats.graphStats}
+                lines={[
+                  {
+                    dataKey: 'invocations',
+                    stroke: theme.palette.info.main,
+                    fill: transparentize(0.8, theme.palette.info.main),
+                  },
+                  {
+                    dataKey: 'errors',
+                    stroke: theme.palette.error.light,
+                    fill: transparentize(0.8, theme.palette.error.light),
+                  },
+                ]}
+              />
+            </GraphCard>
             <TableCard>
               <Box mt={1}>
                 <TableCardHeader>New Errors</TableCardHeader>
@@ -169,33 +201,6 @@ const DashboardContainer = memo(() => {
                 <Result type="success" text="All good, no new errors" />
               )}
             </TableCard>
-            <GraphCard>
-              <SystemHealthDataGrid>
-                <SystemHealthItem variant="h6">System Health</SystemHealthItem>
-                <SystemHealthItem variant="h6">
-                  {100 - data?.getTotalStats?.errorRate!}%
-                </SystemHealthItem>
-                <SystemHealthItem variant="h6">Traces</SystemHealthItem>
-                <SystemHealthItem variant="h6">{data?.getTotalStats?.invocations}</SystemHealthItem>
-                <SystemHealthItem variant="h6">Errors</SystemHealthItem>
-                <SystemHealthItem variant="h6">{data?.getTotalStats?.errors}</SystemHealthItem>
-              </SystemHealthDataGrid>
-              <SimpleAreaGraph
-                data={data?.getTotalStats.graphStats}
-                lines={[
-                  {
-                    dataKey: 'invocations',
-                    stroke: theme.palette.info.main,
-                    fill: transparentize(0.8, theme.palette.info.main),
-                  },
-                  {
-                    dataKey: 'errors',
-                    stroke: theme.palette.error.light,
-                    fill: transparentize(0.8, theme.palette.error.light),
-                  },
-                ]}
-              />
-            </GraphCard>
             <TableCard>
               <Box mt={1}>
                 <TableCardHeader>Top Invoked Units</TableCardHeader>
@@ -228,9 +233,7 @@ const DashboardContainer = memo(() => {
                   </TableBody>
                 </StyledTable>
               )}
-              {isEmpty(data?.getTopInvokedUnits) && (
-                <Result type="empty" text="No Data" />
-              )}
+              {isEmpty(data?.getTopInvokedUnits) && <Result type="empty" text="No Data" />}
             </TableCard>
           </CardsContainer>
         )}
