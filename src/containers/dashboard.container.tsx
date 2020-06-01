@@ -61,7 +61,7 @@ const Insight = styled.div`
   flex-direction: row;
   align-items: center;
 `
-const NewErrors = styled(Table)`
+const StyledTable = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
@@ -138,7 +138,7 @@ const DashboardContainer = memo(() => {
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
               {!isEmpty(data?.getNewErrors) && (
-                <NewErrors aria-label="units table">
+                <StyledTable aria-label="units table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Error</TableCell>
@@ -163,7 +163,7 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </NewErrors>
+                </StyledTable>
               )}
               {isEmpty(data?.getNewErrors) && (
                 <Result type="success" text="All good, no new errors" />
@@ -196,9 +196,42 @@ const DashboardContainer = memo(() => {
                 ]}
               />
             </GraphCard>
-            <DashboardCard>
-              <CardHeader>Top Invoked Units</CardHeader>
-            </DashboardCard>
+            <TableCard>
+              <Box mt={1}>
+                <TableCardHeader>Top Invoked Units</TableCardHeader>
+              </Box>
+              {!isEmpty(data?.getTopInvokedUnits) && (
+                <StyledTable aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Unit Name</TableCell>
+                      <TableCell>Invocations</TableCell>
+                      <TableCell>Errors</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getTopInvokedUnits?.map((unit) => (
+                      <TableRow key={unit.unitName} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/units/${unit.unitName}`} component={Link}>
+                            <Tooltip title={`${unit.unitName}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {unit.unitName}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <TableCell>{unit.invocations}</TableCell>
+                        <TableCell>{unit.errors}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </StyledTable>
+              )}
+              {isEmpty(data?.getTopInvokedUnits) && (
+                <Result type="empty" text="No Data" />
+              )}
+            </TableCard>
           </CardsContainer>
         )}
       </Content>
