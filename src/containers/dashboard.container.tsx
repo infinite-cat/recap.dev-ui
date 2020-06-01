@@ -61,7 +61,7 @@ const Insight = styled.div`
   flex-direction: row;
   align-items: center;
 `
-const NewErrors = styled(Table)`
+const StyledTables = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
@@ -138,7 +138,7 @@ const DashboardContainer = memo(() => {
                 <TableCardHeader>New Errors</TableCardHeader>
               </Box>
               {!isEmpty(data?.getNewErrors) && (
-                <NewErrors aria-label="units table">
+                <StyledTables aria-label="units table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Error</TableCell>
@@ -163,7 +163,7 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </NewErrors>
+                </StyledTables>
               )}
               {isEmpty(data?.getNewErrors) && (
                 <Result type="success" text="All good, no new errors" />
@@ -198,10 +198,10 @@ const DashboardContainer = memo(() => {
             </GraphCard>
             <TableCard>
               <Box mt={1}>
-                <TableCardHeader>TOP INVOKED UNITS</TableCardHeader>
+                <TableCardHeader>Top Invoked Units</TableCardHeader>
               </Box>
-              {!isEmpty(data?.getNewErrors) && (
-                <NewErrors aria-label="units table">
+              {!isEmpty(data?.getTopInvokedUnits) && (
+                <StyledTables aria-label="units table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Unit Name</TableCell>
@@ -226,10 +226,10 @@ const DashboardContainer = memo(() => {
                       </TableRow>
                     ))}
                   </TableBody>
-                </NewErrors>
+                </StyledTables>
               )}
-              {isEmpty(data?.getNewErrors) && (
-                <Result type="success" text="All good, no new errors" />
+              {isEmpty(data?.getTopInvokedUnits) && (
+                <Result type="empty" text="No Data" />
               )}
             </TableCard>
           </CardsContainer>
