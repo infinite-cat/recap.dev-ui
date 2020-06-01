@@ -90,6 +90,12 @@ const ErrorInsightIcon = styled(AlertTriangle)`
   min-width: 24px;
   margin-right: 5px;
 `
+const FirstSeenTableCell = styled(TableCell)`
+  width: 180px;
+`
+const UnitStatsTableCell = styled(TableCell)`
+  width: 140px;
+`
 
 const insightIcons: { [key: string]: ReactElement } = {
   ERROR: <ErrorInsightIcon />,
@@ -175,7 +181,7 @@ const DashboardContainer = memo(() => {
                     <TableRow>
                       <TableCell>Error</TableCell>
                       <TableCell>Unit Name</TableCell>
-                      <TableCell>First seen</TableCell>
+                      <FirstSeenTableCell>First seen</FirstSeenTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -191,7 +197,9 @@ const DashboardContainer = memo(() => {
                           </MaterialLink>
                         </TableCell>
                         <TableCell>{error.unitName}</TableCell>
-                        <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
+                        <FirstSeenTableCell>
+                          {formatDateTime(error.firstEventDateTime)}
+                        </FirstSeenTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -210,8 +218,8 @@ const DashboardContainer = memo(() => {
                   <TableHead>
                     <TableRow>
                       <TableCell>Unit Name</TableCell>
-                      <TableCell>Invocations</TableCell>
-                      <TableCell>Errors</TableCell>
+                      <UnitStatsTableCell>Invocations</UnitStatsTableCell>
+                      <UnitStatsTableCell>Errors</UnitStatsTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -226,8 +234,8 @@ const DashboardContainer = memo(() => {
                             </Tooltip>
                           </MaterialLink>
                         </TableCell>
-                        <TableCell>{unit.invocations}</TableCell>
-                        <TableCell>{unit.errors}</TableCell>
+                        <UnitStatsTableCell>{unit.invocations}</UnitStatsTableCell>
+                        <UnitStatsTableCell>{unit.errors}</UnitStatsTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
