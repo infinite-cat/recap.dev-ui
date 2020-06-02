@@ -48,12 +48,10 @@ export const CardsContainer = styled.div`
   display: grid;
   column-gap: 20px;
   row-gap: 20px;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 1fr 50%;
   margin-top: 20px;
   @media (max-width: 960px) {
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: 1fr;
   }
 `
 const Insights = styled.div`
@@ -68,7 +66,7 @@ const Insight = styled.div`
   flex-direction: row;
   align-items: center;
 `
-const NewErrors = styled(Table)`
+const StyledTable = styled(Table)`
   table-layout: fixed;
   padding: 0;
   margin-top: 10px;
@@ -98,6 +96,12 @@ const ErrorInsightIcon = styled(AlertTriangle)`
   color: ${(p) => p.theme.palette.error.main};
   min-width: 24px;
   margin-right: 5px;
+`
+const FirstSeenTableCell = styled(TableCell)`
+  width: 180px;
+`
+const UnitStatsTableCell = styled(TableCell)`
+  width: 140px;
 `
 
 const insightIcons: { [key: string]: ReactElement } = {
@@ -142,54 +146,25 @@ const DashboardContainer = memo(() => {
                 )}
               </Insights>
             </DashboardCard>
-            <TableCard>
-              <Box mt={1}>
-                <TableCardHeader>New Errors</TableCardHeader>
-              </Box>
-              {!isEmpty(data?.getNewErrors) && (
-                <NewErrors aria-label="units table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Error</TableCell>
-                      <TableCell>Unit Name</TableCell>
-                      <TableCell>First seen</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data?.getNewErrors?.map((error) => (
-                      <TableRow key={error.id} hover>
-                        <TableCell scope="row">
-                          <MaterialLink to={`/errors/${error.id}`} component={Link}>
-                            <Tooltip title={`${error.type}: ${error.message}`} placement="top">
-                              <Typography variant="body2" noWrap>
-                                {error.type}: {error.message}
-                              </Typography>
-                            </Tooltip>
-                          </MaterialLink>
-                        </TableCell>
-                        <TableCell>{error.unitName}</TableCell>
-                        <TableCell>{formatDateTime(error.firstEventDateTime)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </NewErrors>
-              )}
-              {isEmpty(data?.getNewErrors) && (
-                <Result type="success" text="All good, no new errors" />
-              )}
-            </TableCard>
             <GraphCard>
+              <Box ml={2} mb={1}>
+                <CardHeader>System Status</CardHeader>
+              </Box>
               <SystemHealthDataGrid>
-                <SystemHealthItem variant="h6">System Health</SystemHealthItem>
-                <SystemHealthItem variant="h6">
+                <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
                   {100 - data?.getTotalStats?.errorRate!}%
                 </SystemHealthItem>
-                <SystemHealthItem variant="h6">Traces</SystemHealthItem>
-                <SystemHealthItem variant="h6">{data?.getTotalStats?.invocations}</SystemHealthItem>
-                <SystemHealthItem variant="h6">Errors</SystemHealthItem>
-                <SystemHealthItem variant="h6">{data?.getTotalStats?.errors}</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
+                  {data?.getTotalStats?.invocations}
+                </SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">Errors</SystemHealthItem>
+                <SystemHealthItem variant="subtitle2">
+                  {data?.getTotalStats?.errors}
+                </SystemHealthItem>
               </SystemHealthDataGrid>
-              <SimpleAreaGraphComponent
+              <SimpleAreaGraph
                 data={data?.getTotalStats.graphStats}
                 lines={[
                   {
@@ -205,9 +180,78 @@ const DashboardContainer = memo(() => {
                 ]}
               />
             </GraphCard>
-            <DashboardCard>
-              <CardHeader>Top Invoked Units</CardHeader>
-            </DashboardCard>
+            <TableCard>
+              <Box mt={1}>
+                <TableCardHeader>New Errors</TableCardHeader>
+              </Box>
+              {!isEmpty(data?.getNewErrors) && (
+                <StyledTable aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Error</TableCell>
+                      <TableCell>Unit Name</TableCell>
+                      <FirstSeenTableCell>First seen</FirstSeenTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getNewErrors?.map((error) => (
+                      <TableRow key={error.id} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/errors/${error.id}`} component={Link}>
+                            <Tooltip title={`${error.type}: ${error.message}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {error.type}: {error.message}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <TableCell>{error.unitName}</TableCell>
+                        <FirstSeenTableCell>
+                          {formatDateTime(error.firstEventDateTime)}
+                        </FirstSeenTableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </StyledTable>
+              )}
+              {isEmpty(data?.getNewErrors) && (
+                <Result type="success" text="All good, no new errors" />
+              )}
+            </TableCard>
+            <TableCard>
+              <Box mt={1}>
+                <TableCardHeader>Top Invoked Units</TableCardHeader>
+              </Box>
+              {!isEmpty(data?.getTopInvokedUnits) && (
+                <StyledTable aria-label="units table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Unit Name</TableCell>
+                      <UnitStatsTableCell>Invocations</UnitStatsTableCell>
+                      <UnitStatsTableCell>Errors</UnitStatsTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data?.getTopInvokedUnits?.map((unit) => (
+                      <TableRow key={unit.unitName} hover>
+                        <TableCell scope="row">
+                          <MaterialLink to={`/units/${unit.unitName}`} component={Link}>
+                            <Tooltip title={`${unit.unitName}`} placement="top">
+                              <Typography variant="body2" noWrap>
+                                {unit.unitName}
+                              </Typography>
+                            </Tooltip>
+                          </MaterialLink>
+                        </TableCell>
+                        <UnitStatsTableCell>{unit.invocations}</UnitStatsTableCell>
+                        <UnitStatsTableCell>{unit.errors}</UnitStatsTableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </StyledTable>
+              )}
+              {isEmpty(data?.getTopInvokedUnits) && <Result type="empty" text="No Data" />}
+            </TableCard>
           </CardsContainer>
         )}
       </Content>

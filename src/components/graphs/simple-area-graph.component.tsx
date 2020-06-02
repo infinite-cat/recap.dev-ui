@@ -1,16 +1,22 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { max, orderBy, startCase, toLower, mapValues } from 'lodash-es'
+import { max, orderBy, startCase, toLower, mapValues, last, first } from 'lodash-es'
 import { transparentize } from 'polished'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
 import { ThemeContext } from '../../contexts'
-import { formatDateTime } from '../../utils'
+import { formatDateTime, formatDateTimeShort } from '../../utils'
 
 const Wrapper = styled.div`
   width: 100%;
+  max-width: 100%;
   height: 300px;
   overflow: visible;
+  svg {
+    .recharts-yAxis {
+      transform: translate(-9px, 0);
+    }
+  }
 `
 
 interface AreaProps {
@@ -45,17 +51,32 @@ export const SimpleAreaGraphComponent = ({
   return (
     <Wrapper>
       <ResponsiveContainer>
-        <AreaChart width={200} height={60} data={graphData} margin={{ left: -5 }}>
+        <AreaChart
+          width={200}
+          height={60}
+          data={graphData}
+          margin={{ left: -5, right: -10, top: 10 }}
+        >
           {lines.map((line) => (
             <Area key={line.dataKey as string} type="monotone" {...line} />
           ))}
-          <XAxis hide dataKey="x" />
-          <YAxis
+          <XAxis
             hide
+            dataKey="x"
+            orientation="top"
+            tickFormatter={formatDateTimeShort}
+            padding={{ right: 40, left: 40 }}
+            interval={0}
+            tick={{ fill: theme.palette.text.secondary }}
+            ticks={[first(graphData)?.x ?? 0, last(graphData)?.x ?? 0]}
+          />
+          <YAxis
             type="number"
+            orientation="right"
+            mirror
             domain={[
               (dataMin: number) => (maxValue ? dataMin : -1),
-              (dataMax: number) => dataMax * 1.2 + 1,
+              (dataMax: number) => (dataMax ? dataMax * 1.2 : 1),
             ]}
           />
           <Tooltip

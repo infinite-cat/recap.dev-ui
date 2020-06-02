@@ -28,8 +28,11 @@ const MidCards = styled.div`
   display: grid;
   column-gap: 20px;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr 1fr;
+  grid-template-columns: 1fr 50%;
   margin-bottom: 20px;
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
 `
 const GraphCard = styled(Card)`
   display: flex;
