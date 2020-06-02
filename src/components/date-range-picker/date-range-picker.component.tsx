@@ -1,6 +1,7 @@
 import React from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import styled from 'styled-components'
+import { transparentize } from 'polished'
 
 export interface DateRangePickerProps {
   range: string
@@ -8,7 +9,17 @@ export interface DateRangePickerProps {
 }
 
 const ButtonGroup = styled(ToggleButtonGroup)`
-  height: 40px;
+  height: 30px;
+  margin: ${(p) => p.theme.spacing(1, 0.5)};
+`
+const StyledToggleButton = styled(ToggleButton)`
+  &.Mui-selected {
+    color: ${(p) => p.theme.palette.common.white};
+    background: ${(p) => p.theme.palette.primary.main};
+    &:hover {
+      background: ${(p) => transparentize(0.2, p.theme.palette.primary.main)};
+    }
+  }
 `
 
 export const DateRangePicker = ({ range = '24 hours', onRangeChange }: DateRangePickerProps) => (
@@ -16,14 +27,14 @@ export const DateRangePicker = ({ range = '24 hours', onRangeChange }: DateRange
     size="small"
     value={range}
     exclusive
-    onChange={(event, newRange) => onRangeChange(newRange)}
+    onChange={(event, newRange) => newRange && onRangeChange(newRange)}
     aria-label="show date range"
   >
-    <ToggleButton value="7 days" aria-label="7 days">
+    <StyledToggleButton value="7 days" aria-label="7 days">
       7 days
-    </ToggleButton>
-    <ToggleButton value="24 hours" aria-label="24 hours">
+    </StyledToggleButton>
+    <StyledToggleButton value="24 hours" aria-label="24 hours">
       24 hours
-    </ToggleButton>
+    </StyledToggleButton>
   </ButtonGroup>
 )

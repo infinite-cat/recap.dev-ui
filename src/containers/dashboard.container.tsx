@@ -1,6 +1,5 @@
-import React, { memo, useState, ReactElement, useContext } from 'react'
+import React, { memo, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
-import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
 import {
@@ -30,7 +29,7 @@ import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { formatDateTime } from '../utils'
-import { ThemeContext } from '../contexts'
+import { DateRangeContext, ThemeContext } from '../contexts'
 import { DateRangePicker } from '../components/date-range-picker'
 
 const Content = styled.div`
@@ -108,11 +107,7 @@ const insightIcons: { [key: string]: ReactElement } = {
 const DashboardContainer = memo(() => {
   const { theme } = useContext(ThemeContext)
 
-  const [since] = useState(
-    DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
-  )
-
-  const [dateRange, setDateRange] = useState('24 hours')
+  const { since, range, setRange } = useContext(DateRangeContext)
 
   const { data, loading } = useQuery<getDashboardData>(GetDashboardData, {
     variables: {
@@ -124,9 +119,7 @@ const DashboardContainer = memo(() => {
     <StyledPageHeader
       title="Dashboard"
       subTitle="Status of your system"
-      actions={
-        <DateRangePicker range={dateRange} onRangeChange={(newRange) => setDateRange(newRange)} />
-      }
+      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
     >
       <Content>
         {loading && <LoadingPage />}

@@ -36,6 +36,7 @@ const Header = styled.div`
 const Actions = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `
 const HeaderText = styled.div``
 
