@@ -1,6 +1,5 @@
-import React, { memo, useState, ReactElement, useContext } from 'react'
+import React, { memo, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
-import { DateTime } from 'luxon'
 import { useQuery } from '@apollo/react-hooks'
 import { isEmpty } from 'lodash-es'
 import {
@@ -18,12 +17,20 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
 import { transparentize } from 'polished'
 
-import { Card, CardHeader, LoadingPage, PageHeader, Result, SimpleAreaGraph } from '../components'
+import {
+  Card,
+  CardHeader,
+  LoadingPage,
+  PageHeader,
+  Result,
+  SimpleAreaGraphComponent,
+} from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { formatDateTime } from '../utils'
-import { ThemeContext } from '../contexts'
+import { DateRangeContext, ThemeContext } from '../contexts'
+import { DateRangePicker } from '../components/date-range-picker'
 
 const Content = styled.div`
   flex: 1;
@@ -104,9 +111,7 @@ const insightIcons: { [key: string]: ReactElement } = {
 const DashboardContainer = memo(() => {
   const { theme } = useContext(ThemeContext)
 
-  const [since] = useState(
-    DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
-  )
+  const { since, range, setRange } = useContext(DateRangeContext)
 
   const { data, loading } = useQuery<getDashboardData>(GetDashboardData, {
     variables: {
@@ -115,7 +120,11 @@ const DashboardContainer = memo(() => {
   })
 
   return (
-    <StyledPageHeader title="Dashboard" subTitle="Status of your system">
+    <StyledPageHeader
+      title="Dashboard"
+      subTitle="Status of your system"
+      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+    >
       <Content>
         {loading && <LoadingPage />}
         {!loading && (
@@ -155,7 +164,7 @@ const DashboardContainer = memo(() => {
                   {data?.getTotalStats?.errors}
                 </SystemHealthItem>
               </SystemHealthDataGrid>
-              <SimpleAreaGraph
+              <SimpleAreaGraphComponent
                 data={data?.getTotalStats.graphStats}
                 lines={[
                   {

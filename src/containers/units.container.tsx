@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
   Table,
@@ -12,7 +12,6 @@ import {
   Link as MaterialLink,
 } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
-import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import { debounce, isEmpty } from 'lodash-es'
@@ -22,6 +21,8 @@ import SearchIcon from '@material-ui/icons/Search'
 import { GetUnits } from '../graphql/queries'
 import { PageHeader, Card, LoadingOverlay, FullWidthSpinner, Result } from '../components'
 import { getUnits, getUnits_getUnits_units as Unit } from '../graphql/queries/types/getUnits'
+import { DateRangePicker } from '../components/date-range-picker'
+import { DateRangeContext } from '../contexts'
 
 const Content = styled.div``
 const Input = styled(InputBase)`
@@ -47,9 +48,8 @@ const columns = [
 ]
 
 const UnitsContainer = () => {
-  const [since] = useState(
-    DateTime.utc().minus({ days: 6, hours: 23 }).startOf('hour').toMillis().toString(),
-  )
+  const { since, range, setRange } = useContext(DateRangeContext)
+
   const [search, setSearch] = useState('')
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore } = useQuery<getUnits>(GetUnits, {
@@ -101,7 +101,11 @@ const UnitsContainer = () => {
   }, [loadingMore, fetchMore, data])
 
   return (
-    <PageHeader title="Units" subTitle="List of all your units">
+    <PageHeader
+      title="Units"
+      subTitle="List of all your units"
+      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+    >
       <Content>
         <StyledInfiniteScroll
           hasMore={data?.getUnits.hasMore}

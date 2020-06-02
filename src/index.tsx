@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { AppBarProvider, SnackbarProvider, ThemeProvider } from './contexts'
+import { AppBarProvider, DateRangeProvider, SnackbarProvider, ThemeProvider } from './contexts'
 import RootContainer from './containers/root.container'
 
 ReactDOM.render(
@@ -9,7 +9,9 @@ ReactDOM.render(
     <ThemeProvider>
       <SnackbarProvider>
         <AppBarProvider>
-          <RootContainer />
+          <DateRangeProvider>
+            <RootContainer />
+          </DateRangeProvider>
         </AppBarProvider>
       </SnackbarProvider>
     </ThemeProvider>
