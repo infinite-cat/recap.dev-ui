@@ -164,7 +164,7 @@ const DashboardContainer = memo(() => {
                   {data?.getTotalStats?.errors}
                 </SystemHealthItem>
               </SystemHealthDataGrid>
-              <SimpleAreaGraph
+              <SimpleAreaGraphComponent
                 data={data?.getTotalStats.graphStats}
                 lines={[
                   {
