@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import { DateTime } from 'luxon'
+import { usePersistState } from '../hooks'
 
 interface DateRangeProviderProps {
   children: React.ReactElement | React.ReactElement[]
@@ -22,12 +23,12 @@ const getSince = (range: string) => {
 }
 
 const DateRangeProvider = memo(({ children }: DateRangeProviderProps) => {
-  const [range, setRange] = useState('24 hours')
-  const [since, setSince] = useState(getSince('24 hours'))
+  const [range, setRange] = usePersistState('@DateRangeContext_range', '24 hours')
+  const [since, setSince] = useState(getSince(range))
 
   useEffect(() => {
     setSince(getSince(range))
-  }, [range])
+  }, [range, setSince])
 
   return (
     <DateRangeContext.Provider value={{ since, range, setRange }}>
