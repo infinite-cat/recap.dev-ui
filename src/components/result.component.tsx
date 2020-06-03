@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled, { keyframes } from 'styled-components/macro'
 
-import { ReactComponent as SuccessIcon } from '../svg/check-circle.svg'
+import { ReactComponent as SuccessSvg } from '../svg/check-circle.svg'
 import { ReactComponent as NoData } from '../svg/no-data.svg'
 
 const appearAnimation = keyframes`
@@ -28,6 +28,9 @@ const Wrapper = styled.div`
 const Text = styled.div`
   margin-top: 15px;
   text-align: center;
+`
+const SuccessIcon = styled(SuccessSvg)`
+  color: ${(p) => p.theme.palette.success.main};
 `
 
 type ResultProps = {

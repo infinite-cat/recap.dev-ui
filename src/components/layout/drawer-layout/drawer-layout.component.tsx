@@ -39,7 +39,7 @@ export const DrawerLayout = ({ children }: DrawerLayoutProps) => {
   return (
     <Wrapper>
       {isMobile && (
-        <ElevationScroll threshold={1}>
+        <ElevationScroll>
           <AppBar position="fixed" open={isExpanded}>
             <Toolbar>
               <IconButton onClick={openSidebar}>

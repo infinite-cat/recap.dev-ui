@@ -13,6 +13,11 @@ const ButtonGroup = styled(ToggleButtonGroup)`
   margin: ${(p) => p.theme.spacing(1, 0.5)};
 `
 const StyledToggleButton = styled(ToggleButton)`
+  border: none;
+  &.MuiButtonBase-root {
+    margin: 0 5px;
+    border-radius: ${(p) => p.theme.shape.borderRadius}px;
+  }
   &.Mui-selected {
     color: ${(p) => p.theme.palette.common.white};
     background: ${(p) => p.theme.palette.primary.main};

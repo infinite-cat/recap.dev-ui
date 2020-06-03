@@ -16,7 +16,7 @@ import {
   PageHeader,
   SimpleAreaGraphComponent,
 } from '../../components'
-import { Content, TableCard, TopCardsContainer, UnitLink } from '../common.styles'
+import { Content, TableCard, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
@@ -24,10 +24,15 @@ import { formatDateTime } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
 import { ThemeContext } from '../../contexts'
 
+const TopCards = styled.div`
+  display: grid;
+  column-gap: 20px;
+  grid-template-columns: 1fr 50%;
+  margin-bottom: 20px;
+`
 const MidCards = styled.div`
   display: grid;
   column-gap: 20px;
-  grid-auto-flow: column;
   grid-template-columns: 1fr 50%;
   margin-bottom: 20px;
   @media (max-width: 960px) {
@@ -87,7 +92,7 @@ const ErrorContainer = () => {
         {(loading || tracesLoading) && <LoadingPage />}
         {!loading && !tracesLoading && data && (
           <>
-            <TopCardsContainer>
+            <TopCards>
               <DataCard>
                 <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getError?.unitName!} placement="top">
@@ -105,7 +110,7 @@ const ErrorContainer = () => {
                 </CardHeader>
                 <Typography noWrap>{formatDateTime(data.getError?.lastEventDateTime)}</Typography>
               </DataCard>
-            </TopCardsContainer>
+            </TopCards>
             <MidCards>
               <JsonCard title="Response" src={data.getError?.rawError} />
               <GraphCard>
