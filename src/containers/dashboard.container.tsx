@@ -153,7 +153,7 @@ const DashboardContainer = memo(() => {
               <SystemHealthDataGrid>
                 <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">
-                  {100 - data?.getTotalStats?.errorRate!}%
+                  {100 - data?.getTotalStats?.errorRate! * 100}%
                 </SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">
