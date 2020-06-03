@@ -8,15 +8,26 @@ import { ThemeContext } from '../../contexts'
 import { formatDateTime, formatDateTimeShort } from '../../utils'
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   max-width: 100%;
   height: 300px;
   overflow: visible;
   svg {
     .recharts-yAxis {
-      transform: translate(-9px, 0);
+      transform: translate(1px, 0);
     }
   }
+`
+const BottomAxis = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px;
 `
 
 interface AreaProps {
@@ -46,34 +57,33 @@ export const SimpleAreaGraphComponent = ({
     }))
   }, [data, xAxis])
 
-  const maxValue = max(data?.map((x) => max(lines.map((line) => x[line.dataKey as string]))))
-
+  const maxValue = max(
+    data?.map((x) => max(lines.map((line) => Number(x[line.dataKey as string])))),
+  )
   return (
     <Wrapper>
       <ResponsiveContainer>
-        <AreaChart
-          width={200}
-          height={60}
-          data={graphData}
-          margin={{ left: -5, right: -10, top: 10 }}
-        >
+        <AreaChart width={200} height={60} data={graphData} margin={{ top: 10 }}>
           {lines.map((line) => (
             <Area key={line.dataKey as string} type="monotone" {...line} />
           ))}
           <XAxis
             hide
             dataKey="x"
-            orientation="top"
+            orientation="bottom"
+            mirror
             tickFormatter={formatDateTimeShort}
-            padding={{ right: 40, left: 40 }}
-            interval={0}
-            tick={{ fill: theme.palette.text.secondary }}
+            interval="preserveStart"
+            tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
+            tickLine={{ stroke: theme.palette.text.primary }}
             ticks={[first(graphData)?.x ?? 0, last(graphData)?.x ?? 0]}
           />
           <YAxis
             type="number"
             orientation="right"
             mirror
+            tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
+            tickLine={{ stroke: theme.palette.text.primary }}
             domain={[
               (dataMin: number) => (maxValue ? dataMin : -1),
               (dataMax: number) => (dataMax ? dataMax * 1.2 : 1),
@@ -94,6 +104,10 @@ export const SimpleAreaGraphComponent = ({
           />
         </AreaChart>
       </ResponsiveContainer>
+      <BottomAxis>
+        <div>{formatDateTimeShort(first(graphData)?.x ?? 0)}</div>
+        <div>{formatDateTimeShort(last(graphData)?.x ?? 0)}</div>
+      </BottomAxis>
     </Wrapper>
   )
 }

@@ -5,6 +5,7 @@ import { Card } from './card.component'
 
 type DataCardProps = PropsWithChildren<{
   type?: 'success' | 'ok' | 'error' | string
+  className?: string
 }>
 
 const BaseCard = styled(Card)`
@@ -27,18 +28,18 @@ const InfoCard = styled(BaseCard)`
   box-shadow: none;
 `
 
-export const DataCard = memo(({ type, children }: DataCardProps) => {
+export const DataCard = memo(({ type, className, children }: DataCardProps) => {
   if (type === 'success' || type === 'ok') {
-    return <SuccessCard>{children}</SuccessCard>
+    return <SuccessCard className={className}>{children}</SuccessCard>
   }
 
   if (type === 'error') {
-    return <ErrorCard>{children}</ErrorCard>
+    return <ErrorCard className={className}>{children}</ErrorCard>
   }
 
   if (type === 'info') {
-    return <InfoCard>{children}</InfoCard>
+    return <InfoCard className={className}>{children}</InfoCard>
   }
 
-  return <BaseCard>{children}</BaseCard>
+  return <BaseCard className={className}>{children}</BaseCard>
 })
