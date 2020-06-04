@@ -112,7 +112,7 @@ const ErrorContainer = () => {
               </DataCard>
             </TopCards>
             <MidCards>
-              <JsonCard title="Response" src={data.getError?.rawError} />
+              <JsonCard title="Error" src={data.getError?.rawError} />
               <GraphCard>
                 <Box ml={2}>
                   <CardHeader>Frequency</CardHeader>
