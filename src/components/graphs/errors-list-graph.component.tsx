@@ -47,7 +47,7 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
             hide
             type="number"
             domain={[
-              (dataMin: number) => (maxValue ? dataMin : -1),
+              (dataMin: number) => (maxValue ? dataMin : 0),
               (dataMax: number) => dataMax * 1.2 + 1,
             ]}
           />

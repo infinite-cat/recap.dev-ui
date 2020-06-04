@@ -85,7 +85,7 @@ export const SimpleAreaGraphComponent = ({
             tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
             tickLine={{ stroke: theme.palette.text.primary }}
             domain={[
-              (dataMin: number) => (maxValue ? dataMin : -1),
+              (dataMin: number) => (maxValue ? dataMin : 0),
               (dataMax: number) => (dataMax ? dataMax * 1.2 : 1),
             ]}
           />
