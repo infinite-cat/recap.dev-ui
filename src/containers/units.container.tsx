@@ -141,8 +141,12 @@ const UnitsContainer = () => {
                       </TableCell>
                       <TableCell>{row.invocations}</TableCell>
                       <TableCell>{row.errors}</TableCell>
-                      <TableCell>{row.errorRate}</TableCell>
-                      <TableCell>{row.averageDuration} ms</TableCell>
+                      {row.errorRate !== null && <TableCell>{row.errorRate * 100}%</TableCell>}
+                      {row.errorRate == null && <TableCell>N/A</TableCell>}
+                      {row.averageDuration !== null && (
+                        <TableCell>{row.averageDuration} ms</TableCell>
+                      )}
+                      {row.averageDuration == null && <TableCell>N/A</TableCell>}
                     </TableRow>
                   ))}
                 </TableBody>
