@@ -7,7 +7,17 @@
 // GraphQL query operation: getError
 // ====================================================
 
-export interface getError_getError_graphStats {
+export interface getError_getError {
+  __typename: "UnitError";
+  id: number;
+  unitName: string;
+  type: string;
+  message: string | null;
+  rawError: string;
+  lastEventDateTime: string;
+}
+
+export interface getError_getErrorStats {
   __typename: "UnitErrorDetailsGraphStats";
   invocations: number;
   errors: number;
@@ -15,19 +25,9 @@ export interface getError_getError_graphStats {
   dateTime: string;
 }
 
-export interface getError_getError {
-  __typename: "UnitErrorDetails";
-  id: number;
-  unitName: string;
-  type: string;
-  message: string | null;
-  rawError: string;
-  lastEventDateTime: string;
-  graphStats: getError_getError_graphStats[];
-}
-
 export interface getError {
   getError: getError_getError | null;
+  getErrorStats: getError_getErrorStats[];
 }
 
 export interface getErrorVariables {

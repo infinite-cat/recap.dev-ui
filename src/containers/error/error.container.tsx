@@ -1,9 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import styled from 'styled-components/macro'
-import { DateTime } from 'luxon'
 import { Clock, Link as LinkIcon } from 'react-feather'
 import { transparentize } from 'polished'
 
@@ -22,7 +21,8 @@ import { getTraces } from '../../graphql/queries/types/getTraces'
 import { TracesCard } from '../../components/traces-card.component'
 import { formatDateTime } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
-import { ThemeContext } from '../../contexts'
+import { DateRangeContext, ThemeContext } from '../../contexts'
+import { DateRangePicker } from '../../components/date-range-picker'
 
 const TopCards = styled.div`
   display: grid;
@@ -62,18 +62,15 @@ const breadcrumb = (errorName: string = '') => ({
 
 const ErrorContainer = () => {
   const { theme } = useContext(ThemeContext)
+  const { since, range, setRange } = useContext(DateRangeContext)
 
   const { id } = useParams()
   const history = useHistory()
 
-  const [graphSince] = useState(
-    DateTime.utc().minus({ hours: 23 }).startOf('hour').toMillis().toString(),
-  )
-
   const { data, loading } = useQuery<getError>(GetError, {
     variables: {
       id,
-      graphSince,
+      graphSince: since,
     },
   })
 
@@ -87,7 +84,12 @@ const ErrorContainer = () => {
   const title = data?.getError ? `${data?.getError?.type}: ${data?.getError?.message}` : ''
 
   return (
-    <PageHeader title={id} breadcrumb={breadcrumb(title)} onBack={() => history.goBack()}>
+    <PageHeader
+      title={id}
+      breadcrumb={breadcrumb(title)}
+      onBack={() => history.goBack()}
+      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+    >
       <Content>
         {(loading || tracesLoading) && <LoadingPage />}
         {!loading && !tracesLoading && data && (
@@ -118,7 +120,7 @@ const ErrorContainer = () => {
                   <CardHeader>Frequency</CardHeader>
                 </Box>
                 <SimpleAreaGraphComponent
-                  data={data.getError?.graphStats}
+                  data={data?.getErrorStats}
                   lines={[
                     {
                       dataKey: 'invocations',

@@ -36,7 +36,8 @@ type Insight {
 }
 
 type Query {
-  getError(graphSince: String!, id: String!): UnitErrorDetails
+  getError(id: String!): UnitError
+  getErrorStats(id: String!, since: String!): [UnitErrorDetailsGraphStats!]!
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
   getInsights(since: String!): [Insight!]!
   getNewErrors(since: String!): [UnitError!]!
@@ -107,16 +108,6 @@ type UnitDetailsGraphStats {
 
 type UnitError {
   firstEventDateTime: String!
-  id: Int!
-  lastEventDateTime: String!
-  message: String
-  rawError: String!
-  type: String!
-  unitName: String!
-}
-
-type UnitErrorDetails {
-  graphStats: [UnitErrorDetailsGraphStats!]!
   id: Int!
   lastEventDateTime: String!
   message: String
