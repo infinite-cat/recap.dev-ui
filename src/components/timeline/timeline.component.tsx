@@ -10,10 +10,10 @@ import {
   Column,
   DurationColumn,
   ExpandIconContainer,
-  FunctionCallDurationGraph,
   SectionName,
 } from './timeline.styles'
 import { ResourceAccessRow } from './resource-access-row.component'
+import { SuccessDurationGraph } from '..'
 
 export interface TimelineProps {
   trace: Trace
@@ -59,7 +59,7 @@ export const Timeline = ({ trace }: TimelineProps) => {
           </DurationColumn>
           <Column>
             <CallDurationContainer>
-              <FunctionCallDurationGraph
+              <SuccessDurationGraph
                 left={(Number(call.start) - Number(minTimestamp)) / totalDuration}
                 width={((Number(call.end) || maxTimestamp) - Number(call.start)) / totalDuration}
               />
