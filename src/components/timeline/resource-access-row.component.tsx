@@ -12,12 +12,12 @@ import {
   Column,
   DetailsRow,
   ExpandIconContainer,
-  ResourceAccessDurationGraph,
 } from './timeline.styles'
 import { getTrace_getTrace_resourceAccessEvents as ResourceAccessEvent } from '../../graphql/queries/types/getTrace'
 import { camelToTitle, getFastTransition } from '../../utils'
 import { JsonCard } from '../json/json-card.component'
 import { StatusTag } from '../status-tag.component'
+import { CallDurationGraph } from '../graphs'
 
 export interface ResourceAccessRowProps {
   minTimestamp: number
@@ -97,7 +97,7 @@ export const ResourceAccessRow = (props: ResourceAccessRowProps) => {
       </ClickableDurationColumn>
       <ClickableColumn onClick={() => setOpened(!opened)}>
         <CallDurationContainer>
-          <ResourceAccessDurationGraph
+          <CallDurationGraph
             status={event.status}
             left={(Number(event.start) - Number(minTimestamp)) / totalDuration}
             width={((Number(event.end) || maxTimestamp) - Number(event.start)) / totalDuration}

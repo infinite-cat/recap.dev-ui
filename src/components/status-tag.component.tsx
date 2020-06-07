@@ -16,6 +16,9 @@ const BaseChip = styled(Chip)`
 const SuccessChip = styled(BaseChip)`
   background-color: ${(p) => p.theme.palette.success.main};
 `
+const WarningChip = styled(BaseChip)`
+  background-color: ${(p) => p.theme.palette.warning.main};
+`
 const ErrorChip = styled(BaseChip)`
   background-color: ${(p) => p.theme.palette.error.main};
 `
@@ -29,9 +32,5 @@ export const StatusTag = memo(({ status }: ExecutionStatusTagProps) => {
     return <ErrorChip label="Error" size="small" />
   }
 
-  return (
-    <BaseChip variant="outlined" size="small">
-      Unknown
-    </BaseChip>
-  )
+  return <WarningChip label="Unknown" size="small" />
 })
