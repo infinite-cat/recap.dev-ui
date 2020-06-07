@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { Chip } from '@material-ui/core'
 
 interface ExecutionStatusTagProps {
-  status?: 'OK' | 'ERROR' | string
+  status?: 'OK' | 'ERROR' | string | null
 }
 
 const BaseChip = styled(Chip)`

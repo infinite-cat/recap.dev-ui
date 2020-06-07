@@ -47,7 +47,7 @@ export const CallName = styled.div``
 interface DurationGraphProps {
   width: number
   left: number
-  status?: string
+  status?: string | null
 }
 
 export const DurationGraph = styled.div<DurationGraphProps>`

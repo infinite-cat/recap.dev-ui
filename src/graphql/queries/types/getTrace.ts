@@ -23,7 +23,7 @@ export interface getTrace_getTrace_resourceAccessEvents {
   resourceIdentifier: string | null;
   request: string;
   response: string;
-  status: string;
+  status: string | null;
   error: string | null;
 }
 

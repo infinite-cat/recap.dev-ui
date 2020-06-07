@@ -57,7 +57,7 @@ type ResourceAccessEvent {
   response: String!
   serviceName: String!
   start: String!
-  status: String!
+  status: String
 }
 
 type TopInvokedUnit {
