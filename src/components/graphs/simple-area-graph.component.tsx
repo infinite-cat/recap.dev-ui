@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
-import { max, orderBy, startCase, toLower, mapValues, last, first } from 'lodash-es'
+import { max, orderBy, startCase, toLower, mapValues, last, first, round } from 'lodash-es'
 import { transparentize } from 'polished'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
@@ -67,20 +67,11 @@ export const SimpleAreaGraphComponent = ({
           {lines.map((line) => (
             <Area key={line.dataKey as string} type="monotone" {...line} />
           ))}
-          <XAxis
-            hide
-            dataKey="x"
-            orientation="bottom"
-            mirror
-            tickFormatter={formatDateTimeShort}
-            interval="preserveStart"
-            tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
-            tickLine={{ stroke: theme.palette.text.primary }}
-            ticks={[first(graphData)?.x ?? 0, last(graphData)?.x ?? 0]}
-          />
+          <XAxis hide dataKey="x" orientation="bottom" mirror />
           <YAxis
             type="number"
             orientation="right"
+            tickFormatter={(x) => String(round(x, 2))}
             mirror
             tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
             tickLine={{ stroke: theme.palette.text.primary }}
@@ -97,7 +88,7 @@ export const SimpleAreaGraphComponent = ({
             }}
             separator=""
             formatter={(value: number, name: string) => [
-              `${value} ${toLower(startCase(name))}`,
+              `${round(value, 2)} ${toLower(startCase(name))}`,
               '',
             ]}
             labelFormatter={formatDateTime}
