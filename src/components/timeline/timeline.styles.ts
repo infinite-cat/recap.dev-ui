@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components/macro'
 import { Collapse, IconButton } from '@material-ui/core'
 import { transparentize } from 'polished'
@@ -61,7 +62,24 @@ export const DurationGraph = styled.div<DurationGraphProps>`
   left: ${(p) => p.left * 100}%;
 `
 export const FunctionCallDurationGraph = styled(DurationGraph)``
-export const ResourceAccessDurationGraph = styled(DurationGraph)`
-  background: ${(p) =>
-    p.status === 'OK' ? p.theme.palette.info.main : p.theme.palette.error.main};
+
+export const ErrorDurationGraph = styled(DurationGraph)`
+  background: ${(p) => p.theme.palette.error.main}
 `
+export const WarningDurationGraph = styled(DurationGraph)`
+  background: ${(p) => p.theme.palette.warning.main}
+`
+export const SuccessDurationGraph = styled(DurationGraph)`
+  background: ${(p) => p.theme.palette.info.main}
+`
+export const ResourceAccessDurationGraph = ({ status, ...rest }: DurationGraphProps) => {
+  if (status === 'OK') {
+    return (<SuccessDurationGraph {...rest} />)
+  }
+
+  if (status === 'ERROR') {
+    return <ErrorDurationGraph {...rest} />
+  }
+
+  return <WarningDurationGraph {...rest} />
+}
