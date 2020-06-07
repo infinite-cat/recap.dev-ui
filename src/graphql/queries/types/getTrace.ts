@@ -20,7 +20,7 @@ export interface getTrace_getTrace_resourceAccessEvents {
   start: string;
   end: string | null;
   serviceName: string;
-  resourceIdentifier: string;
+  resourceIdentifier: string | null;
   request: string;
   response: string;
   status: string;

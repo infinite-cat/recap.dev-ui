@@ -57,7 +57,11 @@ const ExpandIcon = styled(({ isOpen, ...props }) => <ChevronUp {...props} />)<{ 
   transition: ${(p) => getFastTransition(p.theme, ['transform'])};
 `
 
-const parseResourceIdentifier = (resourceIdentifier: string) => {
+const parseResourceIdentifier = (resourceIdentifier: string | null) => {
+  if (!resourceIdentifier) {
+    return []
+  }
+
   const object = JSON.parse(resourceIdentifier)
 
   return map(Object.keys(object), (key) => ({

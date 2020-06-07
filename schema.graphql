@@ -53,7 +53,7 @@ type ResourceAccessEvent {
   end: String
   error: String
   request: String!
-  resourceIdentifier: String!
+  resourceIdentifier: String
   response: String!
   serviceName: String!
   start: String!
