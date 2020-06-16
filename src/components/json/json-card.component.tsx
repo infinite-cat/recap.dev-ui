@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { IconButton } from '@material-ui/core'
 import { useSnackbar } from 'notistack'
@@ -10,6 +10,7 @@ import { CardProps } from '@material-ui/core/Card/Card'
 import { JsonViewer } from './json-viewer.component'
 import { Card } from '../cards'
 import { CardHeader } from '../typography.component'
+import { formatJSONViewerInput } from '../../utils'
 
 const JSONCard = styled(Card)`
   position: relative;
@@ -34,12 +35,13 @@ export type JsonCardProps = CardProps & {
 
 export const JsonCard = ({ src, title, ...rest }: JsonCardProps) => {
   const { enqueueSnackbar } = useSnackbar()
+  const formattedSrc = useMemo(() => formatJSONViewerInput(src), [src])
 
   return (
     <JSONCard {...rest}>
       <CardHeader>{title}</CardHeader>
       <ScrollContainer>
-        <JsonViewer src={src} />
+        <JsonViewer src={formattedSrc} />
       </ScrollContainer>
       <Controls>
         <CopyToClipboard
