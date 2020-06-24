@@ -3,7 +3,7 @@ import { List, Tooltip } from '@material-ui/core'
 import { Link, useLocation } from 'react-router-dom'
 import { includes, map } from 'lodash-es'
 import { Cpu, Moon, Sun } from 'react-feather'
-import { Dashboard, AccountTree, WarningOutlined } from '@material-ui/icons'
+import { Dashboard, AccountTree, WarningOutlined, SettingsOutlined } from '@material-ui/icons'
 
 import { ListItem, ListItemIcon, ListItemText } from './drawer-layout.styles'
 import { ThemeContext } from '../../../contexts'
@@ -52,7 +52,7 @@ export const TopMenuItems = memo((props: MenuItemsProps) => {
 })
 
 export const bottomMenuItems = [
-  // { primary: 'Settings', to: '/settings', icon: <SettingsOutlined /> },
+  { primary: 'Settings', to: '/settings', icon: <SettingsOutlined /> },
 ] as any[]
 
 export const BottomMenuItems = memo((props: MenuItemsProps) => {
@@ -62,10 +62,6 @@ export const BottomMenuItems = memo((props: MenuItemsProps) => {
 
   return (
     <List>
-      <ListItem button onClick={toggleTheme}>
-        <ListItemIcon>{themeType === 'dark' ? <Sun /> : <Moon />}</ListItemIcon>
-        <ListItemText primary="Toggle Theme" isExpanded={isExpanded} />
-      </ListItem>
       {map(bottomMenuItems, (item) => {
         if (item.to) {
           return (
@@ -82,6 +78,10 @@ export const BottomMenuItems = memo((props: MenuItemsProps) => {
 
         return null
       })}
+      <ListItem button onClick={toggleTheme}>
+        <ListItemIcon>{themeType === 'dark' ? <Sun /> : <Moon />}</ListItemIcon>
+        <ListItemText primary="Toggle Theme" isExpanded={isExpanded} />
+      </ListItem>
     </List>
   )
 })

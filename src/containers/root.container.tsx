@@ -18,6 +18,7 @@ const Errors = getLoadableContainer(() => import('./errors.container'))
 const Error = getLoadableContainer(() => import('./error/error.container'))
 const Unit = getLoadableContainer(() => import('./unit/unit.container'))
 const Units = getLoadableContainer(() => import('./units.container'))
+const Settings = getLoadableContainer(() => import('./settings/settings.container'))
 
 function RootContainer() {
   return (
@@ -45,6 +46,9 @@ function RootContainer() {
             </Route>
             <Route path="/traces">
               <TracesList />
+            </Route>
+            <Route path="/settings">
+              <Settings />
             </Route>
             <Route path="/">
               <Dashboard />
