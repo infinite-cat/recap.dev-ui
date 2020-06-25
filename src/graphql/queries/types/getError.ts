@@ -25,9 +25,21 @@ export interface getError_getErrorStats {
   dateTime: string;
 }
 
+export interface getError_getTraces_traces {
+  __typename: "Trace";
+  id: string;
+  logs: string | null;
+}
+
+export interface getError_getTraces {
+  __typename: "GetTracesResponse";
+  traces: getError_getTraces_traces[];
+}
+
 export interface getError {
   getError: getError_getError | null;
   getErrorStats: getError_getErrorStats[];
+  getTraces: getError_getTraces;
 }
 
 export interface getErrorVariables {

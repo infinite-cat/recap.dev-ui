@@ -38,6 +38,7 @@ export interface getTrace_getTrace {
   request: string;
   response: string | null;
   error: string | null;
+  logs: string | null;
   functionCallEvents: getTrace_getTrace_functionCallEvents[];
   resourceAccessEvents: getTrace_getTrace_resourceAccessEvents[];
 }

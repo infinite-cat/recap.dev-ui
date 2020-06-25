@@ -44,7 +44,7 @@ type Query {
   getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
   getTotalStats(since: String!): TotalStats!
   getTrace(id: String!): Trace
-  getTraces(offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
+  getTraces(limit: Int, offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
   getUnit(graphSince: String!, unitName: String!): UnitDetails
   getUnits(offset: Int, search: String, since: String!): GetUnitsResponse!
 }
@@ -83,8 +83,10 @@ type Trace {
   duration: Int!
   end: String!
   error: String
+  extraData: String
   functionCallEvents: [FunctionCall!]!
   id: String!
+  logs: String
   request: String!
   resourceAccessEvents: [ResourceAccessEvent!]!
   response: String

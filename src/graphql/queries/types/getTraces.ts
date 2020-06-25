@@ -15,6 +15,7 @@ export interface getTraces_getTraces_traces {
   end: string;
   duration: number;
   status: string;
+  logs: string | null;
   request: string;
   response: string | null;
   error: string | null;

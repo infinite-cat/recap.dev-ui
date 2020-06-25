@@ -87,7 +87,7 @@ const TracesContainer = () => {
         >
           <Controls>
             <Input
-              placeholder="Search for a trace id or unit name"
+              placeholder="Search for a trace id, unit name or a log message"
               onChange={(e) => debouncedSetSearch(e.target.value)}
             />
             <IconButton type="submit" aria-label="search">

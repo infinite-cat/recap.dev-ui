@@ -82,6 +82,8 @@ const ErrorContainer = () => {
   })
 
   const title = data?.getError ? `${data?.getError?.type}: ${data?.getError?.message}` : ''
+  const lastInvocationLogs = data?.getTraces?.traces?.[0]?.logs
+  console.log(lastInvocationLogs)
 
   return (
     <PageHeader

@@ -36,5 +36,11 @@ export const GetError = gql`
       currentErrors
       dateTime
     }
+    getTraces(unitErrorId: $id, limit: 1) {
+      traces {
+        id
+        logs
+      }
+    }
   }
 `

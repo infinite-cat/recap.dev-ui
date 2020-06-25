@@ -10,6 +10,7 @@ export const GetTraces = gql`
         end
         duration
         status
+        logs
         request
         response
         error
@@ -32,6 +33,7 @@ export const GetTrace = gql`
       request
       response
       error
+      logs
       functionCallEvents {
         start
         end
