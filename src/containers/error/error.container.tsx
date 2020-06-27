@@ -15,7 +15,7 @@ import {
   PageHeader,
   SimpleAreaGraphComponent,
 } from '../../components'
-import { Content, TableCard, UnitLink } from '../common.styles'
+import { Content, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { formatDateTime } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
