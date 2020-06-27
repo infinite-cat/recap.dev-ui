@@ -6,7 +6,7 @@ import styled from 'styled-components/macro'
 import { Clock, Link as LinkIcon } from 'react-feather'
 import { transparentize } from 'polished'
 
-import { GetError, GetTraces } from '../../graphql/queries'
+import { GetError } from '../../graphql/queries'
 import {
   Card,
   CardHeader,
@@ -15,14 +15,13 @@ import {
   PageHeader,
   SimpleAreaGraphComponent,
 } from '../../components'
-import { Content, TableCard, UnitLink } from '../common.styles'
+import { Content, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
-import { getTraces } from '../../graphql/queries/types/getTraces'
-import { TracesCard } from '../../components/traces-card.component'
 import { formatDateTime } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
 import { DateRangeContext, ThemeContext } from '../../contexts'
 import { DateRangePicker } from '../../components/date-range-picker'
+import { Traces } from '../../components/traces/traces.component'
 
 const TopCards = styled.div`
   display: grid;
@@ -74,13 +73,6 @@ const ErrorContainer = () => {
     },
   })
 
-  const { data: tracesData, loading: tracesLoading } = useQuery<getTraces>(GetTraces, {
-    variables: {
-      unitErrorId: id,
-      offset: 0,
-    },
-  })
-
   const title = data?.getError ? `${data?.getError?.type}: ${data?.getError?.message}` : ''
   const lastInvocationLogs = data?.getTraces?.traces?.[0]?.logs
   console.log(lastInvocationLogs)
@@ -93,8 +85,8 @@ const ErrorContainer = () => {
       actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
     >
       <Content>
-        {(loading || tracesLoading) && <LoadingPage />}
-        {!loading && !tracesLoading && data && (
+        {loading && <LoadingPage />}
+        {!loading && data && (
           <>
             <TopCards>
               <DataCard>
@@ -138,12 +130,7 @@ const ErrorContainer = () => {
                 />
               </GraphCard>
             </MidCards>
-            <TableCard>
-              <Box ml={2} mt={1} mb={1.5}>
-                <CardHeader>Traces</CardHeader>
-              </Box>
-              <TracesCard traces={tracesData?.getTraces?.traces} />
-            </TableCard>
+            <Traces unitErrorId={id} />
           </>
         )}
       </Content>
