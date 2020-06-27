@@ -7,7 +7,7 @@ import { DateTime } from 'luxon'
 import { round } from 'lodash-es'
 import { transparentize } from 'polished'
 
-import { GetTraces, GetUnit } from '../../graphql/queries'
+import { GetUnit } from '../../graphql/queries'
 import {
   Card,
   CardHeader,
@@ -16,12 +16,11 @@ import {
   PageHeader,
   SimpleAreaGraphComponent,
 } from '../../components'
-import { Content, TableCard, TopCardsContainer } from '../common.styles'
-import { getTraces } from '../../graphql/queries/types/getTraces'
+import { Content, TopCardsContainer } from '../common.styles'
 import { getUnit } from '../../graphql/queries/types/getUnit'
-import { TracesCard } from '../../components/traces-card.component'
 import { getStatusByErrorRate } from '../../utils'
 import { ThemeContext } from '../../contexts'
+import { Traces } from '../../components/traces/traces.component'
 
 const MidCards = styled.div`
   display: grid;
@@ -70,21 +69,14 @@ const UnitContainer = () => {
     },
   })
 
-  const { data: tracesData, loading: tracesLoading } = useQuery<getTraces>(GetTraces, {
-    variables: {
-      unitName,
-      offset: 0,
-    },
-  })
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const errorRate = useMemo(() => round(Number(data?.getUnit?.errorRate) * 100, 2), [data])
 
   return (
     <PageHeader title={unitName} breadcrumb={breadcrumb(unitName)} onBack={() => history.goBack()}>
       <Content>
-        {(loading || tracesLoading) && <LoadingPage />}
-        {!loading && !tracesLoading && data && (
+        {loading && <LoadingPage />}
+        {!loading && data && (
           <>
             <TopCardsContainer>
               <DataCard>
@@ -137,12 +129,7 @@ const UnitContainer = () => {
                 />
               </GraphCard>
             </MidCards>
-            <TableCard>
-              <Box ml={2} mt={1} mb={1.5}>
-                <CardHeader>Traces</CardHeader>
-              </Box>
-              <TracesCard traces={tracesData?.getTraces?.traces} />
-            </TableCard>
+            <Traces unitName={unitName} />
           </>
         )}
       </Content>
