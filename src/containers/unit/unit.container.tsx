@@ -55,7 +55,7 @@ const breadcrumb = (unitName: string = '') => ({
 })
 
 const UnitContainer = () => {
-  const { unitName } = useParams()
+  const { unitName } = useParams<{ unitName: string }>()
   const history = useHistory()
   const { theme } = useContext(ThemeContext)
 

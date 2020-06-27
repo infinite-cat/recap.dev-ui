@@ -17,8 +17,8 @@ export const DataCards = () => (
   <div>
     <DataCard>
       <CardHeader>Unit Name</CardHeader>
-      <Tooltip title="dev-traceman-func-test-unit" placement="top">
-        <Typography noWrap>dev-traceman-func-test-unit</Typography>
+      <Tooltip title="dev-recap-func-test-unit" placement="top">
+        <Typography noWrap>dev-recap-func-test-unit</Typography>
       </Tooltip>
     </DataCard>
     <Box mt={2} />

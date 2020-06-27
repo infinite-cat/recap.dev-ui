@@ -26,7 +26,7 @@ const breadcrumb = (id: string) => ({
 })
 
 const TraceContainer = () => {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const history = useHistory()
   const { data, loading } = useQuery<getTrace>(GetTrace, {
     variables: {

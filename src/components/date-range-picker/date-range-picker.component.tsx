@@ -1,6 +1,6 @@
 import React from 'react'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { transparentize } from 'polished'
 
 export interface DateRangePickerProps {
@@ -19,7 +19,7 @@ const StyledToggleButton = styled(ToggleButton)`
     border-radius: ${(p) => p.theme.shape.borderRadius}px;
   }
   &.Mui-selected {
-    color: ${(p) => p.theme.palette.common.white};
+    color: ${(p) => p.theme.palette.background.default};
     background: ${(p) => p.theme.palette.primary.main};
     &:hover {
       background: ${(p) => transparentize(0.2, p.theme.palette.primary.main)};

@@ -15,7 +15,6 @@ const StyledLink = styled(Link)`
   cursor: pointer;
 `
 const ActiveButton = styled(Button)`
-  color: white;
   margin-left: 10px;
 `
 

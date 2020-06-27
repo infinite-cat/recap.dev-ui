@@ -3,7 +3,7 @@ import React, { memo, PropsWithChildren, ReactElement } from 'react'
 import { Breadcrumbs, IconButton, Typography, Link as MaterialLink, Box } from '@material-ui/core'
 import { ArrowLeft } from 'react-feather'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { Helmet } from 'react-helmet'
 
 type Route = {
@@ -50,7 +50,7 @@ export const PageHeader = memo(
   ({ title = '', subTitle = '', breadcrumb, onBack, children, actions }: PageHeaderProps) => (
     <>
       <Helmet>
-        <title>Traceman {title && `| ${title}`}</title>
+        <title>recap.dev {title && `| ${title}`}</title>
       </Helmet>
       <StyledBox p={2}>
         <Header>

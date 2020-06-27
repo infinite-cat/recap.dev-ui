@@ -64,7 +64,7 @@ const ErrorContainer = () => {
   const { theme } = useContext(ThemeContext)
   const { since, range, setRange } = useContext(DateRangeContext)
 
-  const { id } = useParams()
+  const { id } = useParams<{ id: string }>()
   const history = useHistory()
 
   const { data, loading } = useQuery<getError>(GetError, {

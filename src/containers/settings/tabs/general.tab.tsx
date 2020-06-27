@@ -13,9 +13,6 @@ const DaysInput = styled(TextField)`
   width: 60px;
   margin: 0 10px;
 `
-const ActiveButton = styled(Button)`
-  color: white;
-`
 
 export const GeneralTab = () => {
   return (
@@ -26,9 +23,9 @@ export const GeneralTab = () => {
         <DaysInput value={30} name="days" variant="outlined" size="small" />
         days
       </CleanUpRow>
-      <ActiveButton color="primary" variant="contained">
+      <Button color="primary" variant="contained">
         Clean
-      </ActiveButton>
+      </Button>
     </TabCard>
   )
 }
