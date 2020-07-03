@@ -44,7 +44,7 @@ const lightOverrides = {
 const darkOverrides = {
   palette: {
     type: 'dark',
-    primary: { main: '#7ab1db' },
+    primary: { main: '#90CAF9' },
     secondary: { main: '#f48fb1' },
     success: { main: '#81c784' },
     info: { main: '#64b5f6' },

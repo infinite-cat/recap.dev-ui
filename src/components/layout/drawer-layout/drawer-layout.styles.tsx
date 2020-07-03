@@ -57,18 +57,18 @@ export const FullLogo = styled(({ expanded, ...props }) => <SvgFullLogo {...prop
   expanded: boolean
 }>`
   position: relative;
-  left: ${(p) => (p.expanded ? '0' : '-30px')};
+  left: ${(p) => (p.expanded ? '0' : '-33px')};
   width: ${width}px;
   height: 50px;
   padding: 0 40px;
   margin: 20px 0 0 0;
   cursor: pointer;
   transition: ${(p) => getTransition(p.theme, ['left'])};
+  color: ${(p) => p.theme.palette.text.primary};
   @media (${mobileMediaQuery}) {
     left: 0;
   }
   .logo-text {
-    color: ${(p) => p.theme.palette.text.primary};
     opacity: ${(p) => (p.expanded ? 1 : 0)};
     transition: ${(p) => getTransition(p.theme, ['opacity'])};
     @media (${mobileMediaQuery}) {
