@@ -2,6 +2,12 @@
 
 schema {
   query: Query
+  mutation: Mutation
+}
+
+type AwsIntegrationStatusTest {
+  error: String
+  success: Boolean!
 }
 
 type FunctionCall {
@@ -35,12 +41,18 @@ type Insight {
   type: String!
 }
 
+type Mutation {
+  setAwsIntegration(enabled: Boolean!): Settings!
+  testAwsIntegration: AwsIntegrationStatusTest!
+}
+
 type Query {
   getError(id: String!): UnitError
   getErrorStats(id: String!, since: String!): [UnitErrorDetailsGraphStats!]!
   getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
   getInsights(since: String!): [Insight!]!
   getNewErrors(since: String!): [UnitError!]!
+  getSettings: Settings!
   getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
   getTotalStats(since: String!): TotalStats!
   getTrace(id: String!): Trace
@@ -58,6 +70,11 @@ type ResourceAccessEvent {
   serviceName: String!
   start: String!
   status: String
+}
+
+type Settings {
+  id: Int
+  isAwsIntegrationEnabled: Boolean!
 }
 
 type TopInvokedUnit {

@@ -1,10 +1,13 @@
 import React, { memo } from 'react'
 import styled from 'styled-components/macro'
 import { Tab, Tabs, useMediaQuery } from '@material-ui/core'
+import { useQuery } from '@apollo/react-hooks'
 
-import { TabPanel, PageHeader } from '../../components'
+import { TabPanel, PageHeader, LoadingPage } from '../../components'
 import { GeneralTab, IntegrationTab } from './tabs'
 import { mobileMediaQuery } from '../../utils'
+import { getSettings } from '../../graphql/queries/types/getSettings'
+import { GetSettings } from '../../graphql/queries/settings.query'
 
 const StyledPageHeader = styled(PageHeader)`
   min-height: 100vh;
@@ -40,28 +43,35 @@ const SettingsContainer = memo(() => {
     setValue(newValue)
   }
 
+  const { data, loading } = useQuery<getSettings>(GetSettings)
+
   return (
     <StyledPageHeader title="Settings">
       <Content>
-        <StyledTabs
-          orientation={isMobile ? 'horizontal' : 'vertical'}
-          variant="scrollable"
-          indicatorColor="primary"
-          value={value}
-          onChange={handleChange}
-          aria-label="Vertical tabs example"
-        >
-          <Tab label="General" />
-          <Tab label="Integrations" />
-        </StyledTabs>
-        <TabPanels>
-          <TabPanel value={value} index={0}>
-            <GeneralTab />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <IntegrationTab />
-          </TabPanel>
-        </TabPanels>
+        {loading && <LoadingPage />}
+        {!loading && (
+          <>
+            <StyledTabs
+              orientation={isMobile ? 'horizontal' : 'vertical'}
+              variant="scrollable"
+              indicatorColor="primary"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+            >
+              <Tab label="General" />
+              <Tab label="Integrations" />
+            </StyledTabs>
+            <TabPanels>
+              <TabPanel value={value} index={0}>
+                <GeneralTab />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <IntegrationTab data={data?.getSettings!} />
+              </TabPanel>
+            </TabPanels>
+          </>
+        )}
       </Content>
     </StyledPageHeader>
   )
