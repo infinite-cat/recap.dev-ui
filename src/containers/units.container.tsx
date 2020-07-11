@@ -14,7 +14,7 @@ import {
 import { useQuery } from '@apollo/react-hooks'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
-import { debounce, isEmpty } from 'lodash-es'
+import { debounce, isEmpty, round } from 'lodash-es'
 
 import SearchIcon from '@material-ui/icons/Search'
 
@@ -97,7 +97,6 @@ const UnitsContainer = () => {
     }).then(() => {
       setLoadingMore(false)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingMore, fetchMore, data])
 
   return (
@@ -141,10 +140,12 @@ const UnitsContainer = () => {
                       </TableCell>
                       <TableCell>{row.invocations}</TableCell>
                       <TableCell>{row.errors}</TableCell>
-                      {row.errorRate !== null && <TableCell>{row.errorRate * 100}%</TableCell>}
+                      {row.errorRate !== null && (
+                        <TableCell>{round(row.errorRate * 100, 2)}%</TableCell>
+                      )}
                       {row.errorRate == null && <TableCell>N/A</TableCell>}
                       {row.averageDuration !== null && (
-                        <TableCell>{row.averageDuration} ms</TableCell>
+                        <TableCell>{round(row.averageDuration, 2)} ms</TableCell>
                       )}
                       {row.averageDuration == null && <TableCell>N/A</TableCell>}
                     </TableRow>

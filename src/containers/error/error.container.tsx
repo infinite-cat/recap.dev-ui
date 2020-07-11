@@ -4,7 +4,7 @@ import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import styled from 'styled-components/macro'
 import { Clock, Link as LinkIcon } from 'react-feather'
-import { transparentize } from 'polished'
+import { mix } from 'polished'
 
 import { GetError } from '../../graphql/queries'
 import {
@@ -119,12 +119,12 @@ const ErrorContainer = () => {
                     {
                       dataKey: 'invocations',
                       stroke: theme.palette.info.main,
-                      fill: transparentize(0.8, theme.palette.info.main),
+                      fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                     },
                     {
                       dataKey: 'errors',
                       stroke: theme.palette.error.light,
-                      fill: transparentize(0.8, theme.palette.error.light),
+                      fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                     },
                   ]}
                 />

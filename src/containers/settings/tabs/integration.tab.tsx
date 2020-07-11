@@ -72,7 +72,7 @@ export const IntegrationTab = ({ data }: IntegrationTabProps) => {
         <Button variant="contained" onClick={testAwsIntegrationFn}>
           Test
         </Button>
-        {!data.isAwsIntegrationEnabled && (
+        {!data?.isAwsIntegrationEnabled && (
           <ActiveButton
             color="primary"
             variant="contained"
@@ -81,7 +81,7 @@ export const IntegrationTab = ({ data }: IntegrationTabProps) => {
             Enable
           </ActiveButton>
         )}
-        {data.isAwsIntegrationEnabled && (
+        {data?.isAwsIntegrationEnabled && (
           <ActiveButton
             color="primary"
             variant="contained"

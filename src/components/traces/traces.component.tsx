@@ -79,7 +79,6 @@ export const Traces = ({ unitErrorId, unitName }: TracesProps) => {
     }).then(() => {
       setLoadingMore(false)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingMore, fetchMore, data])
 
   return (

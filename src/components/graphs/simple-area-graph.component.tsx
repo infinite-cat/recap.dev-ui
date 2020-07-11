@@ -65,7 +65,7 @@ export const SimpleAreaGraphComponent = ({
       <ResponsiveContainer>
         <AreaChart width={200} height={60} data={graphData} margin={{ top: 10 }}>
           {lines.map((line) => (
-            <Area key={line.dataKey as string} type="monotone" {...line} />
+            <Area key={line.dataKey as string} type="monotone" fillOpacity={1} {...line} />
           ))}
           <XAxis hide dataKey="x" orientation="bottom" mirror />
           <YAxis

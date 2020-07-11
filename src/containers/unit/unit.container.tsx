@@ -5,7 +5,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 import { round } from 'lodash-es'
-import { transparentize } from 'polished'
+import { mix } from 'polished'
 
 import { GetUnit } from '../../graphql/queries'
 import {
@@ -69,7 +69,6 @@ const UnitContainer = () => {
     },
   })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const errorRate = useMemo(() => round(Number(data?.getUnit?.errorRate) * 100, 2), [data])
 
   return (
@@ -103,12 +102,12 @@ const UnitContainer = () => {
                     {
                       dataKey: 'invocations',
                       stroke: theme.palette.info.main,
-                      fill: transparentize(0.8, theme.palette.info.main),
+                      fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                     },
                     {
                       dataKey: 'errors',
                       stroke: theme.palette.error.light,
-                      fill: transparentize(0.8, theme.palette.error.light),
+                      fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                     },
                   ]}
                 />
@@ -123,7 +122,7 @@ const UnitContainer = () => {
                     {
                       dataKey: 'averageDuration',
                       stroke: theme.palette.success.main,
-                      fill: transparentize(0.8, theme.palette.info.main),
+                      fill: mix(0.85, theme.palette.background.default, theme.palette.success.main),
                     },
                   ]}
                 />

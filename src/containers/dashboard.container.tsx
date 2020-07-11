@@ -1,7 +1,7 @@
 import React, { memo, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
 import { useQuery } from '@apollo/react-hooks'
-import { isEmpty } from 'lodash-es'
+import { isEmpty, round } from 'lodash-es'
 import {
   Box,
   Link as MaterialLink,
@@ -15,7 +15,7 @@ import {
 import { Link } from 'react-router-dom'
 import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
-import { transparentize } from 'polished'
+import { mix } from 'polished'
 
 import {
   Card,
@@ -153,7 +153,7 @@ const DashboardContainer = memo(() => {
               <SystemHealthDataGrid>
                 <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">
-                  {100 - data?.getTotalStats?.errorRate! * 100}%
+                  {round(100 - (data?.getTotalStats?.errorRate || 0) * 100, 2)}%
                 </SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
                 <SystemHealthItem variant="subtitle2">
@@ -170,12 +170,12 @@ const DashboardContainer = memo(() => {
                   {
                     dataKey: 'invocations',
                     stroke: theme.palette.info.main,
-                    fill: transparentize(0.8, theme.palette.info.main),
+                    fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                   },
                   {
                     dataKey: 'errors',
                     stroke: theme.palette.error.light,
-                    fill: transparentize(0.8, theme.palette.error.light),
+                    fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                   },
                 ]}
               />
