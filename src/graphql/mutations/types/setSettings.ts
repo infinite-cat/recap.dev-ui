@@ -3,11 +3,13 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { SettingsInput } from "./../../types/graphql-global-types";
+
 // ====================================================
-// GraphQL query operation: getSettings
+// GraphQL mutation operation: setSettings
 // ====================================================
 
-export interface getSettings_getSettings {
+export interface setSettings_setSettings {
   __typename: "Settings";
   id: number | null;
   isAwsIntegrationEnabled: boolean;
@@ -15,6 +17,10 @@ export interface getSettings_getSettings {
   notificationConfigurations: any | null;
 }
 
-export interface getSettings {
-  getSettings: getSettings_getSettings;
+export interface setSettings {
+  setSettings: setSettings_setSettings;
+}
+
+export interface setSettingsVariables {
+  settings: SettingsInput;
 }

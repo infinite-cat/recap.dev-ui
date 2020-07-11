@@ -5,6 +5,8 @@ export const GetSettings = gql`
     getSettings {
       id
       isAwsIntegrationEnabled
+      host
+      notificationConfigurations
     }
   }
 `

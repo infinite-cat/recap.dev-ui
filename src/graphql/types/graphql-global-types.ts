@@ -7,7 +7,13 @@
 // START Enums and Input Objects
 //==============================================================
 
+export interface SettingsInput {
+  host: string;
+  id?: number | null;
+  isAwsIntegrationEnabled: boolean;
+  notificationConfigurations?: any | null;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
-export default {}

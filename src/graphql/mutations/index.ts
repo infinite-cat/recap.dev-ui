@@ -1,1 +1,1 @@
-export * from './aws-integration.mutation'
+export * from './settings.mutation'

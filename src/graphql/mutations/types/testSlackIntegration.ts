@@ -4,15 +4,20 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL mutation operation: testAwsIntegration
+// GraphQL mutation operation: testSlackIntegration
 // ====================================================
 
-export interface testAwsIntegration_testAwsIntegration {
+export interface testSlackIntegration_testSlackIntegration {
   __typename: "IntegrationTestResult";
   success: boolean;
   error: string | null;
 }
 
-export interface testAwsIntegration {
-  testAwsIntegration: testAwsIntegration_testAwsIntegration;
+export interface testSlackIntegration {
+  testSlackIntegration: testSlackIntegration_testSlackIntegration;
+}
+
+export interface testSlackIntegrationVariables {
+  channelId: string;
+  token: string;
 }
