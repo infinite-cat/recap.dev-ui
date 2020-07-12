@@ -1,13 +1,15 @@
-import React, { memo } from 'react'
+import React, { memo, useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Tab, Tabs, useMediaQuery } from '@material-ui/core'
-import { useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { TabPanel, PageHeader, LoadingPage } from '../../components'
 import { GeneralTab, IntegrationTab } from './tabs'
 import { mobileMediaQuery } from '../../utils'
 import { getSettings } from '../../graphql/queries/types/getSettings'
 import { GetSettings } from '../../graphql/queries/settings.query'
+import { SetSettings } from '../../graphql/mutations'
+import { SettingsInput } from '../../graphql/types/graphql-global-types'
 
 const StyledPageHeader = styled(PageHeader)`
   min-height: 100vh;
@@ -45,6 +47,22 @@ const SettingsContainer = memo(() => {
 
   const { data, loading } = useQuery<getSettings>(GetSettings)
 
+  const [setSettings] = useMutation(SetSettings)
+  const updateSettings = useCallback(
+    async (settings: SettingsInput) => {
+      const { __typename, ...newSettings } = settings as any
+
+      await setSettings({
+        variables: {
+          settings: newSettings,
+        },
+        awaitRefetchQueries: true,
+        refetchQueries: ['getSettings'],
+      })
+    },
+    [setSettings],
+  )
+
   return (
     <StyledPageHeader title="Settings">
       <Content>
@@ -64,10 +82,10 @@ const SettingsContainer = memo(() => {
             </StyledTabs>
             <TabPanels>
               <TabPanel value={value} index={0}>
-                <GeneralTab />
+                <GeneralTab data={data?.getSettings!} updateSettings={updateSettings} />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <IntegrationTab data={data?.getSettings!} />
+                <IntegrationTab data={data?.getSettings!} updateSettings={updateSettings} />
               </TabPanel>
             </TabPanels>
           </>

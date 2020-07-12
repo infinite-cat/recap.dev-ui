@@ -5,11 +5,6 @@ schema {
   mutation: Mutation
 }
 
-type AwsIntegrationStatusTest {
-  error: String
-  success: Boolean!
-}
-
 type FunctionCall {
   end: String
   fileName: String!
@@ -41,9 +36,15 @@ type Insight {
   type: String!
 }
 
+type IntegrationTestResult {
+  error: String
+  success: Boolean!
+}
+
 type Mutation {
-  setAwsIntegration(enabled: Boolean!): Settings!
-  testAwsIntegration: AwsIntegrationStatusTest!
+  setSettings(settings: SettingsInput!): Settings!
+  testAwsIntegration: IntegrationTestResult!
+  testSlackIntegration(channelId: String!, token: String!): IntegrationTestResult!
 }
 
 type Query {
@@ -73,8 +74,10 @@ type ResourceAccessEvent {
 }
 
 type Settings {
+  host: String!
   id: Int
   isAwsIntegrationEnabled: Boolean!
+  notificationConfigurations: JSON
 }
 
 type TopInvokedUnit {
@@ -167,6 +170,13 @@ type UnitListDetails {
 enum CacheControlScope {
   PRIVATE
   PUBLIC
+}
+
+input SettingsInput {
+  host: String!
+  id: Int
+  isAwsIntegrationEnabled: Boolean!
+  notificationConfigurations: JSON
 }
 
 
