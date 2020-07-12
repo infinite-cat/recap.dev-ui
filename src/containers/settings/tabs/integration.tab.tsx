@@ -101,7 +101,7 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
     newSettings.notificationConfigurations = JSON.stringify(newConfigurations)
 
     await updateSettings(newSettings)
-  }, [slackConfiguration, data, notificationConfigurations])
+  }, [slackConfiguration, data, notificationConfigurations, updateSettings])
 
   const removeSlackIntegration = async () => {
     await setSlackConfiguration(undefined)
