@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react'
 import styled from 'styled-components/macro'
-import { Tab, Tabs, useMediaQuery } from '@material-ui/core'
+import { Tab, Tabs, Container, useMediaQuery } from '@material-ui/core'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 
 import { TabPanel, PageHeader, LoadingPage } from '../../components'
@@ -14,7 +14,7 @@ import { SettingsInput } from '../../graphql/types/graphql-global-types'
 const StyledPageHeader = styled(PageHeader)`
   min-height: 100vh;
 `
-const Content = styled.div`
+const Content = styled(Container)`
   flex: 1;
   display: flex;
   align-items: flex-start;

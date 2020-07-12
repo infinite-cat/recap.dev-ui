@@ -1,8 +1,8 @@
 import { isArray } from 'lodash-es'
 
-export const safeParse = (parseString: string) => {
+export const safeParse = (parseString?: string | null) => {
   try {
-    return JSON.parse(parseString)
+    return JSON.parse(parseString!)
   } catch (e) {
     return null
   }

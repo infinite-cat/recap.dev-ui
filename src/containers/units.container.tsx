@@ -23,6 +23,7 @@ import { PageHeader, Card, LoadingOverlay, FullWidthSpinner, Result } from '../c
 import { getUnits, getUnits_getUnits_units as Unit } from '../graphql/queries/types/getUnits'
 import { DateRangePicker } from '../components/date-range-picker'
 import { DateRangeContext } from '../contexts'
+import { formatDuration } from '../utils'
 
 const Content = styled.div``
 const Input = styled(InputBase)`
@@ -145,7 +146,7 @@ const UnitsContainer = () => {
                       )}
                       {row.errorRate == null && <TableCell>N/A</TableCell>}
                       {row.averageDuration !== null && (
-                        <TableCell>{round(row.averageDuration, 2)} ms</TableCell>
+                        <TableCell>{formatDuration(round(row.averageDuration))}</TableCell>
                       )}
                       {row.averageDuration == null && <TableCell>N/A</TableCell>}
                     </TableRow>

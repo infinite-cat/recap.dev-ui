@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import styled from 'styled-components/macro'
 import { Clock, Link as LinkIcon } from 'react-feather'
-import { mix } from 'polished'
+import { isEmpty } from 'lodash-es'
 
 import { GetError } from '../../graphql/queries'
 import {
@@ -13,27 +13,29 @@ import {
   DataCard,
   LoadingPage,
   PageHeader,
+  Result,
   SimpleAreaGraphComponent,
 } from '../../components'
 import { Content, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
-import { formatDateTime } from '../../utils'
+import { formatDateTime, safeParse } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
 import { DateRangeContext, ThemeContext } from '../../contexts'
 import { DateRangePicker } from '../../components/date-range-picker'
 import { Traces } from '../../components/traces/traces.component'
+import { LogList } from '../../components/logs'
 
 const TopCards = styled.div`
   display: grid;
   column-gap: 20px;
   grid-template-columns: 1fr 50%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `
 const MidCards = styled.div`
   display: grid;
   column-gap: 20px;
   grid-template-columns: 1fr 50%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
   }
@@ -45,6 +47,9 @@ const GraphCard = styled(Card)`
   margin: 10px 0;
   padding: 10px 0 0 0;
   overflow: visible;
+`
+const NoLogsResult = styled(Result)`
+  min-height: 120px;
 `
 
 const breadcrumb = (errorName: string = '') => ({
@@ -74,8 +79,7 @@ const ErrorContainer = () => {
   })
 
   const title = data?.getError ? `${data?.getError?.type}: ${data?.getError?.message}` : ''
-  const lastInvocationLogs = data?.getTraces?.traces?.[0]?.logs
-  console.log(lastInvocationLogs)
+  const parsedLogs = useMemo(() => safeParse(data?.getTraces?.traces?.[0]?.logs), [data])
 
   return (
     <PageHeader
@@ -119,18 +123,25 @@ const ErrorContainer = () => {
                     {
                       dataKey: 'invocations',
                       stroke: theme.palette.info.main,
-                      fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                     },
                     {
                       dataKey: 'errors',
                       stroke: theme.palette.error.light,
-                      fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                     },
                   ]}
                 />
               </GraphCard>
             </MidCards>
-            <Traces unitErrorId={id} />
+            <DataCard>
+              <CardHeader>Last Invocations Logs</CardHeader>
+              {isEmpty(parsedLogs) && <NoLogsResult type="empty" />}
+              {!isEmpty(parsedLogs) && <LogList logs={parsedLogs} />}
+            </DataCard>
+            <Box mb={2.5} />
+            <DataCard>
+              <CardHeader>Traces</CardHeader>
+              <Traces unitErrorId={id} />
+            </DataCard>
           </>
         )}
       </Content>

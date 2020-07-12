@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { max, orderBy, startCase, toLower, mapValues, last, first, round } from 'lodash-es'
-import { transparentize } from 'polished'
+import { mix, transparentize } from 'polished'
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
 
 import { ThemeContext } from '../../contexts'
@@ -65,7 +65,13 @@ export const SimpleAreaGraphComponent = ({
       <ResponsiveContainer>
         <AreaChart width={200} height={60} data={graphData} margin={{ top: 10 }}>
           {lines.map((line) => (
-            <Area key={line.dataKey as string} type="monotone" fillOpacity={1} {...line} />
+            <Area
+              key={line.dataKey as string}
+              type="monotone"
+              fillOpacity={1}
+              fill={mix(0.85, line.stroke!, theme.palette.info.main)}
+              {...line}
+            />
           ))}
           <XAxis hide dataKey="x" orientation="bottom" mirror />
           <YAxis

@@ -5,7 +5,6 @@ import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
 import { DateTime } from 'luxon'
 import { round } from 'lodash-es'
-import { mix } from 'polished'
 
 import { GetUnit } from '../../graphql/queries'
 import {
@@ -102,12 +101,10 @@ const UnitContainer = () => {
                     {
                       dataKey: 'invocations',
                       stroke: theme.palette.info.main,
-                      fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                     },
                     {
                       dataKey: 'errors',
                       stroke: theme.palette.error.light,
-                      fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                     },
                   ]}
                 />
@@ -122,7 +119,6 @@ const UnitContainer = () => {
                     {
                       dataKey: 'averageDuration',
                       stroke: theme.palette.success.main,
-                      fill: mix(0.85, theme.palette.background.default, theme.palette.success.main),
                     },
                   ]}
                 />

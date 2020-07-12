@@ -1,4 +1,4 @@
-import { formatDuration } from './date.utils'
+import { formatDuration } from '../date.utils'
 
 describe('date.utils.ts', () => {
   describe('formatDuration', () => {

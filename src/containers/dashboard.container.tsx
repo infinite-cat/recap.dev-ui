@@ -15,7 +15,6 @@ import {
 import { Link } from 'react-router-dom'
 import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
-import { mix } from 'polished'
 
 import {
   Card,
@@ -170,12 +169,10 @@ const DashboardContainer = memo(() => {
                   {
                     dataKey: 'invocations',
                     stroke: theme.palette.info.main,
-                    fill: mix(0.85, theme.palette.background.default, theme.palette.info.main),
                   },
                   {
                     dataKey: 'errors',
                     stroke: theme.palette.error.light,
-                    fill: mix(0.85, theme.palette.background.paper, theme.palette.error.light),
                   },
                 ]}
               />
