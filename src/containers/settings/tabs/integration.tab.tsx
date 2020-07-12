@@ -108,6 +108,15 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
     saveSlackIntegration()
   }
 
+  const onSlackChannelChange = (e: any) =>
+    setSlackConfiguration({ ...slackConfiguration, channelId: e.target.value })
+
+  const onSlackTokenChange = (e: any) =>
+    setSlackConfiguration({
+      ...slackConfiguration,
+      token: e.target.value,
+    })
+
   return (
     <>
       <TabCard>
@@ -175,12 +184,7 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
           <Box mb={1}>
             <SettingsInputField
               value={slackConfiguration?.token}
-              onChange={(e) =>
-                setSlackConfiguration({
-                  ...slackConfiguration,
-                  token: e.target.value,
-                })
-              }
+              onChange={onSlackTokenChange}
               name="Bot Token"
               label="Bot OAuth Token"
               size="small"
@@ -188,9 +192,7 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
           </Box>
           <SettingsInputField
             value={slackConfiguration?.channelId}
-            onChange={(e) =>
-              setSlackConfiguration({ ...slackConfiguration, channelId: e.target.value })
-            }
+            onChange={onSlackChannelChange}
             name="Channel Id"
             label="Channel Id"
             size="small"

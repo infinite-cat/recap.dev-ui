@@ -8,7 +8,7 @@ import { GeneralTab, IntegrationTab } from './tabs'
 import { mobileMediaQuery } from '../../utils'
 import { getSettings } from '../../graphql/queries/types/getSettings'
 import { GetSettings } from '../../graphql/queries/settings.query'
-import { SetSettings } from '../../graphql/mutations/settings.mutation'
+import { SetSettings } from '../../graphql/mutations'
 import { SettingsInput } from '../../graphql/types/graphql-global-types'
 
 const StyledPageHeader = styled(PageHeader)`
@@ -50,13 +50,7 @@ const SettingsContainer = memo(() => {
   const [setSettings] = useMutation(SetSettings)
   const updateSettings = useCallback(
     async (settings: SettingsInput) => {
-      const newSettings = {
-        ...settings,
-      }
-
-      // @ts-ignore
-      // eslint-disable-next-line no-underscore-dangle
-      delete newSettings.__typename
+      const { __typename, ...newSettings } = settings as any
 
       await setSettings({
         variables: {
