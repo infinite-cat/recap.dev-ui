@@ -69,7 +69,7 @@ export const SimpleAreaGraphComponent = ({
               key={line.dataKey as string}
               type="monotone"
               fillOpacity={1}
-              fill={mix(0.85, line.stroke!, theme.palette.info.main)}
+              fill={mix(0.85, theme.palette.background.paper, line.stroke!)}
               {...line}
             />
           ))}

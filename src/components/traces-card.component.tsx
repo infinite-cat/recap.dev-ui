@@ -14,7 +14,7 @@ import styled from 'styled-components/macro'
 import { Card } from './cards'
 import { StatusTag } from '.'
 import { getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { formatDateTime } from '../utils'
+import { formatDateTime, formatDuration } from '../utils'
 
 const Traces = styled(Table)`
   tr:last-child {
@@ -60,7 +60,7 @@ export const TracesCard = ({ className, traces }: TracesCardProps) => {
               <TableCell>
                 <StatusTag status={row.status} />
               </TableCell>
-              <TableCell>{row.duration} ms</TableCell>
+              <TableCell>{formatDuration(row.duration)}</TableCell>
               <TableCell>{formatDateTime(row.start)}</TableCell>
             </TableRow>
           ))}
