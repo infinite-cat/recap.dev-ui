@@ -15,7 +15,7 @@ export const TopCardsContainer = styled.div`
   column-gap: 20px;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `
 export const BasicInfoCard = styled(Card)`
   padding: ${(p) => `${p.theme.spacing(1)}px ${p.theme.spacing(2)}px`};

@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import styled from 'styled-components/macro'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/react-hooks'
-import { capitalize, toLower } from 'lodash-es'
+import { capitalize, isEmpty, toLower } from 'lodash-es'
 import { Clock, Link as LinkIcon } from 'react-feather'
 
 import { GetTrace } from '../../graphql/queries'
 import { getTrace } from '../../graphql/queries/types/getTrace'
-import { LoadingPage, PageHeader, DataCard, CardHeader } from '../../components'
+import { LoadingPage, PageHeader, DataCard, CardHeader, Result } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard, UnitLink } from '../common.styles'
-import { formatDateTime } from '../../utils'
+import { formatDateTime, safeParse } from '../../utils'
+import { LogList } from '../../components/logs'
+
+const NoLogsResult = styled(Result)`
+  min-height: 120px;
+`
 
 const breadcrumb = (id: string) => ({
   routes: [
@@ -35,6 +41,7 @@ const TraceContainer = () => {
   })
 
   const trace = data?.getTrace
+  const parsedLogs = useMemo(() => safeParse(data?.getTrace?.logs), [data])
 
   return (
     <PageHeader title={id} breadcrumb={breadcrumb(id!)} onBack={() => history.goBack()}>
@@ -70,6 +77,12 @@ const TraceContainer = () => {
               {trace?.error && <JsonCard title="Error" src={trace?.error} />}
               {trace?.response && <JsonCard title="Response" src={trace?.response} />}
             </TopCardsContainer>
+            <DataCard>
+              <CardHeader>Logs</CardHeader>
+              {isEmpty(parsedLogs) && <NoLogsResult type="empty" />}
+              {!isEmpty(parsedLogs) && <LogList logs={parsedLogs} />}
+            </DataCard>
+            <Box mb={2.5} />
             <BasicInfoCard>
               <CardHeader>Timeline</CardHeader>
               <Timeline trace={trace!} />
