@@ -3,14 +3,14 @@ import { useQuery } from '@apollo/react-hooks'
 import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components/macro'
 import SearchIcon from '@material-ui/icons/Search'
-import { debounce } from 'lodash-es'
+import { debounce, isEmpty } from 'lodash-es'
 import { IconButton, InputBase } from '@material-ui/core'
 
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { GetTraces } from '../../graphql/queries'
 import { TracesCard } from '../traces-card.component'
-import { FullWidthSpinner } from '../spinners'
 import { Card } from '../cards'
+import { FullWidthSpinner } from '../spinners'
 
 const Input = styled(InputBase)`
   flex: 1;
@@ -62,7 +62,12 @@ export const Traces = ({ unitErrorId, unitName }: TracesProps) => {
         offset: data?.getTraces?.offset,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) {
+        const newTraces = [
+          ...(prev?.getTraces?.traces ?? []),
+          ...(fetchMoreResult?.getTraces?.traces ?? []),
+        ]
+
+        if (!fetchMoreResult || isEmpty(newTraces)) {
           return prev
         }
 
@@ -70,7 +75,7 @@ export const Traces = ({ unitErrorId, unitName }: TracesProps) => {
           ...prev,
           getTraces: {
             ...prev?.getTraces,
-            traces: [...prev.getTraces.traces, ...fetchMoreResult.getTraces.traces],
+            traces: newTraces,
             offset: fetchMoreResult.getTraces.offset,
             hasMore: fetchMoreResult.getTraces.hasMore,
           },
@@ -80,6 +85,8 @@ export const Traces = ({ unitErrorId, unitName }: TracesProps) => {
       setLoadingMore(false)
     })
   }, [loadingMore, fetchMore, data])
+
+  const traces = data?.getTraces?.traces
 
   return (
     <StyledInfiniteScroll
@@ -96,8 +103,8 @@ export const Traces = ({ unitErrorId, unitName }: TracesProps) => {
           <SearchIcon />
         </IconButton>
       </Controls>
-      {!loading && data && <TracesCard traces={data?.getTraces?.traces} />}
-      {(loading || loadingMore) && <FullWidthSpinner />}
+      <TracesCard traces={traces} loading={loading} searchTerm={search} />
+      {loadingMore && <FullWidthSpinner />}
     </StyledInfiniteScroll>
   )
 }

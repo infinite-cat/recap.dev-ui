@@ -12,6 +12,7 @@ const SpinnerWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 100%;
+  z-index: 1;
   background: ${(p) => transparentize(0.3, p.theme.palette.background.paper)};
 `
 

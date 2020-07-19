@@ -14,10 +14,10 @@ const LogText = styled.pre<{ expanded: boolean }>`
   max-width: 100%;
   padding: 5px 10px;
   margin-left: 10px;
-  overflow: ${(p) => (p.expanded ? 'visible' : 'hidden')};
-  white-space: ${(p) => (p.expanded ? 'pre-wrap' : 'nowrap')};
+  white-space: pre-wrap;
   word-break: break-all;
-  text-overflow: ellipsis;
+  overflow-y: hidden;
+  height: ${(p) => (p.expanded ? 'auto' : '22px')};
   border-left: 1px solid ${(p) => p.theme.palette.text.secondary};
 `
 const ExpandButton = styled(({ expanded, ...props }) => <IconButton {...props} />)<{
@@ -40,6 +40,10 @@ const TimeChip = styled(Chip)`
   transition: none;
   svg {
     fill: ${(p) => p.theme.palette.background.default};
+  }
+  &:focus,
+  &:hover {
+    background: ${(p) => p.theme.palette.text.secondary};
   }
 `
 
@@ -65,6 +69,7 @@ export const Log = memo(({ message, timestamp }: LogType) => {
           icon={<TimeIcon />}
           deleteIcon={expandComponent}
           onDelete={() => setExpanded((x) => !x)}
+          onClick={() => setExpanded((x) => !x)}
           label={DateTime.fromMillis(timestamp ?? 0).toLocaleString(
             DateTime.DATETIME_MED_WITH_SECONDS,
           )}

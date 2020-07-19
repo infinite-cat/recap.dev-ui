@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react'
 import { List } from '@material-ui/core'
+import { trim } from 'lodash-es'
 
 import { Log, LogType } from './log.component'
 
@@ -11,7 +12,7 @@ interface LogList {
 export const LogList = ({ logs }: LogList) => (
   <List>
     {logs.map((log, index) => (
-      <Log key={index} message={log.message} timestamp={log.timestamp} />
+      <Log key={index} message={trim(log.message)} timestamp={log.timestamp} />
     ))}
   </List>
 )
