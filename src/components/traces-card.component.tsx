@@ -64,7 +64,6 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
           </TableHead>
           <TableBody>
             {traces?.map((row) => {
-              // const logsWithTerm = row?.logs?.filter((log) => log.include(searchTerm)) ?? []
               let logs = []
               if (searchTerm && !loading) {
                 const parsedLogs = safeParse(row?.logs) ?? []
