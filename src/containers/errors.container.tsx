@@ -9,7 +9,7 @@ import {
   TableRow,
   Link as MaterialLink,
 } from '@material-ui/core'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'

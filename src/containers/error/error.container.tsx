@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import styled from 'styled-components/macro'
 import { Clock, Link as LinkIcon } from 'react-feather'
 import { isEmpty } from 'lodash-es'

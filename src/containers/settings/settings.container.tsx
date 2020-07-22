@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from 'react'
 import styled from 'styled-components/macro'
 import { Tab, Tabs, Container, useMediaQuery } from '@material-ui/core'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/client'
 
 import { TabPanel, PageHeader, LoadingPage } from '../../components'
 import { GeneralTab, IntegrationTab } from './tabs'

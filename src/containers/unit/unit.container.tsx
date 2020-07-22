@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useState } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import styled from 'styled-components/macro'
 import { useParams, useHistory } from 'react-router-dom'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
 import { round } from 'lodash-es'
 

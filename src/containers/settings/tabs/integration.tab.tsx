@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Box, Button, Link, TextField, Typography } from '@material-ui/core'
 import { Link as LinkIcon } from 'react-feather'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/client'
 import { find, filter } from 'lodash-es'
 
 import { CardHeader, FullWidthSpinner, StatusTag } from '../../../components'

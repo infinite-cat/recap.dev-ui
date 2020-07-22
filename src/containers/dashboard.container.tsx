@@ -1,6 +1,6 @@
 import React, { memo, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import { isEmpty, round } from 'lodash-es'
 import {
   Box,

@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import { gql } from '@apollo/client'
 
 export const GetUnits = gql`
   query getUnits($search: String, $offset: Int, $since: String!) {

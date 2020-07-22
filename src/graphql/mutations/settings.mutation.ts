@@ -1,4 +1,4 @@
-import { gql } from 'apollo-boost'
+import { gql } from '@apollo/client'
 
 export const SetSettings = gql`
   mutation setSettings($settings: SettingsInput!) {

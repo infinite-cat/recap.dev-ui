@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import { capitalize, isEmpty, toLower } from 'lodash-es'
 import { Clock, Link as LinkIcon } from 'react-feather'
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/client'
 import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components/macro'
 import SearchIcon from '@material-ui/icons/Search'
