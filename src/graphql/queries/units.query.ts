@@ -1,8 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const GetUnits = gql`
-  query getUnits($search: String, $offset: Int, $since: String!) {
-    getUnits(search: $search, offset: $offset, since: $since) {
+  query getUnits(
+    $search: String
+    $offset: Int
+    $since: String!
+    $orderBy: String
+    $orderDirection: String
+  ) {
+    getUnits(
+      search: $search
+      offset: $offset
+      since: $since
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       units {
         unitName
         estimatedCost

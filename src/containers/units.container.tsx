@@ -59,6 +59,8 @@ const UnitsContainer = () => {
       since,
       search,
       offset: 0,
+      orderBy: 'estimatedCost',
+      orderDirection: 'DESC',
     },
   })
 

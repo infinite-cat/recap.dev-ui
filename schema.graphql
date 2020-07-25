@@ -59,7 +59,7 @@ type Query {
   getTrace(id: String!): Trace
   getTraces(limit: Int, offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
   getUnit(graphSince: String!, unitName: String!): UnitDetails
-  getUnits(offset: Int, search: String, since: String!): GetUnitsResponse!
+  getUnits(offset: Int, orderBy: String, orderDirection: String, search: String, since: String!): GetUnitsResponse!
 }
 
 type ResourceAccessEvent {
