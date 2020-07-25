@@ -43,6 +43,7 @@ export interface getDashboardData_getNewErrors {
 export interface getDashboardData_getTopInvokedUnits {
   __typename: "TopInvokedUnit";
   unitName: string;
+  estimatedCost: number | null;
   invocations: string;
   errors: string;
 }

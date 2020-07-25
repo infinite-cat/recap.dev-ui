@@ -46,6 +46,7 @@ const columns = [
   { title: 'Errors', dataIndex: 'errors' as keyof Unit, key: 'errors' },
   { title: 'Error Rate', dataIndex: 'errorRate' as keyof Unit, key: 'errorRate' },
   { title: 'Avg. Duration', dataIndex: 'averageDuration' as keyof Unit, key: 'averageDuration' },
+  { title: 'Est. Monthly Cost', dataIndex: 'estimatedCost' as keyof Unit, key: 'estimatedCost' },
 ]
 
 const UnitsContainer = () => {
@@ -149,6 +150,10 @@ const UnitsContainer = () => {
                         <TableCell>{formatDuration(round(row.averageDuration))}</TableCell>
                       )}
                       {row.averageDuration == null && <TableCell>N/A</TableCell>}
+                      {row.estimatedCost !== null && (
+                        <TableCell>${round(row.estimatedCost, 2)}</TableCell>
+                      )}
+                      {row.estimatedCost == null && <TableCell>N/A</TableCell>}
                     </TableRow>
                   ))}
                 </TableBody>

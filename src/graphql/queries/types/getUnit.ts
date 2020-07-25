@@ -18,6 +18,7 @@ export interface getUnit_getUnit_graphStats {
 export interface getUnit_getUnit {
   __typename: "UnitDetails";
   unitName: string;
+  estimatedCost: number | null;
   errorRate: number | null;
   graphStats: getUnit_getUnit_graphStats[];
 }

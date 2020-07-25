@@ -5,6 +5,7 @@ export const GetUnits = gql`
     getUnits(search: $search, offset: $offset, since: $since) {
       units {
         unitName
+        estimatedCost
         invocations
         errors
         errorRate
@@ -20,6 +21,7 @@ export const GetUnit = gql`
   query getUnit($unitName: String!, $graphSince: String!) {
     getUnit(unitName: $unitName, graphSince: $graphSince) {
       unitName
+      estimatedCost
       errorRate
       graphStats {
         invocations

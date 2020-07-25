@@ -82,6 +82,7 @@ type Settings {
 
 type TopInvokedUnit {
   errors: String!
+  estimatedCost: Float
   invocations: String!
   unitName: String!
 }
@@ -117,6 +118,7 @@ type Trace {
 
 type UnitDetails {
   errorRate: Float
+  estimatedCost: Float
   graphStats: [UnitDetailsGraphStats!]!
   unitName: String!
 }
@@ -163,6 +165,7 @@ type UnitListDetails {
   averageDuration: Float
   errorRate: Float
   errors: String!
+  estimatedCost: Float
   invocations: String!
   unitName: String!
 }

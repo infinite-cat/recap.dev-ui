@@ -28,6 +28,7 @@ export const GetDashboardData = gql`
     }
     getTopInvokedUnits(since: $since) {
       unitName
+      estimatedCost
       invocations
       errors
     }

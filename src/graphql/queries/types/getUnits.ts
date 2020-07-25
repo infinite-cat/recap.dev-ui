@@ -10,6 +10,7 @@
 export interface getUnits_getUnits_units {
   __typename: "UnitListDetails";
   unitName: string;
+  estimatedCost: number | null;
   invocations: string;
   errors: string;
   errorRate: number | null;
