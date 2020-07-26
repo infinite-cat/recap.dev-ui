@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { memo } from 'react'
 import {
   Link as MaterialLink,
@@ -10,14 +11,13 @@ import {
 } from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
-import { isEmpty } from 'lodash-es'
+import { flatten, isEmpty } from 'lodash-es'
 
 import { Card } from './cards'
-import { LoadingOverlay, Result, StatusTag } from '.'
+import { HighlightedText, LoadingOverlay, Result, StatusTag } from '.'
 import { getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { formatDateTime, formatDuration, safeParse } from '../utils'
+import { formatDateTime, formatDuration, getMatches, safeParse } from '../utils'
 import { LogType } from './logs/log.component'
-import { LogList } from './logs'
 
 const Wrapper: typeof TableContainer = styled(({ loading, ...props }) => (
   <TableContainer {...props} />
@@ -31,6 +31,15 @@ const Traces = styled(Table)`
       border: none;
     }
   }
+`
+const LogsWrapper = styled.div`
+  padding: 0 20px;
+  max-height: 150px;
+  overflow-y: auto;
+`
+const LogsTitle = styled.div`
+  padding: 0 20px;
+  margin-bottom: 10px;
 `
 
 const columns = [
@@ -64,17 +73,21 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
           </TableHead>
           <TableBody>
             {traces?.map((row) => {
-              let logs = []
+              let logs: string[] = []
               if (searchTerm && !loading) {
                 const parsedLogs = safeParse(row?.logs) ?? []
-                logs = parsedLogs.filter((log: LogType) => log.message?.includes(searchTerm))
+                logs = flatten(
+                  parsedLogs
+                    .filter((log: LogType) => log.message?.includes(searchTerm))
+                    .map((log: LogType) => getMatches(log.message, searchTerm)),
+                )
               }
               return (
                 <React.Fragment key={row.id}>
                   <TableRow hover>
                     <TableCell scope="row">
                       <MaterialLink to={`/traces/${row.id}`} component={Link}>
-                        {row.id}
+                        <HighlightedText text={row.id} highlight={searchTerm} />
                       </MaterialLink>
                     </TableCell>
                     <TableCell scope="row">{row.unitName}</TableCell>
@@ -87,10 +100,12 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
                   {!isEmpty(logs) && (
                     <TableRow>
                       <TableCell colSpan={5}>
-                        <div style={{ padding: '0 20px' }}>
-                          Found search term in logs:
-                          <LogList logs={logs} />
-                        </div>
+                        <LogsTitle>Found search term in logs (first 10 matches): </LogsTitle>
+                        <LogsWrapper>
+                          {logs.slice(0, 10).map((log, index) => (
+                            <HighlightedText key={index} text={log} highlight={searchTerm} />
+                          ))}
+                        </LogsWrapper>
                       </TableCell>
                     </TableRow>
                   )}
