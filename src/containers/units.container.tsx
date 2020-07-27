@@ -6,6 +6,7 @@ import {
   InputBase,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TableRow,
@@ -51,7 +52,8 @@ const columns = [
 
 const UnitsContainer = () => {
   const { since, range, setRange } = useContext(DateRangeContext)
-
+  const [orderBy, setOrderBy] = useState('estimatedCost')
+  const [orderDirection, setOrderDirection] = useState<'desc' | 'asc'>('desc')
   const [search, setSearch] = useState('')
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore } = useQuery<getUnits>(GetUnits, {
@@ -59,10 +61,16 @@ const UnitsContainer = () => {
       since,
       search,
       offset: 0,
-      orderBy: 'estimatedCost',
-      orderDirection: 'DESC',
+      orderBy,
+      orderDirection,
     },
   })
+
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: string) => {
+    const isDesc = orderBy === property && orderDirection === 'desc'
+    setOrderDirection(isDesc ? 'asc' : 'desc')
+    setOrderBy(property)
+  }
 
   const debouncedSetSearch = useMemo(
     () =>
@@ -130,7 +138,15 @@ const UnitsContainer = () => {
                 <TableHead>
                   <TableRow>
                     {columns.map((column) => (
-                      <TableCell key={column.dataIndex}>{column.title}</TableCell>
+                      <TableCell key={column.dataIndex}>
+                        <TableSortLabel
+                          active={orderBy === column.dataIndex}
+                          direction={orderDirection}
+                          onClick={(e) => handleRequestSort(e, column.dataIndex)}
+                        >
+                          {column.title}
+                        </TableSortLabel>
+                      </TableCell>
                     ))}
                   </TableRow>
                 </TableHead>
