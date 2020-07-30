@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useMemo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { useQuery } from '@apollo/client'
 import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components/macro'
 import SearchIcon from '@material-ui/icons/Search'
-import { debounce, isEmpty } from 'lodash-es'
+import { useDebounce } from 'react-use'
+import { isEmpty } from 'lodash-es'
 import { IconButton, InputBase } from '@material-ui/core'
 
 import { getTraces } from '../../graphql/queries/types/getTraces'
@@ -34,6 +35,7 @@ export interface TracesProps {
 
 export const Traces = memo(
   ({ unitErrorId, unitName, externalSearch, setExternalTerm }: TracesProps) => {
+    const [inputValue, setInputValue] = useState('')
     const [search, setSearch] = useState('')
     const [loadingMore, setLoadingMore] = useState(false)
     const { data, loading, fetchMore } = useQuery<getTraces>(GetTraces, {
@@ -45,12 +47,14 @@ export const Traces = memo(
       },
     })
 
-    const debouncedSetSearch = useMemo(
-      () =>
-        debounce((newSearch: string) => {
-          setSearch(newSearch)
-        }, 500),
-      [setSearch],
+    useDebounce(
+      () => {
+        if (inputValue !== search) {
+          setSearch(inputValue)
+        }
+      },
+      700,
+      [inputValue],
     )
 
     const fetchMoreTraces = useCallback(() => {
@@ -100,12 +104,12 @@ export const Traces = memo(
         <Controls>
           <Input
             placeholder="Search for a trace id, unit name or a log message"
-            value={externalSearch || search}
+            value={externalSearch || inputValue}
             onChange={(e) => {
               if (setExternalTerm) {
                 return setExternalTerm(e.target.value)
               }
-              return debouncedSetSearch(e.target.value)
+              return setInputValue(e.target.value)
             }}
           />
           <IconButton type="submit" aria-label="search">
