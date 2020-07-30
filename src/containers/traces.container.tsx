@@ -27,7 +27,7 @@ const TracesContainer = () => {
   return (
     <PageHeader title="Traces" subTitle="List of all your traces">
       <Content>
-        <Traces externalSearch={searchTerm} setExternalTerm={setQuery} />
+        <Traces externalSearch={query} setExternalTerm={setQuery} />
       </Content>
     </PageHeader>
   )
