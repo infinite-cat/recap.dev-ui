@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import React, { memo } from 'react'
 import {
+  Box,
   Link as MaterialLink,
   Table,
   TableBody,
@@ -103,7 +104,9 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
                         <LogsTitle>Found search term in logs (first 10 matches): </LogsTitle>
                         <LogsWrapper>
                           {logs.slice(0, 10).map((log, index) => (
-                            <HighlightedText key={index} text={log} highlight={searchTerm} />
+                            <Box key={index} mb={2}>
+                              <HighlightedText text={log} highlight={searchTerm} />
+                            </Box>
                           ))}
                         </LogsWrapper>
                       </TableCell>
