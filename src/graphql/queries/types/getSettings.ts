@@ -12,6 +12,7 @@ export interface getSettings_getSettings {
   id: number | null;
   isAwsIntegrationEnabled: boolean;
   host: string;
+  cleanupAfterDays: number | null;
   notificationConfigurations: any | null;
 }
 

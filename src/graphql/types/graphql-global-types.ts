@@ -8,6 +8,7 @@
 //==============================================================
 
 export interface SettingsInput {
+  cleanupAfterDays?: number | null;
   host: string;
   id?: number | null;
   isAwsIntegrationEnabled: boolean;

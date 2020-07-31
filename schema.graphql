@@ -74,6 +74,7 @@ type ResourceAccessEvent {
 }
 
 type Settings {
+  cleanupAfterDays: Int
   host: String!
   id: Int
   isAwsIntegrationEnabled: Boolean!
@@ -176,6 +177,7 @@ enum CacheControlScope {
 }
 
 input SettingsInput {
+  cleanupAfterDays: Int
   host: String!
   id: Int
   isAwsIntegrationEnabled: Boolean!

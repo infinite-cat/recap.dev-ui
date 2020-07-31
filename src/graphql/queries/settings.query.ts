@@ -6,6 +6,7 @@ export const GetSettings = gql`
       id
       isAwsIntegrationEnabled
       host
+      cleanupAfterDays
       notificationConfigurations
     }
   }
