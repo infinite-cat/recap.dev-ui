@@ -29,7 +29,8 @@ export interface getTrace_getTrace_resourceAccessEvents {
 
 export interface getTrace_getTrace {
   __typename: "Trace";
-  id: string;
+  id: number;
+  externalId: string;
   unitName: string;
   start: string;
   end: string;

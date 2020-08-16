@@ -88,7 +88,7 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
                   <TableRow hover>
                     <TableCell scope="row">
                       <MaterialLink to={`/traces/${row.id}`} component={Link}>
-                        <HighlightedText text={row.id} highlight={searchTerm} />
+                        <HighlightedText text={row.externalId} highlight={searchTerm} />
                       </MaterialLink>
                     </TableCell>
                     <TableCell scope="row">{row.unitName}</TableCell>

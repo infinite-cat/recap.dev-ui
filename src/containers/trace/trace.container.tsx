@@ -44,7 +44,11 @@ const TraceContainer = () => {
   const parsedLogs = useMemo(() => safeParse(data?.getTrace?.logs), [data])
 
   return (
-    <PageHeader title={id} breadcrumb={breadcrumb(id!)} onBack={() => history.goBack()}>
+    <PageHeader
+      title={trace?.externalId}
+      breadcrumb={breadcrumb(trace?.externalId!)}
+      onBack={() => history.goBack()}
+    >
       <Content>
         {loading && <LoadingPage />}
         {!loading && data && (

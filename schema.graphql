@@ -105,9 +105,10 @@ type Trace {
   duration: Int!
   end: String!
   error: String
+  externalId: String!
   extraData: String
   functionCallEvents: [FunctionCall!]!
-  id: String!
+  id: Int!
   logs: String
   request: String!
   resourceAccessEvents: [ResourceAccessEvent!]!
@@ -125,7 +126,7 @@ type UnitDetails {
 }
 
 type UnitDetailsGraphStats {
-  averageDuration: Float!
+  averageDuration: Float
   dateTime: String!
   errors: String!
   invocations: String!

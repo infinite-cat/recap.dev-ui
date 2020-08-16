@@ -5,6 +5,7 @@ export const GetTraces = gql`
     getTraces(search: $search, offset: $offset, unitName: $unitName, unitErrorId: $unitErrorId) {
       traces {
         id
+        externalId
         unitName
         start
         end
@@ -25,6 +26,7 @@ export const GetTrace = gql`
   query getTrace($id: String!) {
     getTrace(id: $id) {
       id
+      externalId
       unitName
       start
       end

@@ -9,7 +9,8 @@
 
 export interface getTraces_getTraces_traces {
   __typename: "Trace";
-  id: string;
+  id: number;
+  externalId: string;
   unitName: string;
   start: string;
   end: string;

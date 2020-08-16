@@ -27,7 +27,7 @@ export interface getError_getErrorStats {
 
 export interface getError_getTraces_traces {
   __typename: "Trace";
-  id: string;
+  id: number;
   logs: string | null;
 }
 

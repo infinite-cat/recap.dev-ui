@@ -11,7 +11,7 @@ export interface getUnit_getUnit_graphStats {
   __typename: "UnitDetailsGraphStats";
   invocations: string;
   errors: string;
-  averageDuration: number;
+  averageDuration: number | null;
   dateTime: string;
 }
 
