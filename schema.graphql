@@ -57,7 +57,7 @@ type Query {
   getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
   getTotalStats(since: String!): TotalStats!
   getTrace(id: String!): Trace
-  getTraces(limit: Int, offset: Int, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
+  getTraces(limit: Int, offset: Int, onlyErrors: Boolean, search: String, unitErrorId: String, unitName: String): GetTracesResponse!
   getUnit(graphSince: String!, unitName: String!): UnitDetails
   getUnits(offset: Int, orderBy: String, orderDirection: String, search: String, since: String!): GetUnitsResponse!
 }

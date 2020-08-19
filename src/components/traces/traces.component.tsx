@@ -43,6 +43,7 @@ export const Traces = memo(
         unitErrorId,
         unitName,
         search: externalSearch || search,
+        onlyErrors: false,
         offset: 0,
       },
     })

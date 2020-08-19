@@ -1,8 +1,20 @@
 import { gql } from '@apollo/client'
 
 export const GetTraces = gql`
-  query getTraces($search: String, $offset: Int, $unitName: String, $unitErrorId: String) {
-    getTraces(search: $search, offset: $offset, unitName: $unitName, unitErrorId: $unitErrorId) {
+  query getTraces(
+    $search: String
+    $offset: Int
+    $unitName: String
+    $unitErrorId: String
+    $onlyErrors: Boolean
+  ) {
+    getTraces(
+      search: $search
+      offset: $offset
+      unitName: $unitName
+      unitErrorId: $unitErrorId
+      onlyErrors: $onlyErrors
+    ) {
       traces {
         id
         externalId
