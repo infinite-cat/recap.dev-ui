@@ -44,6 +44,7 @@ export const JsonViewer = ({ src, ...rest }: JsonViewerProps) => {
     <Wrapper>
       <ReactJson
         src={JSON.parse(src!)}
+        shouldCollapse={(obj) => obj.namespace.length >= 3 && Object.keys(obj.src).length > 20}
         theme={themeType === 'light' ? 'rjv-default' : ('ashes' as any)}
         {...rest}
       />
