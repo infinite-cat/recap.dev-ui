@@ -27,6 +27,7 @@ export const GetTraces = gql`
         request
         response
         error
+        extraData
       }
       offset
       hasMore
@@ -48,6 +49,7 @@ export const GetTrace = gql`
       response
       error
       logs
+      extraData
       functionCallEvents {
         start
         end
