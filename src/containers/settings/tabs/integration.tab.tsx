@@ -1,19 +1,18 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
 import { Box, Button, Link, TextField, Typography } from '@material-ui/core'
 import { Link as LinkIcon } from 'react-feather'
 import { useMutation } from '@apollo/client'
 import { find, filter } from 'lodash-es'
+import { useSnackbar } from 'notistack'
 
-import { CardHeader, FullWidthSpinner, StatusTag } from '../../../components'
+import { CardHeader, LoadingButton } from '../../../components'
 import { TabCard } from './tabs.styles'
 import { getSettings_getSettings as getSettings } from '../../../graphql/queries/types/getSettings'
-import { testAwsIntegration_testAwsIntegration as testAwsIntegrationResponse } from '../../../graphql/mutations/types/testAwsIntegration'
 import { JsonCard } from '../../../components/json/json-card.component'
 import { TestAwsIntegration, TestSlackIntegration } from '../../../graphql/mutations'
 import { SettingsInput } from '../../../graphql/types/graphql-global-types'
 import { ReactComponent as SlackLogo } from '../../../svg/integrations/slack.svg'
-import { testSlackIntegration_testSlackIntegration as testSlackIntegrationResponse } from '../../../graphql/mutations/types/testSlackIntegration'
 
 const StyledLink = styled(Link)`
   cursor: pointer;
@@ -42,12 +41,9 @@ export interface IntegrationTabProps {
 }
 
 export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) => {
-  const [awsIntegrationTestResult, setAwsIntegrationTestResult] = useState<
-    testAwsIntegrationResponse | undefined
-  >(undefined)
-  const [slackIntegrationTestResult, setSlackIntegrationTestResult] = useState<
-    testSlackIntegrationResponse | undefined
-  >(undefined)
+  const [awsIntegrationError, setAwsIntegrationError] = useState('')
+  const [setSlackIntegrationError, setSetSlackIntegrationError] = useState('')
+  const { enqueueSnackbar } = useSnackbar()
 
   const [testAwsIntegration, { loading: awsIntegrationTestLoading }] = useMutation(
     TestAwsIntegration,
@@ -66,24 +62,49 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
     [data, updateSettings],
   )
 
-  const notificationConfigurations =
-    (data?.notificationConfigurations && JSON.parse(data?.notificationConfigurations)) || []
+  const notificationConfigurations = useMemo(
+    () => (data?.notificationConfigurations && JSON.parse(data?.notificationConfigurations)) || [],
+    [data],
+  )
+
   const backendSlackConfiguration = find(notificationConfigurations, { type: 'slack' })
   const [slackConfiguration, setSlackConfiguration] = useState(backendSlackConfiguration)
 
   const testAwsIntegrationFn = useCallback(async () => {
+    setAwsIntegrationError('')
     const response = await testAwsIntegration()
-    setAwsIntegrationTestResult(response.data.testAwsIntegration)
-  }, [testAwsIntegration])
+    const result = response?.data?.testAwsIntegration ?? {}
+    const variant = result.success ? 'success' : 'error'
+    const text = result.success ? 'AWS integration works fine' : 'Something went wrong'
+    const autoHideDuration = result.success ? 3000 : null
+    if (result.error) {
+      setAwsIntegrationError(result.error)
+    }
+    enqueueSnackbar(text, { variant, autoHideDuration })
+  }, [testAwsIntegration, setAwsIntegrationError, enqueueSnackbar])
 
   const testSlackIntegration = useCallback(async () => {
+    setSetSlackIntegrationError('')
     const response = await testSlackIntegrationMutation({
       variables: {
         ...slackConfiguration,
       },
     })
-    setSlackIntegrationTestResult(response.data.testSlackIntegration)
-  }, [slackConfiguration, testSlackIntegrationMutation, setSlackIntegrationTestResult])
+    const result = response?.data?.testSlackIntegration ?? {}
+    const variant = result.success ? 'success' : 'error'
+    const text = result.success ? 'Slack integration works fine' : 'Something went wrong'
+    const autoHideDuration = result.success ? 3000 : null
+    if (result.error) {
+      setSetSlackIntegrationError(result.error)
+    }
+
+    enqueueSnackbar(text, { variant, autoHideDuration })
+  }, [
+    slackConfiguration,
+    testSlackIntegrationMutation,
+    setSetSlackIntegrationError,
+    enqueueSnackbar,
+  ])
 
   const saveSlackIntegration = useCallback(async () => {
     const newSettings = { ...data }
@@ -129,9 +150,14 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
           Setup guide <LinkIcon size={14} />
         </StyledLink>
         <Box mt={2} />
-        <Button variant="contained" onClick={testAwsIntegrationFn}>
+        <LoadingButton
+          variant="contained"
+          onClick={testAwsIntegrationFn}
+          loading={awsIntegrationTestLoading}
+          disabled={awsIntegrationTestLoading}
+        >
           Test
-        </Button>
+        </LoadingButton>
         {!data?.isAwsIntegrationEnabled && (
           <ActiveButton
             color="primary"
@@ -150,18 +176,9 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
             Disable
           </ActiveButton>
         )}
-        {awsIntegrationTestLoading && <FullWidthSpinner />}
-        {awsIntegrationTestResult && !awsIntegrationTestLoading && (
+        {awsIntegrationError && (
           <Box mt={2}>
-            Result: <StatusTag status={awsIntegrationTestResult.success ? 'OK' : 'ERROR'} />
-            {awsIntegrationTestResult.error && (
-              <JsonCard
-                elevation={2}
-                title="Error"
-                src={awsIntegrationTestResult.error}
-                variant="outlined"
-              />
-            )}
+            <JsonCard elevation={2} title="Error" src={awsIntegrationError} variant="outlined" />
           </Box>
         )}
       </TabCard>
@@ -180,13 +197,14 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
         <StyledLink>
           Setup guide <LinkIcon size={14} />
         </StyledLink>
-        <Box mb={1} mt={1}>
-          <Box mb={1}>
+        <Box mb={1} mt={2}>
+          <Box mb={3}>
             <SettingsInputField
               value={slackConfiguration?.token}
               onChange={onSlackTokenChange}
               name="Bot Token"
               label="Bot OAuth Token"
+              variant="outlined"
               size="small"
             />
           </Box>
@@ -195,13 +213,19 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
             onChange={onSlackChannelChange}
             name="Channel Id"
             label="Channel Id"
+            variant="outlined"
             size="small"
           />
         </Box>
-        <Box mb={1} mt={1}>
-          <Button variant="contained" onClick={testSlackIntegration}>
+        <Box mb={1} mt={2}>
+          <LoadingButton
+            variant="contained"
+            onClick={testSlackIntegration}
+            loading={slackIntegrationTestLoading}
+            disabled={slackIntegrationTestLoading}
+          >
             Test
-          </Button>
+          </LoadingButton>
           <ActiveButton variant="contained" color="primary" onClick={saveSlackIntegration}>
             Save
           </ActiveButton>
@@ -211,18 +235,14 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
             </ActiveButton>
           )}
         </Box>
-        {slackIntegrationTestLoading && <FullWidthSpinner />}
-        {slackIntegrationTestResult && !slackIntegrationTestLoading && (
+        {setSlackIntegrationError && (
           <Box mt={2}>
-            Result: <StatusTag status={slackIntegrationTestResult.success ? 'OK' : 'ERROR'} />
-            {slackIntegrationTestResult.error && (
-              <JsonCard
-                elevation={2}
-                title="Error"
-                src={slackIntegrationTestResult.error}
-                variant="outlined"
-              />
-            )}
+            <JsonCard
+              elevation={2}
+              title="Error"
+              src={setSlackIntegrationError}
+              variant="outlined"
+            />
           </Box>
         )}
       </TabCard>

@@ -1,7 +1,9 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components/macro'
 import { Tab, Tabs, Container, useMediaQuery } from '@material-ui/core'
 import { useMutation, useQuery } from '@apollo/client'
+import { useParams, useHistory, Link } from 'react-router-dom'
+import { first } from 'lodash-es'
 
 import { TabPanel, PageHeader, LoadingPage } from '../../components'
 import { GeneralTab, IntegrationTab } from './tabs'
@@ -37,13 +39,21 @@ const TabPanels = styled.div`
   width: 100%;
 `
 
+const TABS = ['general', 'integrations']
+
 const SettingsContainer = memo(() => {
-  const [value, setValue] = React.useState(0)
+  const { tab } = useParams<{ tab: string }>()
+  const history = useHistory()
+  const [tabIndex, setTabIndex] = useState(0)
   const isMobile = useMediaQuery(`(${mobileMediaQuery})`)
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue)
-  }
+  useEffect(() => {
+    const newIndex = TABS.indexOf(tab)
+    if (newIndex === -1) {
+      return history.replace(`/settings/${first(TABS)}`)
+    }
+    return setTabIndex(newIndex)
+  }, [tab, setTabIndex, history])
 
   const { data, loading } = useQuery<getSettings>(GetSettings)
 
@@ -73,18 +83,17 @@ const SettingsContainer = memo(() => {
               orientation={isMobile ? 'horizontal' : 'vertical'}
               variant="scrollable"
               indicatorColor="primary"
-              value={value}
-              onChange={handleChange}
+              value={tabIndex}
               aria-label="Vertical tabs example"
             >
-              <Tab label="General" />
-              <Tab label="Integrations" />
+              <Tab to="/settings/general" component={Link} label="General" />
+              <Tab to="/settings/integrations" component={Link} label="Integrations" />
             </StyledTabs>
             <TabPanels>
-              <TabPanel value={value} index={0}>
+              <TabPanel value={tabIndex} index={0}>
                 <GeneralTab data={data?.getSettings!} updateSettings={updateSettings} />
               </TabPanel>
-              <TabPanel value={value} index={1}>
+              <TabPanel value={tabIndex} index={1}>
                 <IntegrationTab data={data?.getSettings!} updateSettings={updateSettings} />
               </TabPanel>
             </TabPanels>
