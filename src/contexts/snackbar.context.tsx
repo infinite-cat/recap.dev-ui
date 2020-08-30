@@ -1,9 +1,10 @@
 import React, { createRef, PropsWithChildren } from 'react'
 import styled from 'styled-components/macro'
 import { SnackbarProvider as RawSnackbarProvider } from 'notistack'
-import { Button } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
+import { Close } from '@material-ui/icons'
 
-const DismissButton = styled(Button)`
+const DismissButton = styled(IconButton)`
   color: inherit;
 `
 
@@ -18,7 +19,11 @@ const SnackbarProvider = ({ children }: PropsWithChildren<{}>) => {
     <RawSnackbarProvider
       ref={stackRef}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      action={(key) => <DismissButton onClick={onClickDismiss(key)}>Dismiss</DismissButton>}
+      action={(key) => (
+        <DismissButton onClick={onClickDismiss(key)} size="small">
+          <Close />
+        </DismissButton>
+      )}
     >
       {children}
     </RawSnackbarProvider>

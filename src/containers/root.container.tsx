@@ -47,7 +47,7 @@ function RootContainer() {
             <Route path="/traces">
               <TracesList />
             </Route>
-            <Route path="/settings">
+            <Route path="/settings/:tab?">
               <Settings />
             </Route>
             <Route path="/">
