@@ -8,11 +8,13 @@ const DismissButton = styled(IconButton)`
   color: inherit;
 `
 
-const SnackbarProvider = ({ children }: PropsWithChildren<{}>) => {
+export const SnackbarProvider = ({ children }: PropsWithChildren<any>) => {
   const stackRef = createRef<any>()
 
   const onClickDismiss = (key: number | string) => () => {
-    stackRef?.current?.closeSnackbar?.(key)
+    if (stackRef.current) {
+      stackRef.current.closeSnackbar(key)
+    }
   }
 
   return (
@@ -29,5 +31,3 @@ const SnackbarProvider = ({ children }: PropsWithChildren<{}>) => {
     </RawSnackbarProvider>
   )
 }
-
-export { SnackbarProvider }
