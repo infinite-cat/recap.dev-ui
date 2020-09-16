@@ -5,11 +5,11 @@ import { trim } from 'lodash-es'
 
 import { Log, LogType } from './log.component'
 
-interface LogList {
+interface LogListProps {
   logs: LogType[]
 }
 
-export const LogList = ({ logs }: LogList) => (
+export const LogList = ({ logs }: LogListProps) => (
   <List>
     {logs.map((log, index) => (
       <Log key={index} message={trim(log.message)} timestamp={log.timestamp} />
