@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React from 'react'
 import styled from 'styled-components/macro'
 import MaterialAppBar from '@material-ui/core/AppBar'
