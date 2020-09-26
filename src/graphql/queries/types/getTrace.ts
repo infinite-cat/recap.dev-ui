@@ -40,6 +40,7 @@ export interface getTrace_getTrace {
   response: string | null;
   error: string | null;
   logs: string | null;
+  extraData: string | null;
   functionCallEvents: getTrace_getTrace_functionCallEvents[];
   resourceAccessEvents: getTrace_getTrace_resourceAccessEvents[];
 }

@@ -6,14 +6,14 @@ export const GetTraces = gql`
     $offset: Int
     $unitName: String
     $unitErrorId: String
-    $onlyErrors: Boolean
+    $status: String
   ) {
     getTraces(
       search: $search
       offset: $offset
       unitName: $unitName
       unitErrorId: $unitErrorId
-      onlyErrors: $onlyErrors
+      status: $status
     ) {
       traces {
         id

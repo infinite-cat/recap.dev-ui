@@ -20,6 +20,7 @@ export interface getTraces_getTraces_traces {
   request: string;
   response: string | null;
   error: string | null;
+  extraData: string | null;
 }
 
 export interface getTraces_getTraces {
@@ -38,4 +39,5 @@ export interface getTracesVariables {
   offset?: number | null;
   unitName?: string | null;
   unitErrorId?: string | null;
+  status?: string | null;
 }
