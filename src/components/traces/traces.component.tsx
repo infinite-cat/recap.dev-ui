@@ -3,24 +3,30 @@ import { useQuery } from '@apollo/client'
 import InfiniteScroll from 'react-infinite-scroller'
 import styled from 'styled-components/macro'
 import SearchIcon from '@material-ui/icons/Search'
-import { useDebounce } from 'react-use'
+import { useDebounce, useLocalStorage } from 'react-use'
 import { isEmpty } from 'lodash-es'
-import { IconButton, InputBase } from '@material-ui/core'
+import { Box, IconButton, InputBase } from '@material-ui/core'
 
 import { getTraces } from '../../graphql/queries/types/getTraces'
 import { GetTraces } from '../../graphql/queries'
-import { TracesCard } from '../traces-card.component'
+import { TracesCard } from './traces-card.component'
 import { Card } from '../cards'
 import { FullWidthSpinner } from '../spinners'
+import { RefreshButton } from '../refresh-button.component'
 
 const Input = styled(InputBase)`
   flex: 1;
   padding: 10px 16px;
 `
-const Controls = styled(Card)`
+const Controls = styled.div`
+  display: flex;
+  align-items: center;
+`
+const InputWrapper = styled(Card)`
   display: flex;
   width: 100%;
   margin: 16px 0;
+  height: 40px;
 `
 const StyledInfiniteScroll = styled(InfiniteScroll)`
   width: 100%;
@@ -38,7 +44,10 @@ export const Traces = memo(
     const [inputValue, setInputValue] = useState('')
     const [search, setSearch] = useState('')
     const [loadingMore, setLoadingMore] = useState(false)
-    const { data, loading, fetchMore } = useQuery<getTraces>(GetTraces, {
+    const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-traces', 0)
+    const { data, loading, fetchMore, refetch } = useQuery<getTraces>(GetTraces, {
+      pollInterval,
+      notifyOnNetworkStatusChange: true,
       variables: {
         unitErrorId,
         unitName,
@@ -103,19 +112,29 @@ export const Traces = memo(
         threshold={500}
       >
         <Controls>
-          <Input
-            placeholder="Search for a trace id, unit name or a log message"
-            value={externalSearch || inputValue}
-            onChange={(e) => {
-              if (setExternalTerm) {
-                return setExternalTerm(e.target.value)
-              }
-              return setInputValue(e.target.value)
-            }}
-          />
-          <IconButton type="submit" aria-label="search">
-            <SearchIcon />
-          </IconButton>
+          <InputWrapper>
+            <Input
+              placeholder="Search for a trace id, unit name or a log message"
+              value={externalSearch || inputValue}
+              onChange={(e) => {
+                if (setExternalTerm) {
+                  return setExternalTerm(e.target.value)
+                }
+                return setInputValue(e.target.value)
+              }}
+            />
+            <IconButton type="submit" aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </InputWrapper>
+          <Box ml={1}>
+            <RefreshButton
+              pollInterval={pollInterval!}
+              setPollInterval={setPollInterval}
+              loading={loading}
+              refetch={refetch}
+            />
+          </Box>
         </Controls>
         <TracesCard traces={traces} loading={loading} searchTerm={externalSearch || search} />
         {loadingMore && <FullWidthSpinner />}

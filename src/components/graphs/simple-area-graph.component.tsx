@@ -69,7 +69,9 @@ export const SimpleAreaGraphComponent = ({
               key={line.dataKey as string}
               type="monotone"
               fillOpacity={1}
-              fill={mix(0.85, theme.palette.background.paper, line.stroke!)}
+              strokeWidth={2}
+              animationDuration={1000}
+              fill={mix(0.8, theme.palette.background.paper, line.stroke!)}
               {...line}
             />
           ))}
@@ -77,7 +79,7 @@ export const SimpleAreaGraphComponent = ({
           <YAxis
             type="number"
             orientation="right"
-            tickFormatter={(x) => String(round(x, 2))}
+            tickFormatter={(x) => String(round(x))}
             mirror
             tick={{ fill: theme.palette.text.primary, fontSize: '0.875rem' }}
             tickLine={{ stroke: theme.palette.text.primary }}

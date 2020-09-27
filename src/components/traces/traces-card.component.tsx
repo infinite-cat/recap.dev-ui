@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import React, { memo } from 'react'
+import React from 'react'
 import {
   Box,
   Link as MaterialLink,
@@ -14,11 +14,11 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import { flatten, isEmpty } from 'lodash-es'
 
-import { Card } from './cards'
-import { HighlightedText, LoadingOverlay, Result, StatusTag } from '.'
-import { getTraces_getTraces_traces as Trace } from '../graphql/queries/types/getTraces'
-import { formatDateTime, formatDuration, getMatches, safeParse } from '../utils'
-import { LogType } from './logs/log.component'
+import { Card } from '../cards'
+import { HighlightedText, LoadingOverlay, Result, StatusTag } from '../index'
+import { getTraces_getTraces_traces as Trace } from '../../graphql/queries/types/getTraces'
+import { formatDateTime, formatDuration, getMatches, safeParse } from '../../utils'
+import { LogType } from '../logs/log.component'
 
 const Wrapper: typeof TableContainer = styled(({ loading, ...props }) => (
   <TableContainer {...props} />
@@ -58,7 +58,7 @@ interface TracesCardProps {
   loading?: boolean
 }
 
-export const TracesCard = memo(({ className, traces, loading, searchTerm }: TracesCardProps) => {
+export const TracesCard = ({ className, traces, loading, searchTerm }: TracesCardProps) => {
   return (
     <Wrapper component={Card} className={className} loading={loading && isEmpty(traces)}>
       {loading && <LoadingOverlay />}
@@ -120,4 +120,4 @@ export const TracesCard = memo(({ className, traces, loading, searchTerm }: Trac
       )}
     </Wrapper>
   )
-})
+}

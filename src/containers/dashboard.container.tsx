@@ -3,6 +3,7 @@ import React, { memo, ReactElement, useContext } from 'react'
 import styled from 'styled-components/macro'
 import { useQuery } from '@apollo/client'
 import { isEmpty, round } from 'lodash-es'
+import { mix } from 'polished'
 import {
   Box,
   Link as MaterialLink,
@@ -169,11 +170,11 @@ const DashboardContainer = memo(() => {
                 lines={[
                   {
                     dataKey: 'invocations',
-                    stroke: theme.palette.info.main,
+                    stroke: mix(0.15, theme.palette.background.paper, theme.palette.info.main),
                   },
                   {
                     dataKey: 'errors',
-                    stroke: theme.palette.error.light,
+                    stroke: mix(0.15, theme.palette.background.paper, theme.palette.error.light),
                   },
                 ]}
               />

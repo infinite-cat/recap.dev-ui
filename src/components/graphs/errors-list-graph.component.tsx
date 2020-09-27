@@ -35,7 +35,10 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
           <Area
             type="monotone"
             dataKey="y"
-            stroke={theme.palette.error.main}
+            fillOpacity={1}
+            strokeWidth={2}
+            animationDuration={1000}
+            stroke={mix(0.25, theme.palette.background.paper, theme.palette.error.main)}
             fill={mix(0.85, theme.palette.background.paper, theme.palette.error.main)}
           />
           <XAxis hide dataKey="x" />
@@ -53,6 +56,7 @@ export const ErrorsListGraph = ({ data }: ErrorsListGraphProps) => {
               border: 'none',
               boxShadow: theme.custom.boxShadow,
             }}
+            allowEscapeViewBox={{ x: true, y: true }}
             separator=""
             formatter={(value: number) => [`${value} errors`, '']}
             labelFormatter={formatDateTime}
