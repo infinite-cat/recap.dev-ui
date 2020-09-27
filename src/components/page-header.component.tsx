@@ -44,6 +44,7 @@ const StyledBox = styled(Box)`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 `
 
 export const PageHeader = memo(
