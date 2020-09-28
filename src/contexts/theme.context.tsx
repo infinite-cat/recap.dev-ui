@@ -9,9 +9,9 @@ import { ThemeProvider as StyledProvider } from 'styled-components/macro'
 import { createMuiTheme, useMediaQuery } from '@material-ui/core'
 import { Helmet } from 'react-helmet'
 import { includes } from 'lodash-es'
+import { useLocalStorage } from 'react-use'
 
 import { GlobalStyles } from '../styles'
-import { usePersistState } from '../hooks'
 import { ThemeType, Theme } from '../models'
 
 type ThemeProviderProps = {
@@ -66,7 +66,7 @@ const ThemeContext = React.createContext({} as ThemeState)
 const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
   const browserTheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light'
   const favicon = browserTheme === 'dark' ? 'favicon-dark.png' : 'favicon.png'
-  const [themeType, setTheme] = usePersistState('theme', browserTheme)
+  const [themeType, setTheme] = useLocalStorage<ThemeType>('theme', browserTheme)
   const type = includes(themeTypes, themeType) ? themeType : 'light'
 
   const theme = useMemo(
@@ -75,11 +75,11 @@ const ThemeProvider = memo(({ children }: ThemeProviderProps) => {
   )
 
   const toggleTheme = useCallback(() => {
-    setTheme((current: ThemeType) => (current === 'dark' ? 'light' : 'dark'))
-  }, [setTheme])
+    setTheme(themeType === 'dark' ? 'light' : 'dark')
+  }, [setTheme, themeType])
 
   return (
-    <ThemeContext.Provider value={{ theme, themeType, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, themeType: themeType!, toggleTheme }}>
       <Helmet>
         <link rel="icon" href={`/${favicon}`} />
       </Helmet>

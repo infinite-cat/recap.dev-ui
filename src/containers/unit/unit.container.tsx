@@ -19,7 +19,7 @@ import { Content, TopCardsContainer } from '../common.styles'
 import { getUnit } from '../../graphql/queries/types/getUnit'
 import { getStatusByErrorRate } from '../../utils'
 import { ThemeContext } from '../../contexts'
-import { Traces } from '../../components/traces/traces.component'
+import { Traces } from '../../components/traces'
 
 const MidCards = styled.div`
   display: grid;
@@ -124,6 +124,7 @@ const UnitContainer = () => {
                 />
               </GraphCard>
             </MidCards>
+            <CardHeader>Traces</CardHeader>
             <Traces unitName={unitName} />
           </>
         )}

@@ -22,7 +22,7 @@ import { formatDateTime, safeParse } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
 import { DateRangeContext, ThemeContext } from '../../contexts'
 import { DateRangePicker } from '../../components/date-range-picker'
-import { Traces } from '../../components/traces/traces.component'
+import { Traces } from '../../components/traces'
 import { LogList } from '../../components/logs'
 
 const TopCards = styled.div`
@@ -138,10 +138,8 @@ const ErrorContainer = () => {
               {!isEmpty(parsedLogs) && <LogList logs={parsedLogs} />}
             </DataCard>
             <Box mb={2.5} />
-            <DataCard>
-              <CardHeader>Traces</CardHeader>
-              <Traces unitErrorId={id} />
-            </DataCard>
+            <CardHeader>Traces</CardHeader>
+            <Traces unitErrorId={id} />
           </>
         )}
       </Content>
