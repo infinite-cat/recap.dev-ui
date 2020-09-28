@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react'
 import { DateTime } from 'luxon'
-import { usePersistState } from '../hooks'
+import { useLocalStorage } from 'react-use'
 
 interface DateRangeProviderProps {
   children: React.ReactElement | React.ReactElement[]
@@ -23,15 +23,15 @@ const getSince = (range: string) => {
 }
 
 const DateRangeProvider = memo(({ children }: DateRangeProviderProps) => {
-  const [range, setRange] = usePersistState('@DateRangeContext_range', '24 hours')
-  const [since, setSince] = useState(getSince(range))
+  const [range, setRange] = useLocalStorage('@DateRangeContext_range', '24 hours')
+  const [since, setSince] = useState(getSince(range!))
 
   useEffect(() => {
-    setSince(getSince(range))
+    setSince(getSince(range!))
   }, [range, setSince])
 
   return (
-    <DateRangeContext.Provider value={{ since, range, setRange }}>
+    <DateRangeContext.Provider value={{ since, range: range!, setRange }}>
       {children}
     </DateRangeContext.Provider>
   )

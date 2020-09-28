@@ -91,7 +91,7 @@ interface RefreshButtonProps {
   setPollInterval: (interval: number) => void
 }
 
-export const RefreshButton = ({
+export const AutoRefreshGroup = ({
   refetch,
   loading,
   pollInterval,
