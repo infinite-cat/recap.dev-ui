@@ -5,10 +5,18 @@ import { useParams, useHistory, Link } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { capitalize, isEmpty, toLower } from 'lodash-es'
 import { Clock, Link as LinkIcon } from 'react-feather'
+import { useLocalStorage } from 'react-use'
 
 import { GetTrace } from '../../graphql/queries'
 import { getTrace } from '../../graphql/queries/types/getTrace'
-import { LoadingPage, PageHeader, DataCard, CardHeader, Result } from '../../components'
+import {
+  LoadingPage,
+  PageHeader,
+  DataCard,
+  CardHeader,
+  Result,
+  AutoRefreshGroup,
+} from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard, UnitLink } from '../common.styles'
@@ -34,11 +42,15 @@ const breadcrumb = (id: string) => ({
 const TraceContainer = () => {
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
-  const { data, loading } = useQuery<getTrace>(GetTrace, {
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-trace-page', 0)
+  const { data, refetch, networkStatus, loading } = useQuery<getTrace>(GetTrace, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
       id,
     },
   })
+  const initialLoading = loading && networkStatus === 1
 
   const trace = data?.getTrace
   const parsedLogs = useMemo(() => safeParse(data?.getTrace?.logs), [data])
@@ -48,10 +60,18 @@ const TraceContainer = () => {
       title={trace?.externalId}
       breadcrumb={breadcrumb(trace?.externalId!)}
       onBack={() => history.goBack()}
+      actions={
+        <AutoRefreshGroup
+          pollInterval={pollInterval!}
+          setPollInterval={setPollInterval}
+          loading={loading}
+          refetch={refetch}
+        />
+      }
     >
       <Content>
-        {loading && <LoadingPage />}
-        {!loading && data && (
+        {initialLoading && <LoadingPage />}
+        {!initialLoading && data && (
           <>
             <TopCardsContainer>
               <DataCard>

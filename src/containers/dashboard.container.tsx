@@ -17,8 +17,10 @@ import {
 import { Link } from 'react-router-dom'
 import Tooltip from '@material-ui/core/Tooltip'
 import { AlertTriangle } from 'react-feather'
+import { useLocalStorage } from 'react-use'
 
 import {
+  AutoRefreshGroup,
   Card,
   CardHeader,
   LoadingPage,
@@ -104,6 +106,10 @@ const FirstSeenTableCell = styled(TableCell)`
 const UnitStatsTableCell = styled(TableCell)`
   width: 140px;
 `
+const Actions = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const insightIcons: { [key: string]: ReactElement } = {
   ERROR: <ErrorInsightIcon />,
@@ -111,24 +117,38 @@ const insightIcons: { [key: string]: ReactElement } = {
 
 const DashboardContainer = memo(() => {
   const { theme } = useContext(ThemeContext)
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-dashboard', 0)
 
   const { since, range, setRange } = useContext(DateRangeContext)
 
-  const { data, loading } = useQuery<getDashboardData>(GetDashboardData, {
+  const { data, loading, refetch, networkStatus } = useQuery<getDashboardData>(GetDashboardData, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
       since,
     },
   })
+  const initialLoading = loading && networkStatus === 1
 
   return (
     <StyledPageHeader
       title="Dashboard"
       subTitle="Status of your system"
-      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+      actions={
+        <Actions>
+          <AutoRefreshGroup
+            pollInterval={pollInterval!}
+            setPollInterval={setPollInterval}
+            loading={loading}
+            refetch={refetch}
+          />
+          <DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />
+        </Actions>
+      }
     >
       <Content>
-        {loading && <LoadingPage />}
-        {!loading && (
+        {initialLoading && <LoadingPage />}
+        {!initialLoading && (
           <CardsContainer>
             <DashboardCard>
               <CardHeader>Insights</CardHeader>
