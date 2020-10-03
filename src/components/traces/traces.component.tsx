@@ -38,7 +38,16 @@ export const Traces = memo((props: TracesProps) => {
   const { unitErrorId, unitName } = props
   const [inputValue, setInputValue] = useState('')
   const [search, setSearch] = useState('')
-  const { traces, loading, fetchMoreTraces, hasMore, loadingMore, refetch } = useTracesData({
+  const {
+    traces,
+    loading,
+    fetchMoreTraces,
+    hasMore,
+    loadingMore,
+    refetch,
+    statuses,
+    setStatuses,
+  } = useTracesData({
     unitErrorId,
     unitName,
   })
@@ -70,7 +79,13 @@ export const Traces = memo((props: TracesProps) => {
           <RefreshButton loading={loading} refetch={refetch} />
         </Box>
       </Controls>
-      <TracesCard traces={traces} loading={loading && !loadingMore} searchTerm={search} />
+      <TracesCard
+        traces={traces}
+        loading={loading && !loadingMore}
+        searchTerm={search}
+        setStatuses={setStatuses}
+        statuses={statuses}
+      />
       {loadingMore && <FullWidthSpinner />}
     </StyledInfiniteScroll>
   )

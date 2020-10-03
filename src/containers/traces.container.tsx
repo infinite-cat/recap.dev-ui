@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-wrap-multilines */
 import React, { useState } from 'react'
 import styled from 'styled-components/macro'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -36,8 +35,18 @@ const TracesContainer = () => {
   const history = useHistory()
   const [query, setQuery] = useState(searchTerm)
   const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-traces', 0)
-  const { traces, loading, fetchMoreTraces, hasMore, loadingMore, refetch } = useTracesData({
+  const {
+    traces,
+    loading,
+    fetchMoreTraces,
+    hasMore,
+    loadingMore,
+    refetch,
+    statuses,
+    setStatuses,
+  } = useTracesData({
     pollInterval,
+    search: query,
   })
 
   useDebounce(
@@ -79,7 +88,13 @@ const TracesContainer = () => {
               </IconButton>
             </InputWrapper>
           </Controls>
-          <TracesCard traces={traces} loading={loading && !loadingMore} searchTerm={query} />
+          <TracesCard
+            traces={traces}
+            loading={loading && !loadingMore}
+            searchTerm={query}
+            statuses={statuses}
+            setStatuses={setStatuses}
+          />
           {loadingMore && <FullWidthSpinner />}
         </StyledInfiniteScroll>
       </Content>

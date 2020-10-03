@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { isEmpty } from 'lodash-es'
 import { useQuery } from '@apollo/client'
 
@@ -14,6 +14,7 @@ interface useTracesDataProps {
 
 export const useTracesData = (props: useTracesDataProps) => {
   const { unitErrorId, unitName, search, pollInterval } = props
+  const [statuses, setStatuses] = React.useState<string[]>([])
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore, refetch } = useQuery<getTraces>(GetTraces, {
     pollInterval: pollInterval || 0,
@@ -22,6 +23,7 @@ export const useTracesData = (props: useTracesDataProps) => {
       unitErrorId,
       unitName,
       search: search || '',
+      statuses,
       onlyErrors: false,
       offset: 0,
     },
@@ -65,5 +67,5 @@ export const useTracesData = (props: useTracesDataProps) => {
 
   const traces = data?.getTraces?.traces
   const hasMore = data?.getTraces?.hasMore
-  return { traces, fetchMoreTraces, loading, hasMore, loadingMore, refetch }
+  return { traces, fetchMoreTraces, loading, hasMore, loadingMore, statuses, setStatuses, refetch }
 }
