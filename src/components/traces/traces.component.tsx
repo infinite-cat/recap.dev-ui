@@ -50,6 +50,7 @@ export const Traces = memo((props: TracesProps) => {
   } = useTracesData({
     unitErrorId,
     unitName,
+    search,
   })
 
   useDebounce(
