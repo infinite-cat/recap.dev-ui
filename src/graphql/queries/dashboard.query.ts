@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client'
 
 export const GetDashboardData = gql`
-  query getDashboardData($since: String!) {
-    getInsights(since: $since) {
+  query getDashboardData($from: String!, $to: String!) {
+    getInsights(from: $from, to: $to) {
       type
       message
       detailsLink
     }
-    getTotalStats(since: $since) {
+    getTotalStats(from: $from, to: $to) {
       invocations
       errors
       errorRate
@@ -17,7 +17,7 @@ export const GetDashboardData = gql`
         dateTime
       }
     }
-    getNewErrors(since: $since) {
+    getNewErrors(from: $from, to: $to) {
       id
       unitName
       type
@@ -26,7 +26,7 @@ export const GetDashboardData = gql`
       firstEventDateTime
       lastEventDateTime
     }
-    getTopInvokedUnits(since: $since) {
+    getTopInvokedUnits(from: $from, to: $to) {
       unitName
       estimatedCost
       invocations

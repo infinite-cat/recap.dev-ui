@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client'
 
 export const GetErrors = gql`
-  query getErrors($graphSince: String!, $offset: Int) {
-    getErrors(graphSince: $graphSince, offset: $offset) {
+  query getErrors($from: String!, $to: String!, $offset: Int) {
+    getErrors(from: $from, to: $to, offset: $offset) {
       errors {
         id
         unitName
@@ -21,7 +21,7 @@ export const GetErrors = gql`
 `
 
 export const GetError = gql`
-  query getError($graphSince: String!, $id: String!) {
+  query getError($from: String!, $to: String!, $id: String!) {
     getError(id: $id) {
       id
       unitName
@@ -30,7 +30,7 @@ export const GetError = gql`
       rawError
       lastEventDateTime
     }
-    getErrorStats(since: $graphSince, id: $id) {
+    getErrorStats(from: $from, to: $to, id: $id) {
       invocations
       errors
       currentErrors

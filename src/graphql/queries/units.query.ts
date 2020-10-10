@@ -4,14 +4,16 @@ export const GetUnits = gql`
   query getUnits(
     $search: String
     $offset: Int
-    $since: String!
+    $from: String!
+    $to: String!
     $orderBy: String
     $orderDirection: String
   ) {
     getUnits(
       search: $search
       offset: $offset
-      since: $since
+      from: $from
+      to: $to
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
@@ -30,8 +32,8 @@ export const GetUnits = gql`
 `
 
 export const GetUnit = gql`
-  query getUnit($unitName: String!, $graphSince: String!) {
-    getUnit(unitName: $unitName, graphSince: $graphSince) {
+  query getUnit($unitName: String!, $from: String!, $to: String!) {
+    getUnit(unitName: $unitName, from: $from, to: $to) {
       unitName
       estimatedCost
       errorRate

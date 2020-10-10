@@ -56,5 +56,6 @@ export interface getDashboardData {
 }
 
 export interface getDashboardDataVariables {
-  since: string;
+  from: string;
+  to: string;
 }

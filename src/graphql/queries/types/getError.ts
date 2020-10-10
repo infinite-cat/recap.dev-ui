@@ -43,6 +43,7 @@ export interface getError {
 }
 
 export interface getErrorVariables {
-  graphSince: string;
+  from: string;
+  to: string;
   id: string;
 }

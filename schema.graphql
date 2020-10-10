@@ -49,17 +49,17 @@ type Mutation {
 
 type Query {
   getError(id: String!): UnitError
-  getErrorStats(id: String!, since: String!): [UnitErrorDetailsGraphStats!]!
-  getErrors(graphSince: String!, offset: Int): GetUnitErrorsResponse!
-  getInsights(since: String!): [Insight!]!
-  getNewErrors(since: String!): [UnitError!]!
+  getErrorStats(from: String!, id: String!, to: String!): [UnitErrorDetailsGraphStats!]!
+  getErrors(from: String!, offset: Int, to: String!): GetUnitErrorsResponse!
+  getInsights(from: String!, to: String!): [Insight!]!
+  getNewErrors(from: String!, to: String!): [UnitError!]!
   getSettings: Settings!
-  getTopInvokedUnits(since: String!): [TopInvokedUnit!]!
-  getTotalStats(since: String!): TotalStats!
+  getTopInvokedUnits(from: String!, to: String!): [TopInvokedUnit!]!
+  getTotalStats(from: String!, to: String!): TotalStats!
   getTrace(id: String!): Trace
   getTraces(limit: Int, offset: Int, search: String, statuses: [String!], unitErrorId: String, unitName: String): GetTracesResponse!
-  getUnit(graphSince: String!, unitName: String!): UnitDetails
-  getUnits(offset: Int, orderBy: String, orderDirection: String, search: String, since: String!): GetUnitsResponse!
+  getUnit(from: String!, to: String!, unitName: String!): UnitDetails
+  getUnits(from: String!, offset: Int, orderBy: String, orderDirection: String, search: String, to: String!): GetUnitsResponse!
 }
 
 type ResourceAccessEvent {

@@ -35,6 +35,7 @@ export interface getErrors {
 }
 
 export interface getErrorsVariables {
-  graphSince: string;
+  from: string;
+  to: string;
   offset?: number | null;
 }

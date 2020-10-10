@@ -29,5 +29,6 @@ export interface getUnit {
 
 export interface getUnitVariables {
   unitName: string;
-  graphSince: string;
+  from: string;
+  to: string;
 }
