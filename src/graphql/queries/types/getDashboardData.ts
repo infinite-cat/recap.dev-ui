@@ -57,5 +57,5 @@ export interface getDashboardData {
 
 export interface getDashboardDataVariables {
   from: string;
-  to: string;
+  to?: string | null;
 }

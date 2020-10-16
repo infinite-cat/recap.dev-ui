@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GetDashboardData = gql`
-  query getDashboardData($from: String!, $to: String!) {
+  query getDashboardData($from: String!, $to: String) {
     getInsights(from: $from, to: $to) {
       type
       message

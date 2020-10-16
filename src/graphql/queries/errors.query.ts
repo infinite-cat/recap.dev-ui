@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const GetErrors = gql`
-  query getErrors($from: String!, $to: String!, $offset: Int) {
+  query getErrors($from: String!, $to: String, $offset: Int) {
     getErrors(from: $from, to: $to, offset: $offset) {
       errors {
         id
@@ -21,7 +21,7 @@ export const GetErrors = gql`
 `
 
 export const GetError = gql`
-  query getError($from: String!, $to: String!, $id: String!) {
+  query getError($from: String!, $to: String, $id: String!) {
     getError(id: $id) {
       id
       unitName

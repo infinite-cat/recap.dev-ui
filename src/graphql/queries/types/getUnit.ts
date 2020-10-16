@@ -30,5 +30,5 @@ export interface getUnit {
 export interface getUnitVariables {
   unitName: string;
   from: string;
-  to: string;
+  to?: string | null;
 }

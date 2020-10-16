@@ -32,7 +32,7 @@ export const GetUnits = gql`
 `
 
 export const GetUnit = gql`
-  query getUnit($unitName: String!, $from: String!, $to: String!) {
+  query getUnit($unitName: String!, $from: String!, $to: String) {
     getUnit(unitName: $unitName, from: $from, to: $to) {
       unitName
       estimatedCost

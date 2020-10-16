@@ -36,6 +36,6 @@ export interface getErrors {
 
 export interface getErrorsVariables {
   from: string;
-  to: string;
+  to?: string | null;
   offset?: number | null;
 }

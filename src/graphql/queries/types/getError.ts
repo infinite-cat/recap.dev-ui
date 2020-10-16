@@ -44,6 +44,6 @@ export interface getError {
 
 export interface getErrorVariables {
   from: string;
-  to: string;
+  to?: string | null;
   id: string;
 }
