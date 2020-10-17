@@ -5,7 +5,7 @@ export const GetUnits = gql`
     $search: String
     $offset: Int
     $from: String!
-    $to: String!
+    $to: String
     $orderBy: String
     $orderDirection: String
   ) {
