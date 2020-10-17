@@ -5,6 +5,7 @@ import { useQuery } from '@apollo/client'
 import styled from 'styled-components/macro'
 import { Clock, Link as LinkIcon } from 'react-feather'
 import { isEmpty } from 'lodash-es'
+import { useLocalStorage } from 'react-use'
 
 import { GetError } from '../../graphql/queries'
 import {
@@ -15,7 +16,7 @@ import {
   PageHeader,
   Result,
   SimpleAreaGraphComponent,
-  DateRangePicker,
+  DefaultPageActions,
 } from '../../components'
 import { Content, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
@@ -65,13 +66,16 @@ const breadcrumb = (errorName: string = '') => ({
 })
 
 const ErrorContainer = () => {
-  const { theme } = useContext(ThemeContext)
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-error', 0)
   const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
+  const { theme } = useContext(ThemeContext)
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
 
-  const { data, loading } = useQuery<getError>(GetError, {
+  const { data, loading, refetch } = useQuery<getError>(GetError, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
       id,
       from,
@@ -87,7 +91,16 @@ const ErrorContainer = () => {
       title={id}
       breadcrumb={breadcrumb(title)}
       onBack={() => history.goBack()}
-      actions={<DateRangePicker value={rangeValue} onValueChange={setRangeValue} />}
+      actions={
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
+      }
     >
       <Content>
         {loading && <LoadingPage />}

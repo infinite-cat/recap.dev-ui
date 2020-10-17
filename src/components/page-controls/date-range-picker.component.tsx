@@ -16,6 +16,7 @@ const ButtonGroup = styled(ToggleButtonGroup)`
   margin: ${(p) => p.theme.spacing(1, 0.5)};
 `
 const StyledToggleButton = styled(ToggleButton)`
+  min-width: 80px;
   &.Mui-selected {
     background-color: ${(p) => p.theme.palette.primary.light};
     color: ${(p) => p.theme.palette.background.default};
@@ -100,6 +101,7 @@ export const DateRangePicker = ({ value, onValueChange }: DateRangePickerProps) 
         ))}
       {isCustomSelected && (
         <StyledToggleButton
+          value="custom-clear"
           onClick={() => {
             onValueChange({
               from: getDateFrom('24 hours'),

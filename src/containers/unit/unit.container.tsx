@@ -1,6 +1,7 @@
 import React, { useContext, useMemo, useState } from 'react'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import styled from 'styled-components/macro'
+import { useLocalStorage } from 'react-use'
 import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import { DateTime } from 'luxon'
@@ -11,6 +12,7 @@ import {
   Card,
   CardHeader,
   DataCard,
+  DefaultPageActions,
   LoadingPage,
   PageHeader,
   SimpleAreaGraphComponent,
@@ -18,7 +20,7 @@ import {
 import { Content, TopCardsContainer } from '../common.styles'
 import { getUnit } from '../../graphql/queries/types/getUnit'
 import { getStatusByErrorRate } from '../../utils'
-import { ThemeContext } from '../../contexts'
+import { DateRangeContext, ThemeContext } from '../../contexts'
 import { Traces } from '../../components/traces'
 
 const MidCards = styled.div`
@@ -53,6 +55,9 @@ const breadcrumb = (unitName: string = '') => ({
 })
 
 const UnitContainer = () => {
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-unit', 0)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
+
   const { unitName } = useParams<{ unitName: string }>()
   const history = useHistory()
   const { theme } = useContext(ThemeContext)
@@ -61,17 +66,35 @@ const UnitContainer = () => {
     DateTime.utc().minus({ hours: 23, days: 6 }).startOf('hour').toMillis().toString(),
   )
 
-  const { data, loading } = useQuery<getUnit>(GetUnit, {
+  const { data, loading, refetch } = useQuery<getUnit>(GetUnit, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
       unitName,
       graphSince,
+      from,
+      to,
     },
   })
 
   const errorRate = useMemo(() => round(Number(data?.getUnit?.errorRate) * 100, 2), [data])
 
   return (
-    <PageHeader title={unitName} breadcrumb={breadcrumb(unitName)} onBack={() => history.goBack()}>
+    <PageHeader
+      title={unitName}
+      breadcrumb={breadcrumb(unitName)}
+      onBack={() => history.goBack()}
+      actions={
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
+      }
+    >
       <Content>
         {loading && <LoadingPage />}
         {!loading && data && (

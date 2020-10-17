@@ -53,6 +53,7 @@ const TracesContainer = () => {
     search: query,
     to,
     from,
+    sessionKey: '@tracesContainer-traces',
   })
 
   useDebounce(
