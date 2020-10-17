@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
@@ -15,13 +15,14 @@ import {
   DataCard,
   CardHeader,
   Result,
-  AutoRefreshGroup,
+  DefaultPageActions,
 } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard, UnitLink } from '../common.styles'
-import { formatDateTime, safeParse } from '../../utils'
+import { formatDateTime, formatDuration, safeParse } from '../../utils'
 import { LogList } from '../../components/logs'
+import { DateRangeContext } from '../../contexts'
 
 const NoLogsResult = styled(Result)`
   min-height: 120px;
@@ -40,20 +41,25 @@ const breadcrumb = (id: string) => ({
 })
 
 const TraceContainer = () => {
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-trace-page', 0)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
+
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
-  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-trace-page', 0)
   const { data, refetch, networkStatus, loading } = useQuery<getTrace>(GetTrace, {
     notifyOnNetworkStatusChange: true,
     pollInterval,
     variables: {
       id,
+      from,
+      to,
     },
   })
   const initialLoading = loading && networkStatus === 1
 
   const trace = data?.getTrace
   const parsedLogs = useMemo(() => safeParse(data?.getTrace?.logs), [data])
+  const parsedExtra = useMemo(() => safeParse(data?.getTrace?.extraData), [data])
 
   return (
     <PageHeader
@@ -61,9 +67,11 @@ const TraceContainer = () => {
       breadcrumb={breadcrumb(trace?.externalId!)}
       onBack={() => history.goBack()}
       actions={
-        <AutoRefreshGroup
-          pollInterval={pollInterval!}
+        <DefaultPageActions
+          pollInterval={pollInterval}
           setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
           loading={loading}
           refetch={refetch}
         />
@@ -90,6 +98,13 @@ const TraceContainer = () => {
                   <Box ml={1}>When</Box>
                 </CardHeader>
                 <Typography noWrap>{formatDateTime(data.getTrace?.start)}</Typography>
+              </DataCard>
+              <DataCard>
+                <CardHeader>Duration and Memory</CardHeader>
+                <Typography>
+                  {formatDuration(parsedExtra?.billedDuration)} ({parsedExtra?.maxMemoryUsed} /
+                  {parsedExtra?.memorySize} MB)
+                </Typography>
               </DataCard>
               <DataCard type={toLower(data.getTrace?.status)}>
                 <CardHeader>Status</CardHeader>

@@ -1,6 +1,7 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { isEmpty } from 'lodash-es'
 import { useQuery } from '@apollo/client'
+import { useSessionStorage } from 'react-use'
 
 import { getTraces } from '../graphql/queries/types/getTraces'
 import { GetTraces } from '../graphql/queries'
@@ -9,12 +10,15 @@ interface useTracesDataProps {
   unitErrorId?: string
   unitName?: string
   search?: string
+  sessionKey: string
   pollInterval?: number
+  to?: string | null
+  from?: string
 }
 
 export const useTracesData = (props: useTracesDataProps) => {
-  const { unitErrorId, unitName, search, pollInterval } = props
-  const [statuses, setStatuses] = React.useState<string[]>([])
+  const { unitErrorId, unitName, search, pollInterval, sessionKey, to, from } = props
+  const [statuses, setStatuses] = useSessionStorage<string[]>(sessionKey, [])
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore, refetch } = useQuery<getTraces>(GetTraces, {
     pollInterval: pollInterval || 0,
@@ -26,6 +30,8 @@ export const useTracesData = (props: useTracesDataProps) => {
       statuses,
       onlyErrors: false,
       offset: 0,
+      to,
+      from,
     },
   })
 

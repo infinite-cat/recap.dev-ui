@@ -51,6 +51,7 @@ export const Traces = memo((props: TracesProps) => {
     unitErrorId,
     unitName,
     search,
+    sessionKey: `@traces-${unitErrorId || unitName}`,
   })
 
   useDebounce(

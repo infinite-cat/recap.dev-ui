@@ -2,6 +2,7 @@ import React from 'react'
 import { RefreshCcw } from 'react-feather'
 import styled, { keyframes } from 'styled-components/macro'
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
+import { fade } from '@material-ui/core'
 
 const spinAnimation = keyframes`
   to {
@@ -13,6 +14,11 @@ const borderAnimation = keyframes`
     transform: rotate(360deg);
   }
 `
+const ButtonGroup = styled(ToggleButtonGroup)`
+  height: 35px;
+  margin: ${(p) => p.theme.spacing(1, 0.5)};
+  overflow: hidden;
+`
 const MainButton = styled(({ loading, ...props }) => <ToggleButton {...props} />)<{
   selected: boolean
   loading: boolean
@@ -21,8 +27,7 @@ const MainButton = styled(({ loading, ...props }) => <ToggleButton {...props} />
     background-color: ${(p) => p.theme.palette.primary.light};
     color: ${(p) => p.theme.palette.background.default};
     &:hover,
-    &:active,
-    &:focus {
+    &:active {
       background-color: ${(p) => p.theme.palette.primary.main};
     }
   }
@@ -35,8 +40,10 @@ const AutoButton = styled(({ loading, ...props }) => <ToggleButton {...props} />
   loading: boolean
 }>`
   position: relative;
-  overflow: hidden;
-  border: none;
+
+  &.MuiToggleButton-root.Mui-selected {
+    background-color: ${(p) => fade(p.theme.palette.primary.light, 0.05)};
+  }
 
   &::before {
     display: ${(p) => (p.selected ? 'block' : 'none')};
@@ -75,10 +82,10 @@ const AutoButton = styled(({ loading, ...props }) => <ToggleButton {...props} />
     display: ${(p) => (p.selected ? 'block' : 'none')};
     position: absolute;
     z-index: -1;
-    left: 2px;
-    top: 2px;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
+    left: 1px;
+    top: 1px;
+    width: calc(100% - 2px);
+    height: calc(100% - 2px);
     background: ${(p) => p.theme.palette.background.default};
     border-radius: 4px;
   }
@@ -91,7 +98,7 @@ interface RefreshButtonProps {
   setPollInterval: (interval: number) => void
 }
 
-export const RefreshButton = ({
+export const RefreshButtonGroup = ({
   refetch,
   loading,
   pollInterval,
@@ -102,25 +109,19 @@ export const RefreshButton = ({
   }
 
   return (
-    <ToggleButtonGroup>
+    <ButtonGroup size="small">
       <MainButton
         selected
-        size="small"
         color="primary"
         onClick={() => refetch()}
         loading={loading}
-        value="value"
+        value="required"
       >
         <RefreshCcw size={20} />
       </MainButton>
-      <AutoButton
-        value="center"
-        size="small"
-        onClick={toggleFetch}
-        selected={Boolean(pollInterval)}
-      >
+      <AutoButton value="required" onClick={toggleFetch} selected={Boolean(pollInterval)}>
         Auto
       </AutoButton>
-    </ToggleButtonGroup>
+    </ButtonGroup>
   )
 }

@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components/macro'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useDebounce, useLocalStorage } from 'react-use'
-import { Box, IconButton, InputBase } from '@material-ui/core'
+import { IconButton, InputBase } from '@material-ui/core'
 import InfiniteScroll from 'react-infinite-scroller'
 
 import SearchIcon from '@material-ui/icons/Search'
 
-import { AutoRefreshGroup, Card, FullWidthSpinner, PageHeader, TracesCard } from '../components'
+import { Card, FullWidthSpinner, PageHeader, TracesCard, DefaultPageActions } from '../components'
 import { useTracesData } from '../hooks'
+import { DateRangeContext } from '../contexts'
 
 const Content = styled.div``
 const StyledInfiniteScroll = styled(InfiniteScroll)`
@@ -30,11 +31,14 @@ const InputWrapper = styled(Card)`
 `
 
 const TracesContainer = () => {
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-traces', 0)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
+
   const location = useLocation()
   const searchTerm = new URLSearchParams(location.search).get('query') ?? ''
   const history = useHistory()
   const [query, setQuery] = useState(searchTerm)
-  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-traces', 0)
+
   const {
     traces,
     loading,
@@ -47,6 +51,9 @@ const TracesContainer = () => {
   } = useTracesData({
     pollInterval,
     search: query,
+    to,
+    from,
+    sessionKey: '@tracesContainer-traces',
   })
 
   useDebounce(
@@ -64,14 +71,14 @@ const TracesContainer = () => {
       title="Traces"
       subTitle="List of all your traces"
       actions={
-        <Box mr={1}>
-          <AutoRefreshGroup
-            pollInterval={pollInterval!}
-            setPollInterval={setPollInterval}
-            loading={loading}
-            refetch={refetch}
-          />
-        </Box>
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
       }
     >
       <Content>
