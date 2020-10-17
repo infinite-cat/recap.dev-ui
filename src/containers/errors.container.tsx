@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import styled from 'styled-components/macro'
 import {
   Table,
@@ -10,7 +10,7 @@ import {
   Link as MaterialLink,
 } from '@material-ui/core'
 import { useQuery } from '@apollo/client'
-import { DateTime } from 'luxon'
+import { useLocalStorage } from 'react-use'
 import { Link } from 'react-router-dom'
 import InfiniteScroll from 'react-infinite-scroller'
 import { isEmpty } from 'lodash-es'
@@ -22,10 +22,12 @@ import {
   LoadingOverlay,
   FullWidthSpinner,
   Result,
+  DefaultPageActions,
 } from '../components'
 import { getErrors_getErrors_errors as Error, getErrors } from '../graphql/queries/types/getErrors'
 import { GetErrors } from '../graphql/queries'
 import { formatDateTime } from '../utils'
+import { DateRangeContext } from '../contexts'
 
 const Content = styled.div`
   padding-top: 16px;
@@ -50,14 +52,16 @@ const columns = [
 ]
 
 const ErrorsListContainer = () => {
-  const [graphSince] = useState(
-    DateTime.utc().minus({ hours: 23 }).startOf('hour').toMillis().toString(),
-  )
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-errors', 0)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
   const [loadingMore, setLoadingMore] = useState(false)
-  const { data, loading, fetchMore } = useQuery<getErrors>(GetErrors, {
+  const { data, loading, fetchMore, refetch } = useQuery<getErrors>(GetErrors, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
-      graphSince,
+      from,
+      to,
       offset: 0,
     },
   })
@@ -94,7 +98,20 @@ const ErrorsListContainer = () => {
   }, [loadingMore, fetchMore, data])
 
   return (
-    <PageHeader title="Errors" subTitle="List of all errors in your units">
+    <PageHeader
+      title="Errors"
+      subTitle="List of all errors in your units"
+      actions={
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
+      }
+    >
       <Content>
         <StyledInfiniteScroll
           hasMore={data?.getErrors.hasMore}

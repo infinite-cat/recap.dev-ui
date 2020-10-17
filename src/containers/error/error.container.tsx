@@ -15,13 +15,13 @@ import {
   PageHeader,
   Result,
   SimpleAreaGraphComponent,
+  DateRangePicker,
 } from '../../components'
 import { Content, UnitLink } from '../common.styles'
 import { getError } from '../../graphql/queries/types/getError'
 import { formatDateTime, safeParse } from '../../utils'
 import { JsonCard } from '../../components/json/json-card.component'
 import { DateRangeContext, ThemeContext } from '../../contexts'
-import { DateRangePicker } from '../../components/date-range-picker'
 import { Traces } from '../../components/traces'
 import { LogList } from '../../components/logs'
 
@@ -66,7 +66,7 @@ const breadcrumb = (errorName: string = '') => ({
 
 const ErrorContainer = () => {
   const { theme } = useContext(ThemeContext)
-  const { since, range, setRange } = useContext(DateRangeContext)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
@@ -74,7 +74,8 @@ const ErrorContainer = () => {
   const { data, loading } = useQuery<getError>(GetError, {
     variables: {
       id,
-      graphSince: since,
+      from,
+      to,
     },
   })
 
@@ -86,7 +87,7 @@ const ErrorContainer = () => {
       title={id}
       breadcrumb={breadcrumb(title)}
       onBack={() => history.goBack()}
-      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+      actions={<DateRangePicker value={rangeValue} onValueChange={setRangeValue} />}
     >
       <Content>
         {loading && <LoadingPage />}

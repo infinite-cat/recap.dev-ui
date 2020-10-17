@@ -20,20 +20,19 @@ import { AlertTriangle } from 'react-feather'
 import { useLocalStorage } from 'react-use'
 
 import {
-  AutoRefreshGroup,
   Card,
   CardHeader,
   LoadingPage,
   PageHeader,
   Result,
   SimpleAreaGraphComponent,
+  DefaultPageActions,
 } from '../components'
 import { GetDashboardData } from '../graphql/queries/dashboard.query'
 import { BasicInfoCard, TableCard } from './common.styles'
 import { getDashboardData } from '../graphql/queries/types/getDashboardData'
 import { formatDateTime } from '../utils'
 import { DateRangeContext, ThemeContext } from '../contexts'
-import { DateRangePicker } from '../components/date-range-picker'
 
 const Content = styled.div`
   flex: 1;
@@ -106,10 +105,6 @@ const FirstSeenTableCell = styled(TableCell)`
 const UnitStatsTableCell = styled(TableCell)`
   width: 140px;
 `
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-`
 
 const insightIcons: { [key: string]: ReactElement } = {
   ERROR: <ErrorInsightIcon />,
@@ -119,13 +114,14 @@ const DashboardContainer = memo(() => {
   const { theme } = useContext(ThemeContext)
   const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-dashboard', 0)
 
-  const { since, range, setRange } = useContext(DateRangeContext)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
   const { data, loading, refetch, networkStatus } = useQuery<getDashboardData>(GetDashboardData, {
     notifyOnNetworkStatusChange: true,
     pollInterval,
     variables: {
-      since,
+      from,
+      to,
     },
   })
   const initialLoading = loading && networkStatus === 1
@@ -135,15 +131,14 @@ const DashboardContainer = memo(() => {
       title="Dashboard"
       subTitle="Status of your system"
       actions={
-        <Actions>
-          <AutoRefreshGroup
-            pollInterval={pollInterval!}
-            setPollInterval={setPollInterval}
-            loading={loading}
-            refetch={refetch}
-          />
-          <DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />
-        </Actions>
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
       }
     >
       <Content>

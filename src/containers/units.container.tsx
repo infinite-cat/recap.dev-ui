@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import styled from 'styled-components/macro'
+import { useLocalStorage } from 'react-use'
 import {
   Table,
   IconButton,
@@ -20,9 +21,15 @@ import { debounce, isEmpty, round } from 'lodash-es'
 import SearchIcon from '@material-ui/icons/Search'
 
 import { GetUnits } from '../graphql/queries'
-import { PageHeader, Card, LoadingOverlay, FullWidthSpinner, Result } from '../components'
+import {
+  PageHeader,
+  Card,
+  LoadingOverlay,
+  FullWidthSpinner,
+  Result,
+  DefaultPageActions,
+} from '../components'
 import { getUnits, getUnits_getUnits_units as Unit } from '../graphql/queries/types/getUnits'
-import { DateRangePicker } from '../components/date-range-picker'
 import { DateRangeContext } from '../contexts'
 import { formatDuration } from '../utils'
 
@@ -51,14 +58,18 @@ const columns = [
 ]
 
 const UnitsContainer = () => {
-  const { since, range, setRange } = useContext(DateRangeContext)
+  const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-units', 0)
+  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
   const [orderBy, setOrderBy] = useState('estimatedCost')
   const [orderDirection, setOrderDirection] = useState<'desc' | 'asc'>('desc')
   const [search, setSearch] = useState('')
   const [loadingMore, setLoadingMore] = useState(false)
-  const { data, loading, fetchMore } = useQuery<getUnits>(GetUnits, {
+  const { data, loading, fetchMore, refetch } = useQuery<getUnits>(GetUnits, {
+    notifyOnNetworkStatusChange: true,
+    pollInterval,
     variables: {
-      since,
+      from,
+      to,
       search,
       offset: 0,
       orderBy,
@@ -115,7 +126,16 @@ const UnitsContainer = () => {
     <PageHeader
       title="Units"
       subTitle="List of all your units"
-      actions={<DateRangePicker range={range} onRangeChange={(newRange) => setRange(newRange)} />}
+      actions={
+        <DefaultPageActions
+          pollInterval={pollInterval}
+          setPollInterval={setPollInterval}
+          rangeValue={rangeValue}
+          setRangeValue={setRangeValue}
+          loading={loading}
+          refetch={refetch}
+        />
+      }
     >
       <Content>
         <StyledInfiniteScroll

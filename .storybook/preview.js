@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { addDecorator } from '@storybook/react'
 import { withKnobs } from '@storybook/addon-knobs'
+import { LocalizationProvider } from '@material-ui/pickers'
+import LuxonUtils from '@material-ui/pickers/adapter/luxon'
 
-import { ThemeProvider } from '../src/contexts'
+import { SnackbarProvider, ThemeProvider } from '../src/contexts'
 import { ThemeSwitcher } from '../src/components'
 
 const StoriesWrapper = styled.div`
@@ -17,8 +19,12 @@ const StoriesWrapper = styled.div`
 
 const StyledDecorator = (story) => (
   <ThemeProvider>
-    <ThemeSwitcher />
-    <StoriesWrapper>{story()}</StoriesWrapper>
+    <LocalizationProvider dateAdapter={LuxonUtils}>
+      <SnackbarProvider>
+        <ThemeSwitcher />
+        <StoriesWrapper>{story()}</StoriesWrapper>
+      </SnackbarProvider>
+    </LocalizationProvider>
   </ThemeProvider>
 )
 

@@ -15,7 +15,7 @@ import {
   DataCard,
   CardHeader,
   Result,
-  AutoRefreshGroup,
+  RefreshButtonGroup,
 } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
@@ -61,7 +61,7 @@ const TraceContainer = () => {
       breadcrumb={breadcrumb(trace?.externalId!)}
       onBack={() => history.goBack()}
       actions={
-        <AutoRefreshGroup
+        <RefreshButtonGroup
           pollInterval={pollInterval!}
           setPollInterval={setPollInterval}
           loading={loading}

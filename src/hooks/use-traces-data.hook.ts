@@ -10,10 +10,12 @@ interface useTracesDataProps {
   unitName?: string
   search?: string
   pollInterval?: number
+  to?: string | null
+  from?: string
 }
 
 export const useTracesData = (props: useTracesDataProps) => {
-  const { unitErrorId, unitName, search, pollInterval } = props
+  const { unitErrorId, unitName, search, pollInterval, to, from } = props
   const [statuses, setStatuses] = React.useState<string[]>([])
   const [loadingMore, setLoadingMore] = useState(false)
   const { data, loading, fetchMore, refetch } = useQuery<getTraces>(GetTraces, {
@@ -26,6 +28,8 @@ export const useTracesData = (props: useTracesDataProps) => {
       statuses,
       onlyErrors: false,
       offset: 0,
+      to,
+      from,
     },
   })
 
