@@ -73,7 +73,7 @@ export const DateRangePicker = ({ value, onValueChange }: DateRangePickerProps) 
     setAnchorEl(null)
     onValueChange({
       from: customValue[0]!.toMillis(),
-      to: customValue[1]!.toMillis(),
+      to: customValue[1]!.endOf('day').toMillis(),
       pickerValue: 'custom',
     })
   }
