@@ -1,24 +1,12 @@
 {
   "extends": ["airbnb", "react-app", "prettier", "prettier/react"],
-  "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  "env": {
-    "browser": true
-  },
-  "parserOptions": {
-    "createDefaultProgram": true
-  },
   "settings": {
     "import/resolver": {"node": {"extensions": [".js", ".jsx", ".ts", ".tsx", ".json"]}}
   },
   "rules": {
-    "semi": ["error", "never"],
-    "object-curly-newline": ["error", {"consistent": true}],
     "react/jsx-filename-extension": [1, {"extensions": [".tsx", ".jsx"]}],
-    "@typescript-eslint/no-unused-vars": ["error", {"ignoreRestSiblings": true}],
     "import/prefer-default-export": "off",
-    "implicit-arrow-linebreak": "off",
-    "react/jsx-one-expression-per-line": "off",
     "import/extensions": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off"

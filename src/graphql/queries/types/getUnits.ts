@@ -32,7 +32,7 @@ export interface getUnitsVariables {
   search?: string | null;
   offset?: number | null;
   from: string;
-  to: string;
+  to?: string | null;
   orderBy?: string | null;
   orderDirection?: string | null;
 }
