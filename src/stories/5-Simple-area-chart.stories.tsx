@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components/macro'
+import ReactApexChart from 'react-apexcharts'
 import { Box } from '@material-ui/core'
+import { mapValues, orderBy } from 'lodash-es'
 
 import { Card, CardHeader, SimpleAreaGraphComponent } from '../components'
 
@@ -202,3 +204,91 @@ export const SimpleAreaGraphStory = () => (
     />
   </GraphCard>
 )
+
+export const SimpleApexGraphStory = () => {
+  const xAxis = 'dateTime'
+  const seriesKeys = ['invocations', 'errors']
+
+  const graphData = useMemo(() => {
+    const orderedData = orderBy(MOCK_DATA, xAxis)
+    return orderedData.map((stat) => ({
+      ...mapValues(stat, Number),
+      x: Number(stat[xAxis]),
+      type: 'column',
+    }))
+  }, [xAxis])
+
+  const series = seriesKeys.map((key) => ({
+    name: key,
+    data: graphData.map((x: any) => Number(x[key])),
+  }))
+
+  const options = {
+    chart: {
+      height: 350,
+      type: 'area',
+    },
+    plotOptions: {
+      line: {
+        dataLabels: {
+          enabled: false,
+        },
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: 'smooth',
+    },
+    colors: ['#42a5f4', '#e88888'],
+    xaxis: {
+      floating: true,
+      type: 'datetime',
+      categories: graphData.map((x: any) => Number(x[xAxis])),
+    },
+    yaxis: {
+      opposite: true,
+      floating: true,
+      axisTicks: {
+        offsetX: 20,
+        offsetY: -6,
+      },
+      labels: {
+        offsetX: 20,
+        offsetY: -6,
+      },
+      axisBorder: {
+        offsetX: 20,
+        offsetY: -6,
+      },
+    },
+    tooltip: {
+      x: {
+        format: 'dd/MM/yy HH:mm',
+      },
+    },
+    grid: {
+      show: false,
+      padding: {
+        left: 0,
+        right: 0,
+        bottom: 0,
+      },
+    },
+    legend: {
+      offsetY: -50,
+      position: 'top',
+      horizontalAlign: 'left',
+    },
+  }
+
+  return (
+    <GraphCard>
+      <Box ml={2} mb={1}>
+        <CardHeader>System Status</CardHeader>
+      </Box>
+      <ReactApexChart options={options} series={series} type="area" height={300} />
+    </GraphCard>
+  )
+}
