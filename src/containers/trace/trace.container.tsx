@@ -99,13 +99,15 @@ const TraceContainer = () => {
                 </CardHeader>
                 <Typography noWrap>{formatDateTime(data.getTrace?.start)}</Typography>
               </DataCard>
-              <DataCard>
-                <CardHeader>Duration and Memory</CardHeader>
-                <Typography>
-                  {formatDuration(parsedExtra?.billedDuration)} ({parsedExtra?.maxMemoryUsed} /
-                  {parsedExtra?.memorySize} MB)
-                </Typography>
-              </DataCard>
+              {parsedExtra?.billedDuration && (
+                <DataCard>
+                  <CardHeader>Duration and Memory</CardHeader>
+                  <Typography>
+                    {formatDuration(parsedExtra?.billedDuration)} ({parsedExtra?.maxMemoryUsed} /
+                    {parsedExtra?.memorySize} MB)
+                  </Typography>
+                </DataCard>
+              )}
               <DataCard type={toLower(data.getTrace?.status)}>
                 <CardHeader>Status</CardHeader>
                 <Typography noWrap>{capitalize(data.getTrace?.status)}</Typography>
