@@ -1,6 +1,6 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
-import { DateRangeValue } from '../components/page-controls'
+import { DateRangeValue } from '../components'
 import { getDateFrom } from '../utils'
 
 interface DateRangeProviderProps {
@@ -24,6 +24,17 @@ const DateRangeProvider = memo(({ children }: DateRangeProviderProps) => {
       pickerValue: '24 hours',
     },
   )
+
+  useEffect(() => {
+    if (rangeValue && rangeValue.pickerValue !== 'custom') {
+      if (rangeValue.from !== getDateFrom(rangeValue.pickerValue)) {
+        setRangeValue({
+          from: getDateFrom(rangeValue.pickerValue),
+          pickerValue: rangeValue.pickerValue,
+        })
+      }
+    }
+  }, [rangeValue, setRangeValue])
 
   return (
     <DateRangeContext.Provider
