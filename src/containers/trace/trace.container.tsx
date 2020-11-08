@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components/macro'
 import { Box, Tooltip, Typography } from '@material-ui/core'
 import { useParams, useHistory, Link } from 'react-router-dom'
@@ -15,14 +15,13 @@ import {
   DataCard,
   CardHeader,
   Result,
-  DefaultPageActions,
+  RefreshButtonGroup,
 } from '../../components'
 import { JsonCard } from '../../components/json/json-card.component'
 import { Timeline } from '../../components/timeline/timeline.component'
 import { Content, TopCardsContainer, BasicInfoCard, UnitLink } from '../common.styles'
 import { formatDateTime, formatDuration, safeParse } from '../../utils'
 import { LogList } from '../../components/logs'
-import { DateRangeContext } from '../../contexts'
 
 const NoLogsResult = styled(Result)`
   min-height: 120px;
@@ -42,7 +41,6 @@ const breadcrumb = (id: string) => ({
 
 const TraceContainer = () => {
   const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-trace-page', 0)
-  const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
   const { id } = useParams<{ id: string }>()
   const history = useHistory()
@@ -51,8 +49,6 @@ const TraceContainer = () => {
     pollInterval,
     variables: {
       id,
-      from,
-      to,
     },
   })
   const initialLoading = loading && networkStatus === 1
@@ -67,11 +63,9 @@ const TraceContainer = () => {
       breadcrumb={breadcrumb(trace?.externalId!)}
       onBack={() => history.goBack()}
       actions={
-        <DefaultPageActions
-          pollInterval={pollInterval}
+        <RefreshButtonGroup
+          pollInterval={pollInterval!}
           setPollInterval={setPollInterval}
-          rangeValue={rangeValue}
-          setRangeValue={setRangeValue}
           loading={loading}
           refetch={refetch}
         />
