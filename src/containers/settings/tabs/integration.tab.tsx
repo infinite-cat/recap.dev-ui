@@ -146,7 +146,7 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
         <Box mb={1}>
           Enables gathering additional information from CloudWatch logs for AWS Lambda
         </Box>
-        <StyledLink>
+        <StyledLink href="https://recap.dev/docs/integrations/aws" target="_blank">
           Setup guide <LinkIcon size={14} />
         </StyledLink>
         <Box mt={2} />
@@ -194,7 +194,7 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
           </Header>
         </Box>
         <Box mb={1}>Sends various notification messages to a specified Slack channel</Box>
-        <StyledLink>
+        <StyledLink href="https://recap.dev/docs/integrations/slack" target="_blank">
           Setup guide <LinkIcon size={14} />
         </StyledLink>
         <Box mb={1} mt={2}>
