@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { ApolloProvider } from '@apollo/client'
+import { useAsync } from 'react-use'
 import loadable from '@loadable/component'
 
 import { getApolloClient } from '../config/apollo.config'
@@ -21,8 +22,14 @@ const Units = getLoadableContainer(() => import('./units.container'))
 const Settings = getLoadableContainer(() => import('./settings/settings.container'))
 
 function RootContainer() {
+  const { value: client } = useAsync(getApolloClient)
+
+  if (!client) {
+    return <LoadingPage />
+  }
+
   return (
-    <ApolloProvider client={getApolloClient()}>
+    <ApolloProvider client={client}>
       <Router>
         <DrawerLayout>
           <Switch>
