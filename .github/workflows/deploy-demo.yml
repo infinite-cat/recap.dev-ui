@@ -12,7 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2-beta
-      - uses: chrislennon/action-aws-cli@v1.1
 
       - uses: actions/cache@v2
         with:
