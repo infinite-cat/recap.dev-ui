@@ -3,7 +3,7 @@ name: upload
 on:
   push:
     branches:
-      - initial-demo-setup
+      - master
 
 jobs:
   dev-deploy:
