@@ -1,194 +1,70 @@
 import * as GraphQLJSON from 'graphql-type-json'
+import { filter, find, flow, take, partialRight } from 'lodash-es'
+import {
+  units,
+  unitDetails,
+  traces,
+  errorList,
+  insights,
+  totalSystemStats,
+  newErrors,
+  topInvokedUnits,
+  errorStats,
+  errors,
+} from './data'
 
 export default {
   JSON: GraphQLJSON,
   Query: {
-    getUnits: () => ({
+    getUnits: (_: any, args: any) => ({
       hasMore: false,
       offset: 20,
-      units: [
-        {
-          unitName: 'dev-recap-dev-example-project-save-books',
-          estimatedCost: 0.0001365717,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-http-fetch',
-          estimatedCost: 0.00010600020000000002,
-          invocations: '1',
-          errors: '0',
-          errorRate: 0,
-          averageDuration: 279,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-mysql-error',
-          estimatedCost: 0.00007385727857142857,
-          invocations: '1',
-          errors: '1',
-          errorRate: 1,
-          averageDuration: 137,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-postgres-error',
-          estimatedCost: 0.00006314297142857143,
-          invocations: '1',
-          errors: '1',
-          errorRate: 1,
-          averageDuration: 117,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-mysql-select',
-          estimatedCost: 0.00005957153571428572,
-          invocations: '1',
-          errors: '0',
-          errorRate: 0,
-          averageDuration: 108,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-dynamodb-get',
-          estimatedCost: 0.00005957153571428572,
-          invocations: '1',
-          errors: '0',
-          errorRate: 0,
-          averageDuration: 171,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-postgres-select',
-          estimatedCost: 0.0000560001,
-          invocations: '1',
-          errors: '0',
-          errorRate: 0,
-          averageDuration: 96,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-recap-dev-example-project-timeout',
-          estimatedCost: 0.000006,
-          invocations: '1',
-          errors: '0',
-          errorRate: 0,
-          averageDuration: 4803,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'recap.dev-backend-func-test-unit-errors',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'localhost',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'Get Post',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/posts/4',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/posts/2',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/posts/1',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/cat-facts',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/cat-fact',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET localhost/',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET 188.149.146.156/',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'GET /',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-        {
-          unitName: 'dev-trace-pg-access',
-          estimatedCost: null,
-          invocations: '0',
-          errors: '0',
-          errorRate: null,
-          averageDuration: null,
-          __typename: 'UnitListDetails',
-        },
-      ],
+      units: args.search ? filter(units, (unit) => unit.unitName.includes(args.search)) : units,
       __typename: 'GetUnitsResponse',
     }),
+    getUnit: (_: any, args: any) => find(unitDetails, { unitName: args.unitName }),
+    getTraces: (_: any, args: any) => ({
+      hasMore: false,
+      offset: 20,
+      traces: flow(
+        partialRight(filter, (trace: any) => {
+          if (
+            args.search &&
+            !trace.unitName.includes(args.search) &&
+            !trace.logs.includes(args.search)
+          ) {
+            return false
+          }
+
+          if (args.unitErrorId && Number(args.unitErrorId) !== trace.unitErrorId) {
+            return false
+          }
+
+          if (args.unitName && args.unitName !== trace.unitName) {
+            return false
+          }
+
+          return true
+        }),
+        partialRight(take, args.limit || 20),
+      )(traces),
+      __typename: 'GetTracesResponse',
+    }),
+    getTrace(_: any, { id }: any) {
+      return find(traces, { id: Number(id) })
+    },
+    getErrors: () => ({
+      hasMore: false,
+      offset: 20,
+      errors: errorList,
+    }),
+    getError(_: any, { id }: any) {
+      return find(errors, { id: Number(id) })
+    },
+    getErrorStats: (_: any, { id }: any) => errorStats[id],
+    getInsights: () => insights,
+    getTotalStats: () => totalSystemStats,
+    getNewErrors: () => newErrors,
+    getTopInvokedUnits: () => topInvokedUnits,
   },
 }

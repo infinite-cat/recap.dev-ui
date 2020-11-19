@@ -1,0 +1,43 @@
+name: upload
+
+on:
+  push:
+    branches:
+      - initial-demo-setup
+
+jobs:
+  dev-deploy:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2-beta
+      - uses: chrislennon/action-aws-cli@v1.1
+
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: install dependencies
+        run: yarn
+      - name: build
+        run: yarn build
+        env:
+          REACT_APP_IS_DEMO: true
+      - name: upload
+        run: aws s3 sync build/. s3://demo.recap.dev/ --delete --exclude '*.html' --cache-control 'max-age=31104000'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: upload
+        run: aws s3 sync build/. s3://demo.recap.dev/ --include '*.html'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: invalidate cache
+        run: aws cloudfront create-invalidation --distribution-id E14K1HSGKN0UVL --paths "/*"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
