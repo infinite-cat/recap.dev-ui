@@ -159,15 +159,6 @@ const DashboardContainer = memo(() => {
                       </Insight>
                     </MaterialLink>
                   ))}
-                {!isEmpty(data?.getInsights) &&
-                  data?.getInsights?.map((insight, index) => (
-                    <MaterialLink to={insight.detailsLink} component={Link} key={index}>
-                      <Insight>
-                        {insightIcons[insight.type]}
-                        <Typography variant="body2">{insight.message}</Typography>
-                      </Insight>
-                    </MaterialLink>
-                  ))}
                 {isEmpty(data?.getInsights) && (
                   <Result type="success" text="All good, system is stable" />
                 )}
