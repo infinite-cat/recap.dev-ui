@@ -45,6 +45,8 @@ const StyledPageHeader = styled(PageHeader)`
 const DashboardCard = styled(BasicInfoCard)`
   width: 100%;
   min-height: 300px;
+  max-height: 550px;
+  overflow: auto;
 `
 export const CardsContainer = styled.div`
   display: grid;
@@ -157,29 +159,40 @@ const DashboardContainer = memo(() => {
                       </Insight>
                     </MaterialLink>
                   ))}
+                {!isEmpty(data?.getInsights) &&
+                  data?.getInsights?.map((insight, index) => (
+                    <MaterialLink to={insight.detailsLink} component={Link} key={index}>
+                      <Insight>
+                        {insightIcons[insight.type]}
+                        <Typography variant="body2">{insight.message}</Typography>
+                      </Insight>
+                    </MaterialLink>
+                  ))}
                 {isEmpty(data?.getInsights) && (
                   <Result type="success" text="All good, system is stable" />
                 )}
               </Insights>
             </DashboardCard>
             <GraphCard>
-              <Box ml={2} mb={1}>
-                <CardHeader>System Status</CardHeader>
-              </Box>
-              <SystemHealthDataGrid>
-                <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
-                <SystemHealthItem variant="subtitle2">
-                  {round(100 - (data?.getTotalStats?.errorRate || 0) * 100, 2)}%
-                </SystemHealthItem>
-                <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
-                <SystemHealthItem variant="subtitle2">
-                  {data?.getTotalStats?.invocations}
-                </SystemHealthItem>
-                <SystemHealthItem variant="subtitle2">Errors</SystemHealthItem>
-                <SystemHealthItem variant="subtitle2">
-                  {data?.getTotalStats?.errors}
-                </SystemHealthItem>
-              </SystemHealthDataGrid>
+              <div>
+                <Box ml={2} mb={1}>
+                  <CardHeader>System Status</CardHeader>
+                </Box>
+                <SystemHealthDataGrid>
+                  <SystemHealthItem variant="subtitle2">System Health</SystemHealthItem>
+                  <SystemHealthItem variant="subtitle2">
+                    {round(100 - (data?.getTotalStats?.errorRate || 0) * 100, 2)}%
+                  </SystemHealthItem>
+                  <SystemHealthItem variant="subtitle2">Traces</SystemHealthItem>
+                  <SystemHealthItem variant="subtitle2">
+                    {data?.getTotalStats?.invocations}
+                  </SystemHealthItem>
+                  <SystemHealthItem variant="subtitle2">Errors</SystemHealthItem>
+                  <SystemHealthItem variant="subtitle2">
+                    {data?.getTotalStats?.errors}
+                  </SystemHealthItem>
+                </SystemHealthDataGrid>
+              </div>
               <SimpleAreaGraphComponent
                 data={data?.getTotalStats.graphStats}
                 lines={[
