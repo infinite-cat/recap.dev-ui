@@ -11,6 +11,10 @@ const units: DurationUnit[] = ['hours', 'minutes', 'seconds', 'milliseconds']
 const shortNames = ['h', 'm', 's', 'ms']
 
 export const formatDuration = (milliseconds: number) => {
+  if (!milliseconds) {
+    return '< 1ms'
+  }
+
   const duration = Duration.fromObject({ milliseconds })
     .shiftTo(...units)
     .toObject()
