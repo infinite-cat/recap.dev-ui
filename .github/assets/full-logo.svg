@@ -2,8 +2,8 @@
     <foreignObject width="100%" height="100%">
         <style>
             svg {
-                color: var(--color-text-primary);
-                fill: var(--color-text-primary);
+                color: red;
+                fill: red;
             }
         </style>
         <div xmlns="http://www.w3.org/1999/xhtml">

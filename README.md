@@ -1,6 +1,5 @@
 <p align="center">
   <a href="https://recap.dev" target="_blank" align="center" style="color: var(--color-text-primary)">
-    test
     <img src=".github/assets/full-logo.svg" width="300">
   </a>
   <br />
