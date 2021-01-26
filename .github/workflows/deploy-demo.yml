@@ -1,4 +1,4 @@
-name: upload
+name: deploy-demo
 
 on:
   push:
@@ -25,12 +25,12 @@ jobs:
         env:
           REACT_APP_IS_DEMO: true
       - name: upload
-        run: aws s3 sync build/. s3://demo.recap.dev/ --delete --exclude '*.html' --cache-control 'max-age=31104000'
+        run: aws s3 sync build/. s3://demo.recap.dev/ --delete --exclude '*.txt' --cache-control 'max-age=31104000'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: upload
-        run: aws s3 sync build/. s3://demo.recap.dev/ --include '*.html'
+        run: aws s3 sync build/. s3://demo.recap.dev/
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
