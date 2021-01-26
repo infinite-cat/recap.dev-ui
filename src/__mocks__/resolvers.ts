@@ -1,5 +1,5 @@
 import * as GraphQLJSON from 'graphql-type-json'
-import { filter, find, flow, take, partialRight, noop } from 'lodash-es'
+import { filter, find, flow, take, partialRight } from 'lodash-es'
 import {
   units,
   unitDetails,
@@ -41,11 +41,7 @@ export default {
             return false
           }
 
-          if (args.unitName && args.unitName !== trace.unitName) {
-            return false
-          }
-
-          return true
+          return !(args.unitName && args.unitName !== trace.unitName)
         }),
         partialRight(take, args.limit || 20),
       )(traces),
