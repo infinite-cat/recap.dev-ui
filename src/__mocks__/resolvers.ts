@@ -11,6 +11,7 @@ import {
   topInvokedUnits,
   errorStats,
   errors,
+  settings,
 } from './data'
 
 export default {
@@ -40,11 +41,7 @@ export default {
             return false
           }
 
-          if (args.unitName && args.unitName !== trace.unitName) {
-            return false
-          }
-
-          return true
+          return !(args.unitName && args.unitName !== trace.unitName)
         }),
         partialRight(take, args.limit || 20),
       )(traces),
@@ -66,5 +63,15 @@ export default {
     getTotalStats: () => totalSystemStats,
     getNewErrors: () => newErrors,
     getTopInvokedUnits: () => topInvokedUnits,
+    getSettings: () => settings,
+  },
+  Mutation: {
+    setSettings: () => settings,
+    testAwsIntegration: () => ({
+      success: true,
+    }),
+    testSlackIntegration: () => ({
+      success: true,
+    }),
   },
 }

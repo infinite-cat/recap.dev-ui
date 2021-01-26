@@ -13,6 +13,7 @@ import { JsonCard } from '../../../components/json/json-card.component'
 import { TestAwsIntegration, TestSlackIntegration } from '../../../graphql/mutations'
 import { SettingsInput } from '../../../graphql/types/graphql-global-types'
 import { ReactComponent as SlackLogo } from '../../../svg/integrations/slack.svg'
+import { IS_DEMO } from '../../../constants'
 
 const StyledLink = styled(Link)`
   cursor: pointer;
@@ -125,6 +126,10 @@ export const IntegrationTab = ({ data, updateSettings }: IntegrationTabProps) =>
   }, [slackConfiguration, data, notificationConfigurations, updateSettings])
 
   const removeSlackIntegration = async () => {
+    // TODO find the better solution
+    if (IS_DEMO) {
+      return
+    }
     await setSlackConfiguration(undefined)
     saveSlackIntegration()
   }

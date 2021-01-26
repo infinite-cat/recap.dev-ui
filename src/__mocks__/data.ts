@@ -4281,3 +4281,12 @@ export const topInvokedUnits = [
     __typename: 'TopInvokedUnit',
   },
 ]
+
+export const settings = {
+  id: 1,
+  isAwsIntegrationEnabled: true,
+  host: 'demo-host',
+  cleanupAfterDays: 90,
+  notificationConfigurations: '[{"type":"slack","token":"slack-token","channelId":"#exceptions"}]',
+  __typename: 'Settings',
+}
