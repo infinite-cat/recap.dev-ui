@@ -1,7 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-
-const BASE_URL = process.env.REACT_APP_HTTP_PROXY ?? ''
-const IS_DEMO = process.env.REACT_APP_IS_DEMO && process.env.REACT_APP_IS_DEMO !== 'false'
+import { BASE_URL, IS_DEMO } from '../constants'
 
 export const getApolloClient = async () => {
   if (IS_DEMO) {

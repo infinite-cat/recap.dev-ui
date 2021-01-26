@@ -1,5 +1,5 @@
 import * as GraphQLJSON from 'graphql-type-json'
-import { filter, find, flow, take, partialRight } from 'lodash-es'
+import { filter, find, flow, take, partialRight, noop } from 'lodash-es'
 import {
   units,
   unitDetails,
@@ -11,6 +11,7 @@ import {
   topInvokedUnits,
   errorStats,
   errors,
+  settings,
 } from './data'
 
 export default {
@@ -66,5 +67,15 @@ export default {
     getTotalStats: () => totalSystemStats,
     getNewErrors: () => newErrors,
     getTopInvokedUnits: () => topInvokedUnits,
+    getSettings: () => settings,
+  },
+  Mutation: {
+    setSettings: () => settings,
+    testAwsIntegration: () => ({
+      success: true,
+    }),
+    testSlackIntegration: () => ({
+      success: true,
+    }),
   },
 }
