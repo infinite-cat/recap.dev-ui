@@ -8,7 +8,9 @@ export const Analytics = () => {
   const location = useLocation()
 
   useEffect(() => {
-    window?.ga?.('send', 'pageview', location.pathname)
+    window?.dataLayer?.push?.('event', 'page_view', {
+      page_location: location.pathname,
+    })
   }, [location])
 
   return (
