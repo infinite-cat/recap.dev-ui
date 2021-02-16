@@ -21,7 +21,7 @@ import {
 } from './drawer-layout.styles'
 
 interface DrawerLayoutProps {
-  children: React.ReactElement
+  children: React.ReactElement | React.ReactElement[]
 }
 
 export const DrawerLayout = ({ children }: DrawerLayoutProps) => {

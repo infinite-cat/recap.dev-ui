@@ -5,7 +5,7 @@ import { useAsync } from 'react-use'
 import loadable from '@loadable/component'
 
 import { getApolloClient } from '../config/apollo.config'
-import { DrawerLayout, LoadingPage } from '../components'
+import { Analytics, DrawerLayout, LoadingPage } from '../components'
 
 const getLoadableContainer = (loader: any) =>
   loadable(loader, {
@@ -61,6 +61,7 @@ function RootContainer() {
               <Dashboard />
             </Route>
           </Switch>
+          <Analytics />
         </DrawerLayout>
       </Router>
     </ApolloProvider>
