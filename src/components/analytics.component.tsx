@@ -8,8 +8,10 @@ export const Analytics = () => {
   const location = useLocation()
 
   useEffect(() => {
-    window?.dataLayer?.push?.('event', 'page_view', {
-      page_location: location.pathname,
+    window?.gtag?.('event', 'page_view', {
+      page_location: `https://recap.dev/${location.pathname}`,
+      page_path: location.pathname,
+      page_referrer: 'https://recap.dev/',
     })
   }, [location])
 
