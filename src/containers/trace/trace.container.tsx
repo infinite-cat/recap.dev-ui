@@ -79,7 +79,7 @@ const TraceContainer = () => {
               <DataCard>
                 <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getTrace?.unitName!} placement="top">
-                  <UnitLink to={`/units/${data.getTrace?.unitName}`} component={Link}>
+                  <UnitLink to={`/units/${encodeURIComponent(data.getTrace?.unitName!)}`} component={Link}>
                     <LinkIcon size={14} />
                     <Box ml={1} />
                     <Typography noWrap>{data.getTrace?.unitName}</Typography>

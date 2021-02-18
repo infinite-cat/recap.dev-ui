@@ -253,7 +253,7 @@ const DashboardContainer = memo(() => {
                     {data?.getTopInvokedUnits?.map((unit) => (
                       <TableRow key={unit.unitName} hover>
                         <TableCell scope="row">
-                          <MaterialLink to={`/units/${unit.unitName}`} component={Link}>
+                          <MaterialLink to={`/units/${encodeURIComponent(unit.unitName)}`} component={Link}>
                             <Tooltip title={`${unit.unitName}`} placement="top">
                               <Typography variant="body2" noWrap>
                                 {unit.unitName}
