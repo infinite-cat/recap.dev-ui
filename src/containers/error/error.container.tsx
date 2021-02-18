@@ -110,7 +110,7 @@ const ErrorContainer = () => {
               <DataCard>
                 <CardHeader>Unit Name</CardHeader>
                 <Tooltip title={data.getError?.unitName!} placement="top">
-                  <UnitLink to={`/units/${data.getError?.unitName}`} component={Link}>
+                  <UnitLink to={`/units/${encodeURIComponent(data.getError?.unitName!)}`} component={Link}>
                     <LinkIcon size={14} />
                     <Box ml={1} />
                     <Typography noWrap>{data.getError?.unitName}</Typography>

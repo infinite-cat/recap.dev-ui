@@ -174,7 +174,7 @@ const UnitsContainer = () => {
                   {data?.getUnits?.units?.map((row) => (
                     <TableRow key={row.unitName} hover>
                       <TableCell scope="row">
-                        <MaterialLink to={`/units/${row.unitName}`} component={Link}>
+                        <MaterialLink to={`/units/${encodeURIComponent(row.unitName)}`} component={Link}>
                           {row.unitName}
                         </MaterialLink>
                       </TableCell>

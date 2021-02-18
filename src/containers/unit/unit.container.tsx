@@ -58,7 +58,8 @@ const UnitContainer = () => {
   const [pollInterval, setPollInterval] = useLocalStorage<number>('@auto-update-unit', 0)
   const { from, to, rangeValue, setRangeValue } = useContext(DateRangeContext)
 
-  const { unitName } = useParams<{ unitName: string }>()
+  const { unitName: encodedUnitName } = useParams<{ unitName: string }>()
+  const unitName = decodeURIComponent(encodedUnitName)
   const history = useHistory()
   const { theme } = useContext(ThemeContext)
 
